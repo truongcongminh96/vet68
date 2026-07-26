@@ -1,0 +1,135 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: "Inter", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Manrope", "Manrope Fallback", ui-sans-serif, system-ui, sans-serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-medical-red: var(--medical-red);
+  --color-highlight: var(--highlight);
+  --color-success: var(--success);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --radius-sm: calc(var(--radius) * 0.75);
+  --radius-md: calc(var(--radius) * 0.875);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.35);
+  --radius-2xl: calc(var(--radius) * 1.6);
+}
+
+:root {
+  --background: #f7fafc;
+  --foreground: #102a3a;
+  --card: #ffffff;
+  --card-foreground: #102a3a;
+  --popover: #ffffff;
+  --popover-foreground: #102a3a;
+  --primary: #073e5f;
+  --primary-foreground: #f8fbfd;
+  --secondary: #eaf2f6;
+  --secondary-foreground: #073e5f;
+  --muted: #edf3f6;
+  --muted-foreground: #526b78;
+  --accent: #e7f0f5;
+  --accent-foreground: #052f49;
+  --destructive: #df2d3f;
+  --medical-red: #df2d3f;
+  --highlight: #f7d928;
+  --success: #198754;
+  --border: #e1e9ee;
+  --input: #d6e1e7;
+  --ring: #0e6a98;
+  --radius: 0.75rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #102a3a;
+  --sidebar-primary: #073e5f;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eaf2f6;
+  --sidebar-accent-foreground: #073e5f;
+  --sidebar-border: #e1e9ee;
+  --sidebar-ring: #0e6a98;
+}
+
+.dark {
+  --background: #0d202b;
+  --foreground: #edf5f8;
+  --card: #132d3b;
+  --card-foreground: #edf5f8;
+  --popover: #132d3b;
+  --popover-foreground: #edf5f8;
+  --primary: #88c5df;
+  --primary-foreground: #092131;
+  --secondary: #183746;
+  --secondary-foreground: #d9edf5;
+  --muted: #17323f;
+  --muted-foreground: #a9bdc7;
+  --accent: #1a3d4d;
+  --accent-foreground: #e6f4f9;
+  --destructive: #ef6673;
+  --medical-red: #ef6673;
+  --highlight: #f7d928;
+  --success: #53b986;
+  --border: #274654;
+  --input: #31515f;
+  --ring: #88c5df;
+  --sidebar: #102733;
+  --sidebar-foreground: #edf5f8;
+  --sidebar-primary: #88c5df;
+  --sidebar-primary-foreground: #092131;
+  --sidebar-accent: #183746;
+  --sidebar-accent-foreground: #edf5f8;
+  --sidebar-border: #274654;
+  --sidebar-ring: #88c5df;
+}
+
+@layer base {
+  * { @apply border-border outline-ring/50; }
+  html { scroll-behavior: smooth; }
+  body { @apply bg-background text-foreground font-sans; }
+  h1, h2, h3, h4, h5, h6 { @apply font-heading; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  a, button, input, select, textarea, summary { @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring; }
+  ::selection { background: color-mix(in srgb, var(--highlight) 75%, white); color: #102a3a; }
+}
+
+@layer utilities {
+  .site-container { @apply mx-auto w-full max-w-[1400px] px-4 sm:px-6 lg:px-8; }
+  .section-space { @apply py-12 md:py-16 lg:py-20; }
+  .text-balance { text-wrap: balance; }
+  .subtle-shadow { box-shadow: 0 14px 38px rgba(7, 62, 95, 0.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

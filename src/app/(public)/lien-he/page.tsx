@@ -1,0 +1,14 @@
+import type { Metadata } from "next";
+import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { getTelephoneUrl } from "@/lib/contact";
+import { getContactSettings } from "@/lib/contact-settings";
+import { hasSupabaseEnv } from "@/lib/supabase/config";
+
+export const metadata: Metadata = { title: "Liên hệ", description: "Liên hệ Vet Medicine 68 qua Zalo, hotline hoặc email để hỏi giá và thông tin sản phẩm.", alternates: { canonical: "/lien-he" } };
+
+export default async function ContactPage() {
+  const contact = await getContactSettings();
+  const demoMode = !hasSupabaseEnv();
+  return <div className="site-container section-space"><div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr]"><div><h1 className="text-4xl font-extrabold tracking-tight md:text-6xl">Liên hệ Vet Medicine 68</h1><p className="mt-5 max-w-xl text-lg leading-8 text-muted-foreground">Gửi tên sản phẩm, SKU và quy cách để Vet68 kiểm tra thông tin nhanh hơn.</p><div className="mt-8 flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row"><Button size="lg" asChild><a href={contact.zaloUrl} target="_blank" rel="noreferrer"><MessageCircle aria-hidden="true" /> Tư vấn qua Zalo</a></Button><Button size="lg" variant="outline" asChild><a href={getTelephoneUrl(contact.phone)}><Phone aria-hidden="true" /> Gọi Vet68</a></Button></div></div><div className="rounded-2xl border bg-card p-6 md:p-8"><h2 className="text-2xl font-extrabold">Thông tin liên hệ</h2><dl className="mt-6 grid gap-6"><div className="flex gap-4"><Phone className="mt-1 size-5 shrink-0 text-primary" aria-hidden="true" /><div><dt className="font-bold">Hotline</dt><dd className="mt-1 text-muted-foreground"><a href={getTelephoneUrl(contact.phone)}>{contact.phoneDisplay}</a></dd></div></div><div className="flex gap-4"><MessageCircle className="mt-1 size-5 shrink-0 text-primary" aria-hidden="true" /><div><dt className="font-bold">Zalo</dt><dd className="mt-1 text-muted-foreground"><a href={contact.zaloUrl} target="_blank" rel="noreferrer">Tư vấn qua Zalo</a></dd></div></div><div className="flex gap-4"><Mail className="mt-1 size-5 shrink-0 text-primary" aria-hidden="true" /><div><dt className="font-bold">Email</dt><dd className="mt-1 text-muted-foreground"><a href={`mailto:${contact.email}`}>{contact.email}</a></dd></div></div><div className="flex gap-4"><MapPin className="mt-1 size-5 shrink-0 text-primary" aria-hidden="true" /><div><dt className="font-bold">Địa chỉ</dt><dd className="mt-1 text-muted-foreground">{contact.address}</dd></div></div></dl>{demoMode ? <p className="mt-7 rounded-xl bg-secondary p-4 text-sm leading-6 text-muted-foreground">Thông tin liên hệ hiện là cấu hình demo. Cần cập nhật bằng Site settings hoặc biến môi trường trước khi đưa website vào sử dụng.</p> : null}</div></div></div>;
+}
