@@ -58,7 +58,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         <h1 className="mt-3 text-4xl font-extrabold tracking-tight md:text-6xl">{post.title}</h1>
         <p className="mt-5 text-lg leading-8 text-muted-foreground">{post.excerpt}</p>
       </header>
-      <div className="relative mx-auto mt-8 aspect-[16/8] max-w-5xl overflow-hidden rounded-2xl"><Image src={post.coverImage} alt={post.coverAlt} fill priority sizes="(max-width: 1200px) 100vw, 1000px" className="object-cover" /></div>
+      <div className="relative mx-auto mt-8 aspect-[16/8] max-w-5xl overflow-hidden rounded-2xl bg-soft-blue"><Image src={post.coverImage} alt={post.coverAlt} fill priority sizes="(max-width: 1200px) 100vw, 1000px" className={post.coverImage.endsWith(".svg") ? "object-contain p-5" : "object-cover"} /></div>
       <div className="mx-auto mt-10 grid max-w-5xl gap-8 lg:grid-cols-[1fr_280px]">
         <div className="article-content min-w-0 text-base leading-8">
           <ReactMarkdown

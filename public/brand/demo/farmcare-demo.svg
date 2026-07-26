@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 96" role="img" aria-label="FarmCare Demo">
+  <circle cx="46" cy="48" r="34" fill="#F6D44B"/>
+  <path d="M26 60c13-28 29-36 43-25-2 24-19 35-43 25Z" fill="#083B59"/>
+  <text x="92" y="57" font-family="Arial, sans-serif" font-size="27" font-weight="800" fill="#083B59">FARMCARE</text>
+</svg>

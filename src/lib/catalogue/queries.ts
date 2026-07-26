@@ -50,15 +50,16 @@ const loadPublicProducts = cache(async (): Promise<Product[]> => {
   const categoryMap = new Map((categoryRows ?? []).map((row) => [row.id, mapCategory(supabase, row)]));
   const animalMap = new Map((animalRows ?? []).map((row) => [row.id, mapAnimalType(supabase, row)]));
 
-  return productRows.flatMap((row) => {
+  const products = productRows.flatMap((row) => {
     const brand = row.brand_id ? brandMap.get(row.brand_id) : undefined;
     const category = row.category_id ? categoryMap.get(row.category_id) : undefined;
     if (!brand || !category || !row.price_display_mode) return [];
 
+    const fallbackImage = getProductFallback(category.slug);
     const images = (imageRows ?? [])
       .filter((image) => image.product_id === row.id)
       .map((image) => ({
-        src: getPublicStorageUrl(supabase, "product-images", image.storage_path, "/images/demo/product-01.jpg"),
+        src: getPublicStorageUrl(supabase, "product-images", image.storage_path, fallbackImage),
         alt: image.alt_text,
       }));
 
@@ -91,10 +92,25 @@ const loadPublicProducts = cache(async (): Promise<Product[]> => {
       isFeatured: row.is_featured,
       isNew: row.is_new,
       isActive: row.is_active,
-      images: images.length ? images : [{ src: "/images/demo/product-01.jpg", alt: `Ảnh tạm cho ${row.name}, hình sản phẩm thật chưa được cập nhật` }],
+      images: images.length ? images : [{ src: fallbackImage, alt: `Ảnh minh hoạ tạm cho ${row.name}, hình sản phẩm thật chưa được cập nhật` }],
       updatedAt: row.updated_at,
     } satisfies Product];
   });
+
+  if (!products.some((product) => product.slug.endsWith("-demo"))) return products;
+
+  return mergeBySlug(products, demoProducts, (product, demoProduct) => ({
+    ...demoProduct,
+    ...product,
+    brand: {
+      ...demoProduct.brand,
+      ...product.brand,
+      logo: product.brand.logo || demoProduct.brand.logo,
+      logoAlt: product.brand.logoAlt || demoProduct.brand.logoAlt,
+    },
+    secondaryCategories: mergeBySlug(product.secondaryCategories, demoProduct.secondaryCategories),
+    animals: mergeBySlug(product.animals, demoProduct.animals),
+  }));
 });
 
 const loadTaxonomy = cache(async () => {
@@ -108,10 +124,33 @@ const loadTaxonomy = cache(async () => {
   ]);
 
   if (categoryError || animalError || brandError) return { categories: [], animalTypes: [], brands: [] };
+  const categories = (categoryRows ?? []).map((row) => mapCategory(supabase, row));
+  const animalTypes = (animalRows ?? []).map((row) => mapAnimalType(supabase, row));
+  const brands = (brandRows ?? []).map((row) => mapBrand(supabase, row));
+
+  if (!brands.some((brand) => brand.name.toLocaleLowerCase("vi").includes("demo"))) {
+    return { categories, animalTypes, brands };
+  }
+
   return {
-    categories: (categoryRows ?? []).map((row) => mapCategory(supabase, row)),
-    animalTypes: (animalRows ?? []).map((row) => mapAnimalType(supabase, row)),
-    brands: (brandRows ?? []).map((row) => mapBrand(supabase, row)),
+    categories: mergeBySlug(categories, demoCategories, (category, demoCategory) => ({
+      ...demoCategory,
+      ...category,
+      image: category.image || demoCategory.image,
+      imageAlt: category.imageAlt || demoCategory.imageAlt,
+    })),
+    animalTypes: mergeBySlug(animalTypes, demoAnimalTypes, (animal, demoAnimal) => ({
+      ...demoAnimal,
+      ...animal,
+      image: animal.image || demoAnimal.image,
+      imageAlt: animal.imageAlt || demoAnimal.imageAlt,
+    })),
+    brands: mergeBySlug(brands, demoBrands, (brand, demoBrand) => ({
+      ...demoBrand,
+      ...brand,
+      logo: brand.logo || demoBrand.logo,
+      logoAlt: brand.logoAlt || demoBrand.logoAlt,
+    })),
   };
 });
 
@@ -125,7 +164,8 @@ const loadPosts = cache(async (): Promise<Post[]> => {
     .lte("published_at", new Date().toISOString())
     .order("published_at", { ascending: false });
   if (error) return [];
-  return (data ?? []).map((row) => ({
+  if (!data?.length) return demoPosts;
+  return data.map((row) => ({
     id: row.id,
     title: row.title,
     slug: row.slug,
@@ -205,9 +245,32 @@ function mapAnimalType(supabase: Awaited<ReturnType<typeof createSupabaseServerC
     name: row.name,
     slug: row.slug,
     description: row.description ?? "",
-    image: getPublicStorageUrl(supabase, "animal-images", row.image_path, "/images/demo/animal-livestock.jpg"),
+    image: getPublicStorageUrl(supabase, "animal-images", row.image_path, getAnimalFallback(row.slug)),
     imageAlt: row.image_alt ?? undefined,
   };
+}
+
+function getAnimalFallback(slug: string) {
+  const fallbacks: Record<string, string> = {
+    cho: "/images/demo/animal-dogs.jpg",
+    meo: "/images/demo/animal-cats.jpg",
+    "gia-suc": "/images/demo/animal-livestock-cattle.jpg",
+    "gia-cam": "/images/demo/animal-poultry.jpg",
+    "thuy-san": "/images/demo/animal-aquaculture.jpg",
+    "thiet-bi-thu-y": "/images/products/demo-veterinary-syringe.svg",
+  };
+  return fallbacks[slug] ?? "/images/demo/animal-dogs.jpg";
+}
+
+function getProductFallback(categorySlug: string) {
+  const fallbacks: Record<string, string> = {
+    "thuoc-thu-y": "/images/products/demo-antibiotic-sachet.svg",
+    "vaccine-sinh-pham": "/images/products/demo-vaccine-vials.svg",
+    "vitamin-dinh-duong": "/images/products/demo-vitamin-bottle.svg",
+    "sat-trung-ve-sinh": "/images/products/demo-disinfectant.svg",
+    "dung-cu-thu-y": "/images/products/demo-veterinary-syringe.svg",
+  };
+  return fallbacks[categorySlug] ?? "/images/products/demo-mineral-bag.svg";
 }
 
 function mapBrand(supabase: Awaited<ReturnType<typeof createSupabaseServerClient>> & {}, row: Database["public"]["Tables"]["brands"]["Row"]): Brand {
@@ -219,4 +282,20 @@ function mapBrand(supabase: Awaited<ReturnType<typeof createSupabaseServerClient
     logo: row.logo_path ? getPublicStorageUrl(supabase, "brand-logos", row.logo_path, "") : undefined,
     logoAlt: row.logo_alt ?? undefined,
   };
+}
+
+function mergeBySlug<T extends { slug: string }>(
+  primary: T[],
+  fallback: T[],
+  merge: (primaryItem: T, fallbackItem: T) => T = (primaryItem) => primaryItem,
+) {
+  const fallbackMap = new Map(fallback.map((item) => [item.slug, item]));
+  const merged = primary.map((item) => {
+    const fallbackItem = fallbackMap.get(item.slug);
+    if (!fallbackItem) return item;
+    fallbackMap.delete(item.slug);
+    return merge(item, fallbackItem);
+  });
+
+  return [...merged, ...fallbackMap.values()];
 }

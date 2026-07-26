@@ -34,7 +34,7 @@ const loadBanners = cache(async (): Promise<Array<PublicBanner & { placement: Pl
     placement: row.placement,
     title: row.title,
     subtitle: row.subtitle,
-    image: getPublicStorageUrl(supabase, "banners", row.desktop_image_path, "/images/demo/medicine-lab.jpg"),
+    image: getPublicStorageUrl(supabase, "banners", row.desktop_image_path, row.placement === "home_hero" ? "/images/home/hero-veterinary-products.jpg" : "/images/demo/article-care.jpg"),
     mobileImage: row.mobile_image_path ? getPublicStorageUrl(supabase, "banners", row.mobile_image_path, "") : null,
     imageAlt: row.image_alt,
     linkUrl: row.link_url,

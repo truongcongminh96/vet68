@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 96" role="img" aria-label="BioVet Demo">
+  <rect x="12" y="14" width="68" height="68" rx="34" fill="#083B59"/>
+  <path d="M46 28v40M26 48h40" stroke="#fff" stroke-width="11" stroke-linecap="round"/>
+  <text x="94" y="57" font-family="Arial, sans-serif" font-size="31" font-weight="800" fill="#083B59">BIOVET</text>
+</svg>

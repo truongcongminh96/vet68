@@ -28,6 +28,10 @@
   --color-medical-red: var(--medical-red);
   --color-highlight: var(--highlight);
   --color-success: var(--success);
+  --color-action: var(--action);
+  --color-action-foreground: var(--action-foreground);
+  --color-deep-navy: var(--deep-navy);
+  --color-soft-blue: var(--soft-blue);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -62,6 +66,10 @@
   --medical-red: #df2d3f;
   --highlight: #f7d928;
   --success: #198754;
+  --action: #7ec8e3;
+  --action-foreground: #062a40;
+  --deep-navy: #062a40;
+  --soft-blue: #eaf6fa;
   --border: #e1e9ee;
   --input: #d6e1e7;
   --ring: #0e6a98;
@@ -95,6 +103,10 @@
   --medical-red: #ef6673;
   --highlight: #f7d928;
   --success: #53b986;
+  --action: #7ec8e3;
+  --action-foreground: #062a40;
+  --deep-navy: #062a40;
+  --soft-blue: #eaf6fa;
   --border: #274654;
   --input: #31515f;
   --ring: #88c5df;
@@ -119,10 +131,41 @@
 }
 
 @layer utilities {
-  .site-container { @apply mx-auto w-full max-w-[1400px] px-4 sm:px-6 lg:px-8; }
-  .section-space { @apply py-12 md:py-16 lg:py-20; }
+  .site-container { @apply mx-auto w-full max-w-[1320px] px-4 sm:px-6 lg:px-8; }
+  .section-space { @apply py-14 md:py-18 lg:py-24; }
   .text-balance { text-wrap: balance; }
-  .subtle-shadow { box-shadow: 0 14px 38px rgba(7, 62, 95, 0.08); }
+  .subtle-shadow { box-shadow: 0 14px 38px rgba(8, 59, 89, 0.08); }
+  .retail-card-shadow { box-shadow: 0 12px 30px rgba(8, 59, 89, 0.065); }
+  .action-button { @apply bg-action text-action-foreground hover:bg-[#6bb9d6] focus-visible:ring-action/45; }
+}
+
+.public-storefront {
+  color-scheme: light;
+  --background: #f7f9fa;
+  --foreground: #142d3a;
+  --card: #ffffff;
+  --card-foreground: #142d3a;
+  --popover: #ffffff;
+  --popover-foreground: #142d3a;
+  --primary: #083b59;
+  --primary-foreground: #ffffff;
+  --secondary: #eaf6fa;
+  --secondary-foreground: #083b59;
+  --muted: #edf3f5;
+  --muted-foreground: #5b707b;
+  --accent: #eaf6fa;
+  --accent-foreground: #083b59;
+  --destructive: #cf343c;
+  --medical-red: #cf343c;
+  --highlight: #f6d44b;
+  --success: #247a56;
+  --border: #dde7eb;
+  --input: #cbdce3;
+  --ring: #2c83a8;
+  --action: #7ec8e3;
+  --action-foreground: #062a40;
+  --deep-navy: #062a40;
+  --soft-blue: #eaf6fa;
 }
 
 @media (prefers-reduced-motion: reduce) {

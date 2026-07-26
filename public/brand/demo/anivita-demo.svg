@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 96" role="img" aria-label="AniVita Demo">
+  <rect x="12" y="14" width="68" height="68" rx="22" fill="#EAF6FA"/>
+  <path d="m46 27 22 41H24z" fill="#7EC8E3"/>
+  <circle cx="46" cy="55" r="11" fill="#083B59"/>
+  <text x="94" y="57" font-family="Arial, sans-serif" font-size="29" font-weight="800" fill="#083B59">ANIVITA</text>
+</svg>

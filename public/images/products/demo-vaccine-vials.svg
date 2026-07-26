@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-labelledby="title desc">
+  <title id="title">Lọ vaccine thú y demo</title>
+  <desc id="desc">Minh hoạ ba lọ vaccine thú y có nhãn xanh navy trên nền phòng lạnh sáng.</desc>
+  <rect width="900" height="900" rx="48" fill="#EEF7FA"/>
+  <path d="M0 670c214-74 408-73 900 14v216H0z" fill="#E1F1F6"/>
+  <ellipse cx="450" cy="726" rx="280" ry="52" fill="#083B59" opacity=".1"/>
+  <g transform="translate(116 140)">
+    <g transform="translate(0 102)">
+      <rect x="78" y="0" width="148" height="72" rx="18" fill="#083B59"/>
+      <path d="M52 70h200l27 68v342c0 45-36 81-81 81h-92c-45 0-81-36-81-81V138z" fill="#fff" stroke="#C8DDE5" stroke-width="8"/>
+      <rect x="25" y="210" width="254" height="184" fill="#7EC8E3"/>
+      <text x="152" y="288" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" font-weight="800" fill="#062A40">NEWCASTLE</text>
+      <text x="152" y="332" text-anchor="middle" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#062A40">VACCINE DEMO</text>
+    </g>
+    <g transform="translate(330 0)">
+      <rect x="78" y="0" width="148" height="72" rx="18" fill="#083B59"/>
+      <path d="M52 70h200l27 68v444c0 45-36 81-81 81h-92c-45 0-81-36-81-81V138z" fill="#fff" stroke="#C8DDE5" stroke-width="8"/>
+      <rect x="25" y="242" width="254" height="208" fill="#083B59"/>
+      <circle cx="152" cy="346" r="57" fill="#F6D44B"/>
+      <path d="m121 348 24 24 43-51" fill="none" stroke="#062A40" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="152" y="500" text-anchor="middle" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#6E7F89">BẢO QUẢN LẠNH</text>
+    </g>
+  </g>
+</svg>

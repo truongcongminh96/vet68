@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-labelledby="title desc">
+  <title id="title">Bơm tiêm thú y demo</title>
+  <desc id="desc">Minh hoạ bơm tiêm định lượng thú y trên khay dụng cụ sạch.</desc>
+  <rect width="900" height="900" rx="48" fill="#F3F9FB"/>
+  <path d="M0 630c242-76 525-79 900 20v250H0z" fill="#E2F2F7"/>
+  <ellipse cx="455" cy="696" rx="310" ry="46" fill="#083B59" opacity=".1"/>
+  <g transform="translate(92 245) rotate(-10 360 200)">
+    <rect x="94" y="128" width="468" height="134" rx="42" fill="#fff" stroke="#083B59" stroke-width="10"/>
+    <rect x="162" y="151" width="326" height="88" rx="24" fill="#EAF6FA"/>
+    <path d="M198 151v88M254 151v88M310 151v88M366 151v88M422 151v88" stroke="#7EC8E3" stroke-width="7"/>
+    <rect x="555" y="151" width="100" height="88" rx="18" fill="#083B59"/>
+    <path d="M654 195h132" stroke="#083B59" stroke-width="14" stroke-linecap="round"/>
+    <path d="m786 195 66-12" stroke="#6E7F89" stroke-width="6" stroke-linecap="round"/>
+    <rect x="15" y="94" width="95" height="202" rx="22" fill="#7EC8E3" stroke="#083B59" stroke-width="10"/>
+    <path d="M15 128h-54M15 262h-54" stroke="#083B59" stroke-width="16" stroke-linecap="round"/>
+    <text x="325" y="203" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" font-weight="800" fill="#083B59">20 ML · VET DEMO</text>
+  </g>
+  <g transform="translate(210 680)">
+    <rect width="480" height="58" rx="29" fill="#fff" stroke="#DDE7EB" stroke-width="4"/>
+    <text x="240" y="38" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#083B59">DỤNG CỤ THÚ Y</text>
+  </g>
+</svg>

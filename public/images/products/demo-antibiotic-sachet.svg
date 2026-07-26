@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-labelledby="title desc">
+  <title id="title">Gói bột kháng sinh thú y demo</title>
+  <desc id="desc">Minh hoạ một gói sản phẩm thú y màu xanh navy và xanh da trời trên nền sáng.</desc>
+  <rect width="900" height="900" rx="48" fill="#F2F8FA"/>
+  <ellipse cx="450" cy="740" rx="230" ry="42" fill="#083B59" opacity=".09"/>
+  <g transform="translate(245 115)">
+    <path d="M46 20h318l34 52v560l-34 36H46L12 632V72z" fill="#fff" stroke="#DDE7EB" stroke-width="8"/>
+    <path d="M12 72 46 20h318l34 52z" fill="#083B59"/>
+    <rect x="12" y="456" width="386" height="176" fill="#083B59"/>
+    <path d="M12 318c104-62 220-73 386-27v165H12z" fill="#7EC8E3"/>
+    <circle cx="205" cy="212" r="72" fill="#EAF6FA" stroke="#083B59" stroke-width="8"/>
+    <path d="M165 216c27-40 59-40 80 0-23 20-57 20-80 0Z" fill="#083B59"/>
+    <circle cx="182" cy="188" r="12" fill="#083B59"/>
+    <circle cx="230" cy="188" r="12" fill="#083B59"/>
+    <text x="205" y="382" text-anchor="middle" font-family="Arial, sans-serif" font-size="42" font-weight="700" fill="#062A40">AMOX 50%</text>
+    <text x="205" y="520" text-anchor="middle" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#fff">BỘT THÚ Y</text>
+    <text x="205" y="563" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#DDF3FB">GÓI 100 G</text>
+    <rect x="136" y="600" width="138" height="35" rx="17" fill="#F6D44B"/>
+    <text x="205" y="624" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#062A40">SẢN PHẨM DEMO</text>
+  </g>
+</svg>

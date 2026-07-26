@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 
-export function ZaloConsultationButton({ zaloUrl, message, className, size = "default", label = "Tư vấn qua Zalo" }: { zaloUrl: string; message: string; className?: string; size?: "default" | "sm" | "lg"; label?: string }) {
+export function ZaloConsultationButton({ zaloUrl, message, className, size = "default", label = "Tư vấn qua Zalo", variant = "default" }: { zaloUrl: string; message: string; className?: string; size?: "default" | "sm" | "lg"; label?: string; variant?: "default" | "outline" | "secondary" | "ghost" | "destructive" | "link" }) {
   const [feedback, setFeedback] = useState<"idle" | "copied" | "manual">("idle");
 
   async function handleClick() {
@@ -33,7 +33,7 @@ export function ZaloConsultationButton({ zaloUrl, message, className, size = "de
 
   return (
     <>
-      <Button type="button" size={size} onClick={handleClick} className={cn("whitespace-nowrap", className)}>
+      <Button type="button" size={size} variant={variant} onClick={handleClick} className={cn("whitespace-nowrap", className)}>
         {feedback === "copied" ? <Check aria-hidden="true" /> : <MessageCircle aria-hidden="true" />}
         {feedback === "copied" ? "Đã sao chép lời nhắn" : label}
       </Button>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-labelledby="title desc">
+  <title id="title">Chai vitamin thú y demo</title>
+  <desc id="desc">Minh hoạ chai vitamin thú y màu xanh da trời và vàng trên nền sáng.</desc>
+  <rect width="900" height="900" rx="48" fill="#F6FAFB"/>
+  <circle cx="720" cy="180" r="92" fill="#EAF6FA"/>
+  <circle cx="190" cy="700" r="128" fill="#F6D44B" opacity=".28"/>
+  <ellipse cx="450" cy="750" rx="210" ry="42" fill="#083B59" opacity=".1"/>
+  <g transform="translate(285 90)">
+    <rect x="75" y="14" width="180" height="94" rx="22" fill="#083B59"/>
+    <path d="M56 106h218l27 68v466c0 48-39 87-87 87H116c-48 0-87-39-87-87V174z" fill="#fff" stroke="#DDE7EB" stroke-width="8"/>
+    <rect x="29" y="270" width="272" height="300" fill="#7EC8E3"/>
+    <path d="M29 270h272v82c-86 42-176 46-272 8z" fill="#5AB3D4"/>
+    <circle cx="165" cy="414" r="74" fill="#fff"/>
+    <text x="165" y="397" text-anchor="middle" font-family="Arial, sans-serif" font-size="38" font-weight="800" fill="#083B59">ADE</text>
+    <text x="165" y="440" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#083B59">PLUS</text>
+    <rect x="83" y="498" width="164" height="34" rx="17" fill="#F6D44B"/>
+    <text x="165" y="522" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#062A40">VITAMIN THÚ Y</text>
+    <text x="165" y="620" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#6E7F89">CHAI 100 ML</text>
+    <text x="165" y="675" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#E5484D">DEMO</text>
+  </g>
+</svg>

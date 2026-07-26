@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-labelledby="title desc">
+  <title id="title">Chai sát trùng thú y demo</title>
+  <desc id="desc">Minh hoạ can dung dịch sát trùng thú y màu trắng và xanh navy.</desc>
+  <rect width="900" height="900" rx="48" fill="#F4F9FA"/>
+  <path d="M0 180c210 60 315 38 473-55 145-86 283-73 427-10V0H0z" fill="#EAF6FA"/>
+  <ellipse cx="448" cy="750" rx="240" ry="44" fill="#083B59" opacity=".1"/>
+  <g transform="translate(250 100)">
+    <path d="M118 30h172v78H118z" fill="#083B59"/>
+    <rect x="102" y="0" width="204" height="44" rx="16" fill="#062A40"/>
+    <path d="M74 102h260l42 87v453c0 47-38 85-85 85H117c-47 0-85-38-85-85V189z" fill="#fff" stroke="#D4E3E8" stroke-width="8"/>
+    <path d="M250 102h84l42 87v89h-126z" fill="#EAF6FA"/>
+    <rect x="32" y="292" width="344" height="274" fill="#083B59"/>
+    <path d="M32 292h344v75c-105 45-220 44-344 6z" fill="#7EC8E3"/>
+    <circle cx="204" cy="440" r="72" fill="#fff"/>
+    <path d="M204 390v100M154 440h100" stroke="#E5484D" stroke-width="28" stroke-linecap="round"/>
+    <text x="204" y="620" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" font-weight="800" fill="#083B59">IODINE CARE</text>
+    <text x="204" y="657" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#6E7F89">CAN 1 LÍT · DEMO</text>
+  </g>
+</svg>
