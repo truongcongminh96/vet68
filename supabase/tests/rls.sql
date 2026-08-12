@@ -1,10 +1,11 @@
 begin;
-select plan(26);
+select plan(28);
 
 select ok((select relrowsecurity from pg_class where oid = 'public.profiles'::regclass), 'profiles RLS is active');
 select ok((select relrowsecurity from pg_class where oid = 'public.categories'::regclass), 'categories RLS is active');
 select ok((select relrowsecurity from pg_class where oid = 'public.animal_types'::regclass), 'animal_types RLS is active');
 select ok((select relrowsecurity from pg_class where oid = 'public.brands'::regclass), 'brands RLS is active');
+select ok((select relrowsecurity from pg_class where oid = 'public.companies'::regclass), 'companies RLS is active');
 select ok((select relrowsecurity from pg_class where oid = 'public.products'::regclass), 'products RLS is active');
 select ok((select relrowsecurity from pg_class where oid = 'public.product_categories'::regclass), 'product_categories RLS is active');
 select ok((select relrowsecurity from pg_class where oid = 'public.product_animal_types'::regclass), 'product_animal_types RLS is active');
@@ -17,6 +18,7 @@ select is((select array_agg(policyname order by policyname)::text[] from pg_poli
 select is((select array_agg(policyname order by policyname)::text[] from pg_policies where schemaname = 'public' and tablename = 'categories'), array['categories_admin_delete','categories_public_read','categories_staff_insert','categories_staff_update']::text[], 'categories policies are complete');
 select is((select array_agg(policyname order by policyname)::text[] from pg_policies where schemaname = 'public' and tablename = 'animal_types'), array['animal_types_admin_delete','animal_types_public_read','animal_types_staff_insert','animal_types_staff_update']::text[], 'animal type policies are complete');
 select is((select array_agg(policyname order by policyname)::text[] from pg_policies where schemaname = 'public' and tablename = 'brands'), array['brands_admin_delete','brands_public_read','brands_staff_insert','brands_staff_update']::text[], 'brand policies are complete');
+select is((select array_agg(policyname order by policyname)::text[] from pg_policies where schemaname = 'public' and tablename = 'companies'), array['companies_admin_delete','companies_public_read','companies_staff_insert','companies_staff_update']::text[], 'company policies are complete');
 select is((select array_agg(policyname order by policyname)::text[] from pg_policies where schemaname = 'public' and tablename = 'posts'), array['posts_admin_delete','posts_public_read','posts_staff_insert','posts_staff_update']::text[], 'post policies are complete');
 select is((select array_agg(policyname order by policyname)::text[] from pg_policies where schemaname = 'public' and tablename = 'banners'), array['banners_admin_delete','banners_public_read','banners_staff_insert','banners_staff_update']::text[], 'banner policies are complete');
 select is((select array_agg(policyname order by policyname)::text[] from pg_policies where schemaname = 'public' and tablename = 'site_settings'), array['site_settings_admin_delete','site_settings_admin_insert','site_settings_admin_update','site_settings_public_read']::text[], 'settings policies are complete');

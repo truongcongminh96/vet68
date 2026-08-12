@@ -1,11 +1,11 @@
 import "server-only";
 
 import { cache } from "react";
-import { animalTypes as demoAnimalTypes, brands as demoBrands, categories as demoCategories, posts as demoPosts, products as demoProducts } from "@/lib/catalogue/demo-data";
+import { animalTypes as demoAnimalTypes, brands as demoBrands, categories as demoCategories, companies as demoCompanies, posts as demoPosts, products as demoProducts } from "@/lib/catalogue/demo-data";
 import { filterProducts } from "@/lib/catalogue/filter-products";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getPublicStorageUrl } from "@/lib/supabase/storage";
-import type { AnimalType, Brand, CatalogueFilters, Category, Post, Product } from "@/types/catalogue";
+import type { AnimalType, Brand, CatalogueFilters, Category, Company, Post, Product } from "@/types/catalogue";
 import type { Database } from "@/types/database";
 
 export const CATALOGUE_PAGE_SIZE = 12;
@@ -29,12 +29,14 @@ const loadPublicProducts = cache(async (): Promise<Product[]> => {
     .in("product_id", productIds);
 
   const brandIds = productRows.flatMap((row) => row.brand_id ? [row.brand_id] : []);
+  const companyIds = productRows.flatMap((row) => row.company_id ? [row.company_id] : []);
   const categoryIds = [
     ...productRows.flatMap((row) => row.category_id ? [row.category_id] : []),
     ...(secondaryLinks ?? []).map((row) => row.category_id),
   ];
 
-  const [{ data: brandRows }, { data: categoryRows }, { data: animalLinks }, { data: imageRows }] = await Promise.all([
+  const [{ data: companyRows }, { data: brandRows }, { data: categoryRows }, { data: animalLinks }, { data: imageRows }] = await Promise.all([
+    companyIds.length ? supabase.from("companies").select("*").in("id", [...new Set(companyIds)]) : Promise.resolve({ data: [] }),
     brandIds.length ? supabase.from("brands").select("*").in("id", [...new Set(brandIds)]) : Promise.resolve({ data: [] }),
     categoryIds.length ? supabase.from("categories").select("*").in("id", [...new Set(categoryIds)]) : Promise.resolve({ data: [] }),
     supabase.from("product_animal_types").select("product_id, animal_type_id").in("product_id", productIds),
@@ -46,14 +48,16 @@ const loadPublicProducts = cache(async (): Promise<Product[]> => {
     ? await supabase.from("animal_types").select("*").in("id", animalIds)
     : { data: [] };
 
+  const companyMap = new Map((companyRows ?? []).map((row) => [row.id, mapCompany(row)]));
   const brandMap = new Map((brandRows ?? []).map((row) => [row.id, mapBrand(supabase, row)]));
   const categoryMap = new Map((categoryRows ?? []).map((row) => [row.id, mapCategory(supabase, row)]));
   const animalMap = new Map((animalRows ?? []).map((row) => [row.id, mapAnimalType(supabase, row)]));
 
   const products = productRows.flatMap((row) => {
+    const company = row.company_id ? companyMap.get(row.company_id) : undefined;
     const brand = row.brand_id ? brandMap.get(row.brand_id) : undefined;
     const category = row.category_id ? categoryMap.get(row.category_id) : undefined;
-    if (!brand || !category || !row.price_display_mode) return [];
+    if (!company || !brand || !category || !row.price_display_mode) return [];
 
     const fallbackImage = getProductFallback(category.slug);
     const images = (imageRows ?? [])
@@ -70,6 +74,7 @@ const loadPublicProducts = cache(async (): Promise<Product[]> => {
       sku: row.sku,
       shortDescription: row.short_description ?? "",
       description: row.description ?? "",
+      company,
       brand,
       category,
       secondaryCategories: (secondaryLinks ?? [])
@@ -87,6 +92,7 @@ const loadPublicProducts = cache(async (): Promise<Product[]> => {
       packaging: row.packaging ?? "Chưa cập nhật",
       indications: row.indications ?? "Thông tin đang được cập nhật.",
       usageInformation: row.usage_information ?? "Vui lòng liên hệ Vet68 và tham khảo hướng dẫn từ nhà sản xuất.",
+      storageInformation: row.storage_information ?? "Thông tin bảo quản đang được cập nhật. Vui lòng kiểm tra nhãn sản phẩm hoặc hướng dẫn chính thức từ nhà sản xuất.",
       safetyInformation: row.safety_information ?? "Đọc kỹ nhãn sản phẩm và tham khảo người có chuyên môn.",
       requiresConsultation: row.requires_consultation,
       isFeatured: row.is_featured,
@@ -108,6 +114,7 @@ const loadPublicProducts = cache(async (): Promise<Product[]> => {
       logo: product.brand.logo || demoProduct.brand.logo,
       logoAlt: product.brand.logoAlt || demoProduct.brand.logoAlt,
     },
+    company: product.company,
     secondaryCategories: mergeBySlug(product.secondaryCategories, demoProduct.secondaryCategories),
     animals: mergeBySlug(product.animals, demoProduct.animals),
   }));
@@ -115,43 +122,21 @@ const loadPublicProducts = cache(async (): Promise<Product[]> => {
 
 const loadTaxonomy = cache(async () => {
   const supabase = await createSupabaseServerClient();
-  if (!supabase) return { categories: demoCategories, animalTypes: demoAnimalTypes, brands: demoBrands };
+  if (!supabase) return { categories: demoCategories, animalTypes: demoAnimalTypes, brands: demoBrands, companies: demoCompanies };
 
-  const [{ data: categoryRows, error: categoryError }, { data: animalRows, error: animalError }, { data: brandRows, error: brandError }] = await Promise.all([
+  const [{ data: categoryRows, error: categoryError }, { data: animalRows, error: animalError }, { data: brandRows, error: brandError }, { data: companyRows, error: companyError }] = await Promise.all([
     supabase.from("categories").select("*").eq("is_active", true).order("sort_order"),
     supabase.from("animal_types").select("*").eq("is_active", true).order("sort_order"),
     supabase.from("brands").select("*").eq("is_active", true).order("sort_order"),
+    supabase.from("companies").select("*").eq("is_active", true).order("sort_order"),
   ]);
 
-  if (categoryError || animalError || brandError) return { categories: [], animalTypes: [], brands: [] };
+  if (categoryError || animalError || brandError || companyError) return { categories: [], animalTypes: [], brands: [], companies: [] };
   const categories = (categoryRows ?? []).map((row) => mapCategory(supabase, row));
   const animalTypes = (animalRows ?? []).map((row) => mapAnimalType(supabase, row));
   const brands = (brandRows ?? []).map((row) => mapBrand(supabase, row));
-
-  if (!brands.some((brand) => brand.name.toLocaleLowerCase("vi").includes("demo"))) {
-    return { categories, animalTypes, brands };
-  }
-
-  return {
-    categories: mergeBySlug(categories, demoCategories, (category, demoCategory) => ({
-      ...demoCategory,
-      ...category,
-      image: category.image || demoCategory.image,
-      imageAlt: category.imageAlt || demoCategory.imageAlt,
-    })),
-    animalTypes: mergeBySlug(animalTypes, demoAnimalTypes, (animal, demoAnimal) => ({
-      ...demoAnimal,
-      ...animal,
-      image: animal.image || demoAnimal.image,
-      imageAlt: animal.imageAlt || demoAnimal.imageAlt,
-    })),
-    brands: mergeBySlug(brands, demoBrands, (brand, demoBrand) => ({
-      ...demoBrand,
-      ...brand,
-      logo: brand.logo || demoBrand.logo,
-      logoAlt: brand.logoAlt || demoBrand.logoAlt,
-    })),
-  };
+  const companies = (companyRows ?? []).map(mapCompany);
+  return { categories, animalTypes, brands, companies };
 });
 
 const loadPosts = cache(async (): Promise<Post[]> => {
@@ -197,6 +182,35 @@ export async function getRelatedProducts(product: Product, limit = 4) {
 
 export async function getFeaturedProducts(limit = 4) {
   return (await loadPublicProducts()).filter((product) => product.isFeatured).slice(0, limit);
+}
+
+export async function getDealProducts(limit = 5) {
+  const products = await loadPublicProducts();
+  const featured = products.filter((product) => product.isFeatured);
+  if (featured.length >= limit) return featured.slice(0, limit);
+
+  const featuredIds = new Set(featured.map((product) => product.id));
+  return [...featured, ...products.filter((product) => !featuredIds.has(product.id))].slice(0, limit);
+}
+
+export async function getCatalogueCategorySummaries() {
+  const [products, taxonomy] = await Promise.all([loadPublicProducts(), loadTaxonomy()]);
+
+  return taxonomy.categories
+    .filter((category) => category.kind === "product_type")
+    .map((category) => {
+      const matchingProducts = products.filter((product) => (
+        product.category.id === category.id
+        || product.secondaryCategories.some((secondaryCategory) => secondaryCategory.id === category.id)
+      ));
+
+      return {
+        category,
+        productCount: matchingProducts.length,
+        image: category.image || matchingProducts[0]?.images[0]?.src || getProductFallback(category.slug),
+        imageAlt: category.imageAlt || matchingProducts[0]?.images[0]?.alt || `Ảnh minh hoạ cho danh mục ${category.name}`,
+      };
+    });
 }
 
 export async function getNewProducts(limit = 4) {
@@ -264,6 +278,14 @@ function getAnimalFallback(slug: string) {
 
 function getProductFallback(categorySlug: string) {
   const fallbacks: Record<string, string> = {
+    "thuoc-tiem": "/images/products/demo-veterinary-syringe.svg",
+    "thuoc-uong": "/images/products/demo-antibiotic-sachet.svg",
+    "thuoc-boi-ngoai-da-phun-xit": "/images/products/demo-disinfectant.svg",
+    "thuoc-dieu-tri-noi-ngoai-kst": "/images/products/demo-antibiotic-sachet.svg",
+    "thuoc-dac-tri": "/images/products/demo-vitamin-bottle.svg",
+    "vaccine-khang-the": "/images/products/demo-vaccine-vials.svg",
+    "moi-truong": "/images/products/demo-disinfectant.svg",
+    "huong-than": "/images/products/demo-vitamin-bottle.svg",
     "thuoc-thu-y": "/images/products/demo-antibiotic-sachet.svg",
     "vaccine-sinh-pham": "/images/products/demo-vaccine-vials.svg",
     "vitamin-dinh-duong": "/images/products/demo-vitamin-bottle.svg",
@@ -282,6 +304,10 @@ function mapBrand(supabase: Awaited<ReturnType<typeof createSupabaseServerClient
     logo: row.logo_path ? getPublicStorageUrl(supabase, "brand-logos", row.logo_path, "") : undefined,
     logoAlt: row.logo_alt ?? undefined,
   };
+}
+
+function mapCompany(row: Database["public"]["Tables"]["companies"]["Row"]): Company {
+  return { id: row.id, name: row.name, slug: row.slug, description: row.description ?? "" };
 }
 
 function mergeBySlug<T extends { slug: string }>(

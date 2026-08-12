@@ -22,6 +22,7 @@ type ProductImage = Database["public"]["Tables"]["product_images"]["Row"];
 
 export function ProductEditorForm({
   defaultValues,
+  companies,
   brands,
   categories,
   animalTypes,
@@ -30,6 +31,7 @@ export function ProductEditorForm({
   initialImages = [],
 }: {
   defaultValues: ProductFormValues;
+  companies: Option[];
   brands: Option[];
   categories: Option[];
   animalTypes: Option[];
@@ -78,8 +80,9 @@ export function ProductEditorForm({
         </Card>
 
         <Card>
-          <CardHeader><CardTitle>Phân loại</CardTitle><CardDescription>Danh mục chính và thương hiệu.</CardDescription></CardHeader>
+          <CardHeader><CardTitle>Phân loại</CardTitle><CardDescription>Công ty phân phối, danh mục chính và thương hiệu.</CardDescription></CardHeader>
           <CardContent className="grid gap-5 sm:grid-cols-2">
+            <Controller control={form.control} name="companyId" render={({ field }) => <Field id="product-company" label="Công ty phân phối" error={error("companyId")}><Select value={field.value} onValueChange={field.onChange}><SelectTrigger {...fieldA11y("product-company", "companyId")}><SelectValue placeholder="Chọn công ty" /></SelectTrigger><SelectContent>{companies.map((item) => <SelectItem key={item.id} value={item.id}>{item.name}</SelectItem>)}</SelectContent></Select></Field>} />
             <Controller control={form.control} name="categoryId" render={({ field }) => <Field id="product-category" label="Danh mục" error={error("categoryId")}><Select value={field.value} onValueChange={field.onChange}><SelectTrigger {...fieldA11y("product-category", "categoryId")}><SelectValue placeholder="Chọn danh mục" /></SelectTrigger><SelectContent>{categories.map((item) => <SelectItem key={item.id} value={item.id}>{item.name}</SelectItem>)}</SelectContent></Select></Field>} />
             <Controller control={form.control} name="brandId" render={({ field }) => <Field id="product-brand" label="Thương hiệu" error={error("brandId")}><Select value={field.value} onValueChange={field.onChange}><SelectTrigger {...fieldA11y("product-brand", "brandId")}><SelectValue placeholder="Chọn thương hiệu" /></SelectTrigger><SelectContent>{brands.map((item) => <SelectItem key={item.id} value={item.id}>{item.name}</SelectItem>)}</SelectContent></Select></Field>} />
             <Controller control={form.control} name="animalTypeIds" render={({ field }) => <ToggleOptions legend="Vật nuôi phù hợp" options={animalTypes} values={field.value} onChange={field.onChange} />} />
@@ -103,7 +106,8 @@ export function ProductEditorForm({
             <Field id="product-packaging" label="Quy cách" error={error("packaging")}><Input {...fieldA11y("product-packaging", "packaging")} {...form.register("packaging")} /></Field>
             <Field id="product-active-ingredients" label="Thành phần" error={error("activeIngredients")}><Textarea {...fieldA11y("product-active-ingredients", "activeIngredients")} rows={4} {...form.register("activeIngredients")} /></Field>
             <Field id="product-indications" label="Chỉ định" error={error("indications")}><Textarea {...fieldA11y("product-indications", "indications")} rows={5} {...form.register("indications")} /></Field>
-            <Field id="product-usage" label="Thông tin sử dụng" error={error("usageInformation")}><Textarea {...fieldA11y("product-usage", "usageInformation")} rows={5} {...form.register("usageInformation")} /></Field>
+            <Field id="product-usage" label="Hướng dẫn sử dụng" error={error("usageInformation")}><Textarea {...fieldA11y("product-usage", "usageInformation")} rows={5} {...form.register("usageInformation")} /></Field>
+            <Field id="product-storage" label="Hướng dẫn bảo quản" error={error("storageInformation")}><Textarea {...fieldA11y("product-storage", "storageInformation")} rows={5} {...form.register("storageInformation")} /></Field>
             <Field id="product-safety" label="Thông tin an toàn" error={error("safetyInformation")}><Textarea {...fieldA11y("product-safety", "safetyInformation")} rows={5} {...form.register("safetyInformation")} /></Field>
           </CardContent>
         </Card>

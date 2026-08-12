@@ -6,5 +6,5 @@ export const metadata: Metadata = { title: "Tất cả sản phẩm", descriptio
 
 export default async function ProductsPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const filters = parseCatalogueFilters(await searchParams);
-  return <CataloguePage title="Catalogue sản phẩm" description="Tìm theo vật nuôi, danh mục, thương hiệu, mức giá tham khảo và yêu cầu tư vấn." filters={filters} />;
+  return <CataloguePage title="Tất cả sản phẩm" description="Khám phá sản phẩm Vet68 theo công ty phân phối, danh mục, đối tượng sử dụng và nhu cầu tư vấn." filters={filters} showHero />;
 }

@@ -1,4 +1,4 @@
-import type { AnimalType, Brand, Category, Post, Product } from "@/types/catalogue";
+import type { AnimalType, Brand, Category, Company, Post, Product } from "@/types/catalogue";
 
 export const animalTypes: AnimalType[] = [
   { id: "animal-dog", name: "Chó", slug: "cho", description: "Sản phẩm chăm sóc và hỗ trợ sức khỏe cho chó.", image: "/images/demo/animal-dogs.jpg" },
@@ -33,9 +33,17 @@ export const brands: Brand[] = [
   { id: "brand-biovet-demo", name: "BioVet Demo", slug: "biovet-demo", description: "Thương hiệu minh họa cho vaccine và sinh phẩm.", logo: "/brand/demo/biovet-demo.svg" },
 ];
 
+export const companies: Company[] = [
+  { id: "company-vet68-demo", name: "Vet68 Distribution Demo", slug: "vet68-distribution-demo", description: "Công ty phân phối minh họa." },
+  { id: "company-anivita-demo", name: "AniVita Distribution Demo", slug: "anivita-distribution-demo", description: "Công ty phân phối minh họa." },
+  { id: "company-biovet-demo", name: "BioVet Distribution Demo", slug: "biovet-distribution-demo", description: "Công ty phân phối minh họa." },
+  { id: "company-farmcare-demo", name: "FarmCare Distribution Demo", slug: "farmcare-distribution-demo", description: "Công ty phân phối minh họa." },
+];
+
 const category = (slug: string) => categories.find((item) => item.slug === slug)!;
 const animal = (slug: string) => animalTypes.find((item) => item.slug === slug)!;
 const brand = (slug: string) => brands.find((item) => item.slug === slug)!;
+const company = (slug: string) => companies.find((item) => item.slug === slug)!;
 
 const demoNotice = "Dữ liệu sản phẩm minh họa. Nội dung chuyên môn, chỉ định và hướng dẫn sử dụng đang chờ Vet Medicine 68 xác minh trước khi xuất bản chính thức.";
 
@@ -47,6 +55,7 @@ export const products: Product[] = [
     sku: "VET68-001",
     shortDescription: "Sản phẩm mẫu dùng để minh họa catalogue thuốc thú y và trạng thái giá cố định.",
     description: demoNotice,
+    company: company("vet68-distribution-demo"),
     brand: brand("vet68-demo"),
     category: category("thuoc-thu-y"),
     secondaryCategories: [category("khang-sinh"), category("ho-tro-ho-hap")],
@@ -60,6 +69,7 @@ export const products: Product[] = [
     packaging: "Gói 100 g",
     indications: demoNotice,
     usageInformation: "Không có hướng dẫn liều dùng trong dữ liệu demo. Vui lòng tham khảo nhãn sản phẩm và tư vấn chuyên môn.",
+    storageInformation: "Thông tin bảo quản demo chưa được xác minh. Vui lòng kiểm tra nhãn sản phẩm hoặc tài liệu chính thức của nhà sản xuất.",
     safetyInformation: "Không tự sử dụng dữ liệu demo để điều trị. Đọc kỹ nhãn và thông tin từ nhà sản xuất.",
     requiresConsultation: true,
     isFeatured: true,
@@ -75,6 +85,7 @@ export const products: Product[] = [
     sku: "VET68-002",
     shortDescription: "Sản phẩm mẫu minh họa nhóm vitamin và giá tham khảo khoảng.",
     description: demoNotice,
+    company: company("anivita-distribution-demo"),
     brand: brand("anivita-demo"),
     category: category("vitamin-dinh-duong"),
     secondaryCategories: [category("vitamin-khoang-chat"), category("dien-giai-phuc-hoi")],
@@ -88,6 +99,7 @@ export const products: Product[] = [
     packaging: "Chai 100 ml",
     indications: demoNotice,
     usageInformation: "Liên hệ Vet68 để được kiểm tra đúng sản phẩm và quy cách.",
+    storageInformation: "Thông tin bảo quản demo chưa được xác minh. Vui lòng kiểm tra nhãn sản phẩm hoặc tài liệu chính thức của nhà sản xuất.",
     safetyInformation: "Thông tin website không thay thế hướng dẫn từ bác sĩ thú y hoặc nhà sản xuất.",
     requiresConsultation: false,
     isFeatured: true,
@@ -103,6 +115,7 @@ export const products: Product[] = [
     sku: "VET68-003",
     shortDescription: "Sản phẩm mẫu minh họa trạng thái liên hệ báo giá và yêu cầu tư vấn.",
     description: demoNotice,
+    company: company("biovet-distribution-demo"),
     brand: brand("biovet-demo"),
     category: category("vaccine-sinh-pham"),
     secondaryCategories: [category("vaccine")],
@@ -116,6 +129,7 @@ export const products: Product[] = [
     packaging: "Quy cách theo nhà sản xuất",
     indications: demoNotice,
     usageInformation: "Vaccine cần được lựa chọn, bảo quản và sử dụng theo hướng dẫn chuyên môn đã xác minh.",
+    storageInformation: "Điều kiện bảo quản vaccine đang chờ nguồn chính thức xác minh. Không sử dụng dữ liệu demo để vận chuyển hoặc bảo quản.",
     safetyInformation: "Không sử dụng thông tin demo để xây dựng lịch vaccine.",
     requiresConsultation: true,
     isFeatured: true,
@@ -131,6 +145,7 @@ export const products: Product[] = [
     sku: "VET68-004",
     shortDescription: "Dữ liệu mẫu cho nhóm sát trùng và vệ sinh khu vực chăn nuôi.",
     description: demoNotice,
+    company: company("farmcare-distribution-demo"),
     brand: brand("farmcare-demo"),
     category: category("sat-trung-ve-sinh"),
     secondaryCategories: [category("sat-trung")],
@@ -144,6 +159,7 @@ export const products: Product[] = [
     packaging: "Chai 1 lít",
     indications: demoNotice,
     usageInformation: "Tỷ lệ pha và phạm vi sử dụng phải lấy từ nhãn sản phẩm đã xác minh.",
+    storageInformation: "Thông tin bảo quản demo chưa được xác minh. Giữ nguyên bao bì và kiểm tra hướng dẫn trên nhãn sản phẩm.",
     safetyInformation: "Không trộn hóa chất khi chưa có hướng dẫn an toàn phù hợp.",
     requiresConsultation: false,
     isFeatured: true,
@@ -159,6 +175,7 @@ export const products: Product[] = [
     sku: "VET68-005",
     shortDescription: "Sản phẩm mẫu cho nhóm khoáng và dinh dưỡng bổ sung.",
     description: demoNotice,
+    company: company("anivita-distribution-demo"),
     brand: brand("anivita-demo"),
     category: category("vitamin-dinh-duong"),
     secondaryCategories: [category("dien-giai-phuc-hoi")],
@@ -172,6 +189,7 @@ export const products: Product[] = [
     packaging: "Túi 1 kg",
     indications: demoNotice,
     usageInformation: "Khẩu phần sử dụng phải do đơn vị chuyên môn hoặc nhà sản xuất cung cấp.",
+    storageInformation: "Thông tin bảo quản demo chưa được xác minh. Kiểm tra điều kiện bảo quản trên bao bì chính thức.",
     safetyInformation: "Không thay đổi khẩu phần vật nuôi chỉ dựa trên nội dung demo.",
     requiresConsultation: false,
     isFeatured: false,
@@ -187,6 +205,7 @@ export const products: Product[] = [
     sku: "VET68-006",
     shortDescription: "Dụng cụ mẫu để kiểm thử catalogue vật tư thú y.",
     description: demoNotice,
+    company: company("farmcare-distribution-demo"),
     brand: brand("farmcare-demo"),
     category: category("dung-cu-thu-y"),
     secondaryCategories: [category("dung-cu")],
@@ -200,6 +219,7 @@ export const products: Product[] = [
     packaging: "1 cái",
     indications: "Dụng cụ minh họa. Thông số kỹ thuật đang chờ xác minh.",
     usageInformation: "Sử dụng theo hướng dẫn của nhà sản xuất và quy trình chuyên môn.",
+    storageInformation: "Bảo quản dụng cụ sạch, khô và theo hướng dẫn của nhà sản xuất sau khi sử dụng.",
     safetyInformation: "Bảo đảm vệ sinh và xử lý dụng cụ theo quy định phù hợp.",
     requiresConsultation: false,
     isFeatured: false,

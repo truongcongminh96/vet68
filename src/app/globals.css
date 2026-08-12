@@ -168,11 +168,45 @@
   --soft-blue: #eaf6fa;
 }
 
+.announcement-bar {
+  min-height: 2.625rem;
+}
+
+.announcement-track {
+  min-height: 2.625rem;
+  animation: announcement-scroll 26s linear infinite;
+  will-change: transform;
+}
+
+.announcement-bar:hover .announcement-track,
+.announcement-bar:focus-within .announcement-track {
+  animation-play-state: paused;
+}
+
+.announcement-item {
+  width: max-content;
+  min-width: 100vw;
+  flex: none;
+  padding-inline: clamp(2rem, 7vw, 7rem);
+  text-align: center;
+  white-space: nowrap;
+}
+
+@keyframes announcement-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     scroll-behavior: auto !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .announcement-track {
+    animation: none !important;
+    transform: none !important;
   }
 }

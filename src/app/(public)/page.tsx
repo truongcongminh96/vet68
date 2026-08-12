@@ -7,15 +7,16 @@ import {
   BookOpen,
   Bug,
   CalendarDays,
+  Headset,
   HeartPulse,
   MessageCircle,
-  PackageCheck,
   Phone,
   Pill,
-  Search,
+  ReceiptText,
   ShieldCheck,
   Sparkles,
   Syringe,
+  Truck,
   Wind,
   Wrench,
 } from "lucide-react";
@@ -70,60 +71,52 @@ export default async function HomePage() {
 
   return (
     <>
-      <section className="overflow-hidden border-b border-border bg-white">
-        <div className="site-container grid items-center gap-10 py-12 md:grid-cols-[0.9fr_1.1fr] md:py-16 lg:min-h-[600px] lg:gap-14 lg:py-18">
-          <div className="max-w-[650px]">
-            <p className="mb-4 font-heading text-sm font-bold text-[#257493]">Catalogue thuốc và sản phẩm thú y</p>
-            <h1 className="text-4xl font-bold leading-[1.08] tracking-[-0.04em] text-primary sm:text-5xl lg:text-[58px]">
-              Thuốc thú y chính hãng, dễ dàng tra cứu
-            </h1>
-            <p className="mt-5 max-w-[590px] text-base leading-7 text-muted-foreground md:text-lg">
-              Tìm theo vật nuôi, công dụng, thương hiệu hoặc hoạt chất. Liên hệ Vet68 để xác nhận giá và quy cách hiện tại.
-            </p>
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-              <Button size="lg" className="action-button h-11 px-5" asChild>
-                <Link href="/san-pham">Xem danh mục sản phẩm <ArrowRight aria-hidden="true" /></Link>
-              </Button>
-              <Button size="lg" variant="outline" className="h-11 bg-white px-5" asChild>
-                <a href={contact.zaloUrl} target="_blank" rel="noreferrer"><MessageCircle aria-hidden="true" /> Tư vấn qua Zalo</a>
-              </Button>
-            </div>
-          </div>
-
-          <div className="grid min-h-[430px] grid-cols-[1.15fr_0.85fr] gap-3 sm:gap-4" aria-label="Hình ảnh minh hoạ thú y và sản phẩm">
-            <div className="relative overflow-hidden rounded-2xl bg-soft-blue retail-card-shadow">
-              <Image
-                src={heroBanner?.image ?? "/images/home/hero-veterinary-products.jpg"}
-                alt={heroBanner?.imageAlt ?? "Chó đeo ống nghe, hình minh hoạ cho hoạt động tư vấn thú y"}
-                fill
-                priority
-                sizes="(max-width: 768px) 60vw, 38vw"
-                className="object-cover object-center"
-              />
-            </div>
-            <div className="grid grid-rows-2 gap-3 sm:gap-4">
-              <div className="relative overflow-hidden rounded-2xl border border-border bg-[#f4f8fa]">
-                <Image src="/images/products/demo-vitamin-bottle.svg" alt="Minh hoạ chai vitamin thú y demo" fill priority sizes="(max-width: 768px) 36vw, 20vw" className="object-contain p-3" />
+      <section className="border-b border-border bg-white py-4 sm:py-6 lg:py-8">
+        <div className="site-container">
+          <div className="relative min-h-[570px] overflow-hidden rounded-2xl bg-deep-navy retail-card-shadow sm:min-h-[620px] lg:min-h-[680px]" aria-label="Hình ảnh minh hoạ hoạt động chăm sóc thú y">
+            <Image
+              src={heroBanner?.image ?? "/images/home/hero-veterinary-products.jpg"}
+              alt={heroBanner?.imageAlt ?? "Nhân viên thú y đang chăm sóc và kiểm tra sức khỏe cho chó"}
+              fill
+              priority
+              sizes="(max-width: 1400px) 100vw, 1320px"
+              className="object-cover object-[68%_center]"
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(247,250,252,0.98)_0%,rgba(247,250,252,0.93)_32%,rgba(247,250,252,0.42)_57%,rgba(247,250,252,0.05)_78%)] max-md:bg-[linear-gradient(180deg,rgba(247,250,252,0.96)_0%,rgba(247,250,252,0.82)_54%,rgba(6,42,64,0.58)_100%)]" />
+            <div className="relative z-10 flex min-h-[570px] max-w-[680px] flex-col justify-between p-6 sm:min-h-[620px] sm:p-10 lg:min-h-[680px] lg:p-14">
+              <div>
+                <p className="mb-4 font-heading text-sm font-extrabold uppercase tracking-[0.14em] text-[#257493]">Vet Medicine 68</p>
+                <h1 className="max-w-[620px] text-4xl font-bold leading-[1.06] tracking-[-0.045em] text-primary sm:text-5xl lg:text-[62px]">
+                  {heroBanner?.title ?? "Thuốc thú y chất lượng, dễ dàng tra cứu"}
+                </h1>
+                <p className="mt-5 max-w-[560px] text-base leading-7 text-[#385565] md:text-lg md:leading-8">
+                  {heroBanner?.subtitle ?? "Tìm đúng sản phẩm theo công ty phân phối, danh mục và đối tượng sử dụng. Vet68 hỗ trợ xác nhận giá, quy cách và thông tin cần thiết trước khi đặt hàng."}
+                </p>
               </div>
-              <div className="relative overflow-hidden rounded-2xl bg-soft-blue">
-                <Image src="/images/demo/animal-cats.jpg" alt="Mèo, nhóm vật nuôi trong catalogue Vet68" fill sizes="(max-width: 768px) 36vw, 20vw" className="object-cover" />
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Button size="lg" className="action-button h-12 px-5" asChild>
+                  <Link href="/san-pham">Xem danh mục sản phẩm <ArrowRight aria-hidden="true" /></Link>
+                </Button>
+                <Button size="lg" variant="outline" className="h-12 border-white/70 bg-white/92 px-5 text-primary backdrop-blur-sm hover:bg-white" asChild>
+                  <Link href="/lien-he"><MessageCircle aria-hidden="true" /> Liên hệ</Link>
+                </Button>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="border-b border-border bg-white" aria-label="Lợi ích tra cứu">
-        <div className="site-container grid grid-cols-2 py-5 md:grid-cols-4 md:py-6">
+      <section className="border-b border-border bg-white" aria-label="Cam kết của Vet68">
+        <div className="site-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            [BadgeCheck, "Thông tin rõ ràng", "Tên, SKU và quy cách"],
-            [Search, "Tìm kiếm nhanh", "Theo vật nuôi và nhu cầu"],
-            [PackageCheck, "Giá tham khảo", "Xác nhận khi liên hệ"],
-            [MessageCircle, "Tư vấn trực tiếp", "Qua Zalo và hotline"],
+            [BadgeCheck, "Sản phẩm chất lượng", "Thông tin sản phẩm rõ ràng, dễ kiểm tra"],
+            [ReceiptText, "Hóa đơn đầy đủ", "Minh bạch thông tin khi xác nhận đơn hàng"],
+            [Truck, "Giao hàng nhanh", "Hỗ trợ xử lý và giao đơn đúng thời gian"],
+            [Headset, "Hỗ trợ kỹ thuật tận tình", "Tư vấn trực tiếp qua Zalo và hotline"],
           ].map(([Icon, title, text], index) => (
-            <div key={String(title)} className={`flex gap-3 px-2 py-3 sm:px-4 ${index % 2 ? "border-l border-border" : ""} md:border-l md:first:border-l-0`}>
-              <Icon className="mt-0.5 size-5 shrink-0 text-[#257493]" aria-hidden="true" />
-              <div><p className="text-sm font-bold text-foreground">{String(title)}</p><p className="mt-1 text-xs leading-5 text-muted-foreground">{String(text)}</p></div>
+            <div key={String(title)} className={`flex min-h-28 items-center gap-4 py-5 sm:px-6 ${index > 0 ? "lg:border-l lg:border-border" : ""} ${index % 2 ? "sm:border-l sm:border-border lg:border-l" : ""}`}>
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-soft-blue text-primary"><Icon className="size-5" aria-hidden="true" /></span>
+              <div><p className="font-heading text-sm font-extrabold text-foreground sm:text-base">{String(title)}</p><p className="mt-1 text-xs leading-5 text-muted-foreground">{String(text)}</p></div>
             </div>
           ))}
         </div>

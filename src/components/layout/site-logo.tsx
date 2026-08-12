@@ -3,21 +3,20 @@ import Link from "next/link";
 
 export function SiteLogo({ compact = false }: { compact?: boolean }) {
   return (
-    <Link href="/" className="inline-flex shrink-0 items-center gap-2.5" aria-label="Vet Medicine 68, về trang chủ">
+    <Link href="/" className="inline-flex shrink-0 items-center gap-3" aria-label="Vet Medicine 68, về trang chủ">
       <Image
         src="/brand/vet-medicine-68-mark.png"
         alt=""
         width={260}
         height={260}
         priority
-        className={compact ? "h-11 w-11 rounded-full object-contain" : "h-13 w-13 rounded-full object-contain"}
+        className={compact ? "h-11 w-11 rounded-full object-contain" : "h-14 w-14 rounded-full object-contain"}
       />
-      {compact ? null : (
-        <span className="leading-none">
-          <span className="block font-heading text-[17px] font-extrabold tracking-[-0.03em] text-primary">VET MEDICINE</span>
-          <span className="mt-1 block font-heading text-[14px] font-bold tracking-[0.2em] text-medical-red">68</span>
+      <span className="block">
+        <span className={`block whitespace-nowrap font-heading font-extrabold tracking-[-0.035em] text-primary ${compact ? "text-[14px] min-[390px]:text-[16px] sm:text-[18px]" : "text-[16px] sm:text-[18px]"}`}>
+          VET MEDICINE <span className="text-medical-red">68</span>
         </span>
-      )}
+      </span>
     </Link>
   );
 }

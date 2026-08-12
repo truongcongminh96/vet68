@@ -30,7 +30,7 @@ export async function ProductCard({ product, eager = false }: { product: Product
         <h3 className="mt-3 line-clamp-2 text-base font-bold leading-6 text-foreground sm:text-lg">
           <Link href={`/san-pham/${product.slug}`} className="hover:text-primary">{product.name}</Link>
         </h3>
-        <p className="mt-1 text-xs leading-5 text-muted-foreground">{product.brand.name} | {product.packaging}</p>
+        <p className="mt-1 text-xs leading-5 text-muted-foreground">{product.company.name} | {product.brand.name} | {product.packaging}</p>
         {demoMode ? <p className="mt-1 text-[11px] font-medium text-muted-foreground">Hình và dữ liệu minh hoạ</p> : null}
         <div className="mt-4 border-t border-border/80 pt-4"><ProductPrice product={product} compact /></div>
         <div className="mt-auto flex flex-wrap items-center justify-between gap-2 pt-4">

@@ -20,13 +20,14 @@ const schema = z.object({
   q: optionalString(100),
   animal: optionalString(80),
   category: optionalString(80),
+  company: optionalString(80),
   brand: optionalString(80),
   price_min: optionalNumber,
   price_max: optionalNumber,
   dosage_form: optionalString(80),
   consultation: optionalEnum(["required", "not_required"]),
   price_mode: optionalEnum(["fixed", "approximate", "contact"]),
-  sort: z.enum(["relevance", "newest", "price_asc", "price_desc", "name"]).catch("relevance"),
+  sort: z.enum(["name_asc", "name_desc"]).catch("name_asc"),
   page: z.coerce.number().int().positive().catch(1),
 });
 
@@ -37,6 +38,7 @@ export function parseCatalogueFilters(values: Record<string, string | string[] |
     query: parsed.q,
     animal: parsed.animal,
     category: parsed.category,
+    company: parsed.company,
     brand: parsed.brand,
     priceMin: parsed.price_min,
     priceMax: parsed.price_max,

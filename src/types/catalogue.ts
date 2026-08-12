@@ -30,6 +30,13 @@ export type Brand = {
   logoAlt?: string;
 };
 
+export type Company = {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+};
+
 export type Product = {
   id: string;
   name: string;
@@ -37,6 +44,7 @@ export type Product = {
   sku: string;
   shortDescription: string;
   description: string;
+  company: Company;
   brand: Brand;
   category: Category;
   secondaryCategories: Category[];
@@ -50,6 +58,7 @@ export type Product = {
   packaging: string;
   indications: string;
   usageInformation: string;
+  storageInformation: string;
   safetyInformation: string;
   requiresConsultation: boolean;
   isFeatured: boolean;
@@ -75,12 +84,13 @@ export type CatalogueFilters = {
   query?: string;
   animal?: string;
   category?: string;
+  company?: string;
   brand?: string;
   priceMin?: number;
   priceMax?: number;
   dosageForm?: string;
   consultation?: "required" | "not_required";
   priceMode?: PriceDisplayMode;
-  sort: "relevance" | "newest" | "price_asc" | "price_desc" | "name";
+  sort: "name_asc" | "name_desc";
   page: number;
 };

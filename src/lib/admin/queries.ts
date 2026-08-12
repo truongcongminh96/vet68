@@ -7,13 +7,14 @@ type ProductRow = Database["public"]["Tables"]["products"]["Row"];
 
 export async function getAdminTaxonomy() {
   const supabase = await createSupabaseServerClient();
-  if (!supabase) return { categories: [], animalTypes: [], brands: [] };
-  const [{ data: categories }, { data: animalTypes }, { data: brands }] = await Promise.all([
+  if (!supabase) return { categories: [], animalTypes: [], brands: [], companies: [] };
+  const [{ data: categories }, { data: animalTypes }, { data: brands }, { data: companies }] = await Promise.all([
     supabase.from("categories").select("*").order("sort_order"),
     supabase.from("animal_types").select("*").order("sort_order"),
     supabase.from("brands").select("*").order("sort_order"),
+    supabase.from("companies").select("*").order("sort_order"),
   ]);
-  return { categories: categories ?? [], animalTypes: animalTypes ?? [], brands: brands ?? [] };
+  return { categories: categories ?? [], animalTypes: animalTypes ?? [], brands: brands ?? [], companies: companies ?? [] };
 }
 
 export async function getAdminProducts({

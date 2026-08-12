@@ -10,6 +10,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...products.map((item) => ({ url: absoluteUrl(`/san-pham/${item.slug}`), lastModified: new Date(item.updatedAt), changeFrequency: "weekly" as const, priority: 0.8 })),
     ...taxonomy.categories.map((item) => ({ url: absoluteUrl(`/danh-muc/${item.slug}`), changeFrequency: "weekly" as const, priority: 0.7 })),
     ...taxonomy.animalTypes.map((item) => ({ url: absoluteUrl(`/vat-nuoi/${item.slug}`), changeFrequency: "weekly" as const, priority: 0.7 })),
+    ...taxonomy.companies.map((item) => ({ url: absoluteUrl(`/cong-ty/${item.slug}`), changeFrequency: "weekly" as const, priority: 0.6 })),
     ...taxonomy.brands.map((item) => ({ url: absoluteUrl(`/thuong-hieu/${item.slug}`), changeFrequency: "weekly" as const, priority: 0.6 })),
     ...posts.map((item) => ({ url: absoluteUrl(`/kien-thuc-thu-y/${item.slug}`), lastModified: new Date(item.publishedAt), changeFrequency: "monthly" as const, priority: 0.7 })),
   ];
