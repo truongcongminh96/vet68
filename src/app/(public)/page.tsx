@@ -9,8 +9,8 @@ import {
   CalendarDays,
   Headset,
   HeartPulse,
+  Heart,
   MessageCircle,
-  Phone,
   Pill,
   ReceiptText,
   ShieldCheck,
@@ -24,7 +24,6 @@ import { ProductCard } from "@/components/catalogue/product-card";
 import { ProductPrice } from "@/components/catalogue/product-price";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { getTelephoneUrl } from "@/lib/contact";
 import { getContactSettings } from "@/lib/contact-settings";
 import { getFeaturedProducts, getNewProducts, getPosts, getTaxonomy } from "@/lib/catalogue/queries";
 import { getActiveBanners } from "@/lib/content/queries";
@@ -51,200 +50,201 @@ const needIcons = {
 const knowledgeCategories = ["Thông tin sử dụng", "Tư vấn sản phẩm", "Chăm sóc vật nuôi"];
 
 export default async function HomePage() {
-  const [taxonomy, featuredProducts, newProducts, posts, heroBanners, promotionBanners] = await Promise.all([
+  const [taxonomy, featuredProducts, newProducts, posts, heroBanners, promotionBanners, contact] = await Promise.all([
     getTaxonomy(),
-    getFeaturedProducts(4),
-    getNewProducts(4),
+    getFeaturedProducts(6),
+    getNewProducts(6),
     getPosts(),
     getActiveBanners("home_hero"),
     getActiveBanners("home_promotion"),
+    getContactSettings(),
   ]);
-  const contact = await getContactSettings();
   const demoMode = !hasSupabaseEnv()
     || featuredProducts.some((product) => product.slug.endsWith("-demo"))
     || taxonomy.brands.some((brand) => brand.name.toLocaleLowerCase("vi").includes("demo"));
   const heroBanner = heroBanners[0];
   const promotionBanner = promotionBanners[0];
-  const needs = taxonomy.categories
-    .filter((item) => item.kind === "treatment_need" && item.slug in needIcons)
-    .slice(0, 8);
+  const needs = taxonomy.categories.filter((item) => item.kind === "treatment_need" && item.slug in needIcons).slice(0, 8);
 
   return (
-    <>
-      <section className="border-b border-border bg-white py-4 sm:py-6 lg:py-8">
-        <div className="site-container">
-          <div className="relative min-h-[570px] overflow-hidden rounded-2xl bg-deep-navy retail-card-shadow sm:min-h-[620px] lg:min-h-[680px]" aria-label="Hình ảnh minh hoạ hoạt động chăm sóc thú y">
-            <Image
-              src={heroBanner?.image ?? "/images/home/hero-veterinary-products.jpg"}
-              alt={heroBanner?.imageAlt ?? "Nhân viên thú y đang chăm sóc và kiểm tra sức khỏe cho chó"}
-              fill
-              priority
-              sizes="(max-width: 1400px) 100vw, 1320px"
-              className="object-cover object-[68%_center]"
-            />
-            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(247,250,252,0.98)_0%,rgba(247,250,252,0.93)_32%,rgba(247,250,252,0.42)_57%,rgba(247,250,252,0.05)_78%)] max-md:bg-[linear-gradient(180deg,rgba(247,250,252,0.96)_0%,rgba(247,250,252,0.82)_54%,rgba(6,42,64,0.58)_100%)]" />
-            <div className="relative z-10 flex min-h-[570px] max-w-[680px] flex-col justify-between p-6 sm:min-h-[620px] sm:p-10 lg:min-h-[680px] lg:p-14">
-              <div>
-                <p className="mb-4 font-heading text-sm font-extrabold uppercase tracking-[0.14em] text-[#257493]">Vet Medicine 68</p>
-                <h1 className="max-w-[620px] text-4xl font-bold leading-[1.06] tracking-[-0.045em] text-primary sm:text-5xl lg:text-[62px]">
-                  {heroBanner?.title ?? "Thuốc thú y chất lượng, dễ dàng tra cứu"}
-                </h1>
-                <p className="mt-5 max-w-[560px] text-base leading-7 text-[#385565] md:text-lg md:leading-8">
-                  {heroBanner?.subtitle ?? "Tìm đúng sản phẩm theo công ty phân phối, danh mục và đối tượng sử dụng. Vet68 hỗ trợ xác nhận giá, quy cách và thông tin cần thiết trước khi đặt hàng."}
-                </p>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <Button size="lg" className="action-button h-12 px-5" asChild>
-                  <Link href="/san-pham">Xem danh mục sản phẩm <ArrowRight aria-hidden="true" /></Link>
-                </Button>
-                <Button size="lg" variant="outline" className="h-12 border-white/70 bg-white/92 px-5 text-primary backdrop-blur-sm hover:bg-white" asChild>
-                  <Link href="/lien-he"><MessageCircle aria-hidden="true" /> Liên hệ</Link>
-                </Button>
+    <div className="overflow-hidden bg-[#fffaf0]">
+      <section className="hero-editorial">
+        <div className="site-container relative z-10 grid min-h-[520px] items-center gap-7 py-9 md:min-h-[570px] md:grid-cols-[0.96fr_1.04fr] md:py-12 lg:min-h-[600px] lg:gap-10">
+          <div className="relative z-10 pb-1 md:pb-12">
+            <span className="hero-ray-mark" aria-hidden="true" />
+            <p className="whitespace-nowrap font-heading text-[clamp(2.35rem,4.7vw,4.4rem)] font-extrabold leading-[0.95] tracking-[-0.06em] text-primary">Vet Medicine <span className="text-medical-red">68</span></p>
+            <h1 className="mt-5 max-w-[590px] text-[2rem] font-extrabold leading-[1.08] tracking-[-0.045em] text-primary sm:text-[2.4rem] lg:text-[44px]">
+              {heroBanner?.title ?? "Thuốc thú y chất lượng, dễ dàng tra cứu"}
+            </h1>
+            <p className="mt-4 max-w-[530px] text-[15px] leading-7 text-[#405c68] md:text-base">
+              {heroBanner?.subtitle ?? "Tìm đúng sản phẩm theo công ty phân phối, danh mục và đối tượng sử dụng. Vet68 hỗ trợ xác nhận giá và quy cách trước khi đặt hàng."}
+            </p>
+            <Button size="lg" className="action-button mt-6 h-13 rounded-full px-6 text-base font-extrabold shadow-[3px_4px_0_rgba(6,45,62,0.12)]" asChild>
+              <Link href="/san-pham">Xem danh mục sản phẩm <ArrowRight aria-hidden="true" /></Link>
+            </Button>
+          </div>
+
+          <div className="relative min-h-[350px] self-stretch md:min-h-[480px]">
+            <span className="hero-hand-loop hero-hand-loop-top hidden md:block" aria-hidden="true" />
+            <div className="hero-photo-frame absolute inset-x-[6%] bottom-3 top-3 md:left-[11%] md:right-[7%] md:bottom-7 md:top-6">
+              <div className="hero-photo-inner">
+                <Image
+                  src={heroBanner?.image ?? "/images/home/hero-vet-dog.png"}
+                  alt={heroBanner?.imageAlt ?? "Bác sĩ thú y kiểm tra sức khoẻ cho chó golden retriever"}
+                  fill
+                  priority
+                  sizes="(max-width: 768px) 94vw, 52vw"
+                  className="object-cover object-center"
+                />
               </div>
             </div>
+            <span className="hero-hand-loop hero-hand-loop-bottom hidden md:block" aria-hidden="true" />
+            <Heart className="hero-doodle-heart hidden md:block" strokeWidth={2.6} aria-hidden="true" />
           </div>
         </div>
       </section>
 
-      <section className="border-b border-border bg-white" aria-label="Cam kết của Vet68">
-        <div className="site-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="trust-paper-strip relative z-10" aria-label="Cam kết của Vet68">
+        <div className="site-container grid grid-cols-2 gap-y-4 pb-7 pt-5 lg:grid-cols-4 lg:pb-8 lg:pt-6">
           {[
-            [BadgeCheck, "Sản phẩm chất lượng", "Thông tin sản phẩm rõ ràng, dễ kiểm tra"],
-            [ReceiptText, "Hóa đơn đầy đủ", "Minh bạch thông tin khi xác nhận đơn hàng"],
-            [Truck, "Giao hàng nhanh", "Hỗ trợ xử lý và giao đơn đúng thời gian"],
-            [Headset, "Hỗ trợ kỹ thuật tận tình", "Tư vấn trực tiếp qua Zalo và hotline"],
-          ].map(([Icon, title, text], index) => (
-            <div key={String(title)} className={`flex min-h-28 items-center gap-4 py-5 sm:px-6 ${index > 0 ? "lg:border-l lg:border-border" : ""} ${index % 2 ? "sm:border-l sm:border-border lg:border-l" : ""}`}>
-              <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-soft-blue text-primary"><Icon className="size-5" aria-hidden="true" /></span>
-              <div><p className="font-heading text-sm font-extrabold text-foreground sm:text-base">{String(title)}</p><p className="mt-1 text-xs leading-5 text-muted-foreground">{String(text)}</p></div>
+            [BadgeCheck, "Sản phẩm chất lượng", "Thông tin rõ ràng, dễ kiểm tra", "bg-petshop-teal"],
+            [ReceiptText, "Hóa đơn đầy đủ", "Minh bạch khi xác nhận đơn", "bg-medical-red"],
+            [Truck, "Giao hàng nhanh", "Hỗ trợ xử lý đúng thời gian", "bg-petshop-teal"],
+            [Headset, "Tư vấn tận tình", "Trực tiếp qua Zalo và hotline", "bg-medical-red"],
+          ].map(([Icon, title, text, color], index) => (
+            <div key={String(title)} className={`flex min-h-16 items-center gap-3 px-2 sm:px-5 ${index > 0 ? "lg:border-l lg:border-border" : ""}`}>
+              <span className={`flex size-11 shrink-0 items-center justify-center rounded-full text-white sm:size-12 ${String(color)}`}><Icon className="size-5" aria-hidden="true" /></span>
+              <div><p className="font-heading text-sm font-extrabold text-primary sm:text-base">{String(title)}</p><p className="mt-1 hidden text-xs leading-5 text-muted-foreground sm:block">{String(text)}</p></div>
             </div>
           ))}
         </div>
       </section>
 
-      {demoMode ? (
-        <div className="border-b border-[#efe2a6] bg-[#fffaf0]">
-          <div className="site-container py-3 text-center text-xs font-semibold leading-5 text-[#6b5700]">{DEMO_NOTICE}</div>
-        </div>
-      ) : null}
+      {demoMode ? <div className="border-y border-[#eedf9d] bg-[#fff7cc]"><div className="site-container py-2.5 text-center text-xs font-semibold leading-5 text-[#685300]">{DEMO_NOTICE}</div></div> : null}
 
-      <section id="vat-nuoi" className="section-space bg-[#f7f9fa] scroll-mt-44">
-        <div className="site-container">
-          <div className="max-w-2xl">
-            <h2 className="text-3xl font-bold tracking-[-0.03em] text-primary md:text-[40px]">Tìm theo vật nuôi</h2>
-            <p className="mt-3 max-w-xl leading-7 text-muted-foreground">Bắt đầu từ nhóm phù hợp để thu hẹp catalogue nhanh hơn.</p>
-          </div>
-          <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
-            {taxonomy.animalTypes.slice(0, 6).map((animal) => (
-              <Link key={animal.id} href={`/vat-nuoi/${animal.slug}`} className="group overflow-hidden rounded-2xl border border-border bg-white transition-[border-color,box-shadow,transform] duration-200 hover:-translate-y-1 hover:border-action/70 hover:retail-card-shadow motion-reduce:transform-none">
-                <div className="relative aspect-[4/3] overflow-hidden bg-soft-blue">
-                  <Image src={animal.image} alt={animal.imageAlt ?? `Hình minh hoạ nhóm ${animal.name}`} fill sizes="(max-width: 768px) 50vw, 33vw" className={animal.slug === "thiet-bi-thu-y" ? "object-contain p-4 transition-transform duration-200 group-hover:scale-[1.025]" : "object-cover transition-transform duration-200 group-hover:scale-[1.025]"} />
-                </div>
-                <div className="flex items-center justify-between gap-3 p-4 md:p-5">
-                  <div><h3 className="font-heading text-base font-bold text-foreground md:text-lg">{animal.name}</h3><p className="mt-1 hidden text-sm leading-6 text-muted-foreground sm:line-clamp-2 sm:block">{animal.description}</p></div>
-                  <ArrowRight className="size-5 shrink-0 text-primary transition-transform group-hover:translate-x-1" aria-hidden="true" />
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section-space border-y border-[#dbeaf0] bg-soft-blue">
-        <div className="site-container">
-          <div className="max-w-2xl">
-            <h2 className="text-3xl font-bold tracking-[-0.03em] text-primary md:text-[40px]">Tìm theo nhu cầu sử dụng</h2>
-            <p className="mt-3 max-w-xl leading-7 text-muted-foreground">Lối vào thực dụng cho khách hàng đã biết mục đích cần tra cứu.</p>
-          </div>
-          <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-            {needs.map((need) => {
-              const Icon = needIcons[need.slug as keyof typeof needIcons];
-              return (
-                <Link key={need.id} href={`/danh-muc/${need.slug}`} className="group rounded-2xl border border-white bg-white p-4 transition-[border-color,box-shadow,transform] duration-200 hover:-translate-y-1 hover:border-action hover:retail-card-shadow motion-reduce:transform-none md:p-5">
-                  <span className="flex size-11 items-center justify-center rounded-xl bg-soft-blue text-primary"><Icon className="size-5" aria-hidden="true" /></span>
-                  <h3 className="mt-4 font-heading text-sm font-bold leading-5 text-foreground md:text-base">{need.name}</h3>
-                  <p className="mt-2 hidden text-sm leading-6 text-muted-foreground md:line-clamp-2 md:block">{need.description}</p>
-                  <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-primary">Xem nhóm <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" aria-hidden="true" /></span>
+      <main className="paper-canvas py-11 md:py-14">
+        <section id="vat-nuoi" className="scroll-mt-36">
+          <div className="site-container">
+            <h2 className="petshop-section-title">Tìm theo vật nuôi</h2>
+            <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">Chọn đúng nhóm vật nuôi để thu hẹp catalogue nhanh hơn.</p>
+            <div className="petshop-scroll-row -mx-4 mt-6 flex snap-x gap-4 overflow-x-auto px-4 pb-3 sm:mx-0 sm:px-0 md:grid md:grid-cols-3 lg:grid-cols-6">
+              {taxonomy.animalTypes.slice(0, 6).map((animal) => (
+                <Link key={animal.id} href={`/vat-nuoi/${animal.slug}`} className="group min-w-[170px] snap-start overflow-hidden rounded-[18px] border-4 border-white bg-white petshop-card-shadow transition-transform duration-200 hover:-translate-y-1 motion-reduce:transform-none md:min-w-0">
+                  <div className="relative aspect-[4/3] overflow-hidden bg-petshop-cream">
+                    <Image src={animal.image} alt={animal.imageAlt ?? `Hình minh hoạ nhóm ${animal.name}`} fill sizes="(max-width: 768px) 170px, 17vw" className={animal.slug === "thiet-bi-thu-y" ? "object-contain p-4 transition-transform group-hover:scale-105" : "object-cover transition-transform group-hover:scale-105"} />
+                  </div>
+                  <div className="m-1 flex items-center justify-between gap-2 rounded-xl bg-petshop-teal px-3 py-2.5 text-white">
+                    <h3 className="truncate font-heading text-sm font-extrabold">{animal.name}</h3>
+                    <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-white text-petshop-teal"><ArrowRight className="size-3.5" aria-hidden="true" /></span>
+                  </div>
                 </Link>
-              );
-            })}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="section-space bg-white">
-        <div className="site-container">
-          <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-end sm:justify-between">
-            <div className="max-w-2xl"><h2 className="text-3xl font-bold tracking-[-0.03em] text-primary md:text-[40px]">Sản phẩm nổi bật</h2><p className="mt-3 leading-7 text-muted-foreground">Các sản phẩm demo thể hiện đầy đủ ba trạng thái giá của catalogue.</p></div>
-            <Button variant="outline" className="bg-white" asChild><Link href="/san-pham">Xem toàn bộ catalogue <ArrowRight aria-hidden="true" /></Link></Button>
+        <section className="pt-9 md:pt-11">
+          <div className="site-container">
+            <h2 className="petshop-section-title">Tìm theo nhu cầu sử dụng</h2>
+            <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">Lối vào thực dụng khi bạn đã biết mục đích cần tra cứu.</p>
+            <div className="petshop-scroll-row -mx-4 mt-6 flex snap-x gap-3 overflow-x-auto px-4 pb-3 sm:mx-0 sm:px-0 md:grid md:grid-cols-4 lg:grid-cols-8">
+              {needs.map((need) => {
+                const Icon = needIcons[need.slug as keyof typeof needIcons];
+                return (
+                  <Link key={need.id} href={`/danh-muc/${need.slug}`} className="group flex min-h-32 min-w-[138px] snap-start flex-col items-center justify-center rounded-[18px] border border-[#eee5d4] bg-white p-4 text-center petshop-card-shadow transition-[border-color,transform] hover:-translate-y-1 hover:border-petshop-teal motion-reduce:transform-none md:min-w-0">
+                    <Icon className="size-9 text-[#08728a] transition-transform group-hover:scale-110" strokeWidth={1.7} aria-hidden="true" />
+                    <h3 className="mt-3 text-xs font-extrabold leading-5 text-primary">{need.name}</h3>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
-          <p className="mt-5 inline-flex rounded-lg bg-[#fffaf0] px-3 py-2 text-xs font-semibold text-[#6b5700]">Giá hiển thị chỉ mang tính tham khảo và có thể thay đổi.</p>
-          <div className="mt-6 grid grid-cols-1 gap-4 min-[440px]:grid-cols-2 lg:grid-cols-4 lg:gap-5">{featuredProducts.map((product, index) => <ProductCard key={product.id} product={product} eager={index < 4} />)}</div>
-        </div>
-      </section>
+        </section>
 
-      <section className="section-space bg-[#f7f9fa]">
-        <div className="site-container">
-          <div className="grid overflow-hidden rounded-2xl border border-[#d5e8ef] bg-soft-blue lg:grid-cols-[1.08fr_0.92fr]">
-            <div className="flex flex-col justify-center p-7 md:p-10 lg:p-12">
-              <h2 className="max-w-xl text-3xl font-bold tracking-[-0.03em] text-primary md:text-[38px]">{promotionBanner?.title ?? "Bạn cần kiểm tra giá hoặc quy cách hiện tại?"}</h2>
-              <p className="mt-4 max-w-xl leading-7 text-muted-foreground">{promotionBanner?.subtitle ?? "Gửi tên sản phẩm hoặc mã SKU qua Zalo. Vet68 sẽ hỗ trợ xác nhận đúng mặt hàng và tư vấn phù hợp."}</p>
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <Button size="lg" className="action-button h-11 px-5" asChild><a href={promotionBanner?.linkUrl ?? contact.zaloUrl} target="_blank" rel="noreferrer"><MessageCircle aria-hidden="true" /> Tư vấn qua Zalo</a></Button>
-                <Button size="lg" variant="outline" className="h-11 bg-white px-5" asChild><a href={getTelephoneUrl(contact.phone)}><Phone aria-hidden="true" /> {contact.phoneDisplay}</a></Button>
+        <section className="pt-9 md:pt-11">
+          <div className="site-container">
+            <SectionHeading title="Sản phẩm nổi bật" href="/san-pham" label="Xem tất cả" />
+            <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">Những sản phẩm đang được khách hàng quan tâm trong catalogue.</p>
+            <div className="petshop-scroll-row -mx-4 mt-6 flex snap-x gap-4 overflow-x-auto px-4 pb-4 sm:mx-0 sm:px-0 lg:grid lg:grid-cols-4 xl:grid-cols-6">
+              {featuredProducts.map((product, index) => <div key={product.id} className="min-w-[240px] snap-start lg:min-w-0"><ProductCard product={product} eager={index < 4} showcase /></div>)}
+            </div>
+            <p className="mt-1 text-xs font-semibold text-[#755b00]">Giá hiển thị mang tính tham khảo và có thể thay đổi theo thời điểm.</p>
+          </div>
+        </section>
+
+        <section className="pt-10 md:pt-12">
+          <div className="site-container">
+            <div className="relative grid min-h-[250px] overflow-hidden rounded-[24px] bg-deep-navy text-white petshop-card-shadow md:grid-cols-[0.88fr_1.12fr]">
+              <div className="relative min-h-60 overflow-hidden md:min-h-[300px]">
+                <Image src={promotionBanner?.image ?? "/images/home/consultation-vet-dog.png"} alt={promotionBanner?.imageAlt ?? "Bác sĩ thú y bế chó nhỏ để tư vấn chăm sóc"} fill sizes="(max-width: 768px) 100vw, 44vw" className="object-cover object-left" />
+                <div className="absolute inset-0 hidden bg-gradient-to-r from-transparent via-transparent to-deep-navy md:block" />
+              </div>
+              <div className="petshop-paw-pattern relative flex flex-col justify-center px-6 py-8 md:px-10 lg:px-14">
+                <h2 className="text-3xl font-extrabold tracking-[-0.04em] text-white md:text-[38px]">{promotionBanner?.title ?? "Cần tư vấn sản phẩm phù hợp?"}</h2>
+                <p className="mt-3 max-w-xl text-sm leading-6 text-white/75 md:text-base">{promotionBanner?.subtitle ?? "Gửi tên sản phẩm hoặc mã SKU. Đội ngũ Vet68 sẽ hỗ trợ xác nhận đúng mặt hàng và quy cách hiện tại."}</p>
+                <Button size="lg" className="mt-6 w-fit rounded-full bg-petshop-yellow px-6 font-extrabold text-primary hover:bg-[#ffd13a]" asChild>
+                  <a href={promotionBanner?.linkUrl ?? contact.zaloUrl} target="_blank" rel="noreferrer"><MessageCircle aria-hidden="true" /> Chat ngay với chuyên gia</a>
+                </Button>
               </div>
             </div>
-            <div className="relative min-h-72 lg:min-h-[390px]">
-              <Image src={promotionBanner?.image ?? "/images/demo/article-care.jpg"} alt={promotionBanner?.imageAlt ?? "Người chăm sóc mèo, hình minh hoạ cho tư vấn sản phẩm thú y"} fill sizes="(max-width: 1024px) 100vw, 42vw" className="object-cover" />
-            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="thuong-hieu" className="section-space bg-white scroll-mt-44">
-        <div className="site-container">
-          <div className="max-w-2xl"><h2 className="text-3xl font-bold tracking-[-0.03em] text-primary md:text-[40px]">Thương hiệu trong catalogue</h2><p className="mt-3 leading-7 text-muted-foreground">Chọn thương hiệu để xem các sản phẩm đang được công khai.</p></div>
-          <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-            {taxonomy.brands.map((brand) => (
-              <Link key={brand.id} href={`/thuong-hieu/${brand.slug}`} className="group flex min-h-36 flex-col items-center justify-center rounded-2xl border border-border bg-white p-5 text-center transition-[border-color,box-shadow,transform] duration-200 hover:-translate-y-1 hover:border-action hover:retail-card-shadow motion-reduce:transform-none">
-                {brand.logo ? <Image src={brand.logo} alt={brand.logoAlt ?? `Logo ${brand.name}`} width={190} height={76} unoptimized={brand.logo.toLowerCase().includes(".svg")} className="h-14 w-auto max-w-full object-contain grayscale transition-[filter] duration-200 group-hover:grayscale-0" /> : <span className="font-heading text-xl font-extrabold text-primary">{brand.name}</span>}
-                <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-muted-foreground group-hover:text-primary">Xem sản phẩm <ArrowRight className="size-3.5" aria-hidden="true" /></span>
-              </Link>
-            ))}
-          </div>
-          {demoMode ? <p className="mt-4 text-xs text-muted-foreground">Tên và logo thương hiệu trong phần này là dữ liệu minh hoạ.</p> : null}
-        </div>
-      </section>
-
-      {newProducts.length >= 4 ? (
-        <section className="section-space border-y border-border bg-[#f7f9fa]">
+        <section id="thuong-hieu" className="scroll-mt-36 pt-9 md:pt-11">
           <div className="site-container">
-            <div className="max-w-2xl"><h2 className="text-3xl font-bold tracking-[-0.03em] text-primary md:text-[40px]">Sản phẩm mới cập nhật</h2><p className="mt-3 leading-7 text-muted-foreground">Các mặt hàng vừa được bổ sung hoặc cập nhật thông tin.</p></div>
-            <div className="mt-8 grid gap-4 md:grid-cols-2">
-              {newProducts.map((product) => (
-                <article key={product.id} className="grid grid-cols-[112px_1fr] gap-4 rounded-2xl border border-border bg-white p-3 transition-colors hover:border-action sm:grid-cols-[140px_1fr]">
-                  <Link href={`/san-pham/${product.slug}`} className="relative aspect-square overflow-hidden rounded-xl bg-[#f4f8fa]"><Image src={product.images[0].src} alt={product.images[0].alt} fill sizes="140px" className="object-contain p-2" /></Link>
-                  <div className="flex min-w-0 flex-col py-1"><div className="flex items-start justify-between gap-2"><div><p className="text-xs font-semibold text-muted-foreground">{product.brand.name}</p><h3 className="mt-1 line-clamp-2 font-heading font-bold leading-6"><Link href={`/san-pham/${product.slug}`} className="hover:text-primary">{product.name}</Link></h3></div><Badge className="bg-[#fff8d6] text-[#735e00]">Mới</Badge></div><p className="mt-1 text-xs text-muted-foreground">{product.sku} | {product.packaging}</p><div className="mt-auto pt-3"><ProductPrice product={product} compact /></div></div>
+            <SectionHeading title="Thương hiệu trong catalogue" href="/san-pham" label="Xem tất cả" />
+            <div className="petshop-scroll-row -mx-4 mt-6 flex snap-x gap-3 overflow-x-auto px-4 pb-4 sm:mx-0 sm:px-0 md:grid md:grid-cols-4">
+              {taxonomy.brands.map((brand) => (
+                <Link key={brand.id} href={`/thuong-hieu/${brand.slug}`} className="group flex min-h-28 min-w-[210px] snap-start items-center justify-center rounded-[18px] border border-[#eee5d4] bg-white p-5 petshop-card-shadow transition-[border-color,transform] hover:-translate-y-1 hover:border-petshop-teal motion-reduce:transform-none md:min-w-0">
+                  {brand.logo ? <Image src={brand.logo} alt={brand.logoAlt ?? `Logo ${brand.name}`} width={190} height={76} unoptimized={brand.logo.toLowerCase().includes(".svg")} className="h-12 w-auto max-w-full object-contain transition-transform group-hover:scale-105" /> : <span className="font-heading text-xl font-extrabold text-primary">{brand.name}</span>}
+                </Link>
+              ))}
+            </div>
+            {demoMode ? <p className="text-xs text-muted-foreground">Tên và logo thương hiệu trong phần này là dữ liệu minh hoạ.</p> : null}
+          </div>
+        </section>
+
+        {newProducts.length >= 4 ? (
+          <section className="pt-9 md:pt-11">
+            <div className="site-container">
+              <SectionHeading title="Sản phẩm mới cập nhật" href="/san-pham" label="Xem tất cả" />
+              <div className="petshop-scroll-row -mx-4 mt-6 flex snap-x gap-4 overflow-x-auto px-4 pb-4 sm:mx-0 sm:px-0 lg:grid lg:grid-cols-4 xl:grid-cols-6">
+                {newProducts.map((product) => (
+                  <article key={product.id} className="flex min-w-[225px] snap-start flex-col overflow-hidden rounded-[18px] border border-[#eee5d4] bg-white petshop-card-shadow lg:min-w-0">
+                    <Link href={`/san-pham/${product.slug}`} className="relative aspect-[4/3] bg-[#fffdf8]"><Badge className="absolute left-3 top-3 z-10 rounded-full bg-medical-red text-white">Mới</Badge><Image src={product.images[0].src} alt={product.images[0].alt} fill sizes="225px" className="object-contain p-5" /></Link>
+                    <div className="flex flex-1 flex-col p-4"><p className="truncate text-[11px] font-semibold text-muted-foreground">{product.brand.name}</p><h3 className="mt-1 line-clamp-2 text-sm font-extrabold leading-5 text-primary"><Link href={`/san-pham/${product.slug}`} className="hover:text-medical-red">{product.name}</Link></h3><p className="mt-1 truncate text-[10px] text-muted-foreground">{product.sku} · {product.packaging}</p><div className="mt-auto pt-3 [&_p]:text-medical-red"><ProductPrice product={product} compact /></div></div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        ) : null}
+
+        <section className="pt-9 md:pt-11">
+          <div className="site-container">
+            <SectionHeading title="Kiến thức thú y" href="/kien-thuc-thu-y" label="Xem tất cả" icon="book" />
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
+              {posts.slice(0, 3).map((post, index) => (
+                <article key={post.id} className="group flex flex-col overflow-hidden rounded-[18px] border border-[#eee5d4] bg-white petshop-card-shadow transition-transform hover:-translate-y-1 motion-reduce:transform-none">
+                  <Link href={`/kien-thuc-thu-y/${post.slug}`} className="relative aspect-[3/2] overflow-hidden bg-petshop-cream"><Image src={post.coverImage} alt={post.coverAlt} fill sizes="(max-width: 768px) 100vw, 33vw" className={post.coverImage.endsWith(".svg") ? "object-contain p-5 transition-transform group-hover:scale-105" : "object-cover transition-transform group-hover:scale-105"} /></Link>
+                  <div className="flex flex-1 flex-col p-4"><p className="text-xs font-bold text-petshop-teal">{knowledgeCategories[index] ?? "Kiến thức thú y"}</p><h3 className="mt-2 line-clamp-2 text-lg font-extrabold leading-6 text-primary"><Link href={`/kien-thuc-thu-y/${post.slug}`} className="hover:text-medical-red">{post.title}</Link></h3><p className="mt-2 line-clamp-2 text-sm leading-6 text-muted-foreground">{post.excerpt}</p><div className="mt-auto flex items-center gap-1 pt-4 text-xs text-muted-foreground"><CalendarDays className="size-3.5" aria-hidden="true" />{new Intl.DateTimeFormat("vi-VN").format(new Date(post.publishedAt))}</div></div>
                 </article>
               ))}
             </div>
           </div>
         </section>
-      ) : null}
+      </main>
+    </div>
+  );
+}
 
-      <section className="section-space bg-white">
-        <div className="site-container">
-          <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-end sm:justify-between"><div className="max-w-2xl"><h2 className="text-3xl font-bold tracking-[-0.03em] text-primary md:text-[40px]">Kiến thức thú y</h2><p className="mt-3 leading-7 text-muted-foreground">Nội dung demo về cách tra cứu, sử dụng sản phẩm và chăm sóc vật nuôi.</p></div><Button variant="outline" className="bg-white" asChild><Link href="/kien-thuc-thu-y">Xem tất cả bài viết <BookOpen aria-hidden="true" /></Link></Button></div>
-          <div className="mt-8 grid gap-5 md:grid-cols-3">
-            {posts.slice(0, 3).map((post, index) => (
-              <article key={post.id} className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-white transition-[border-color,box-shadow,transform] duration-200 hover:-translate-y-1 hover:border-action hover:retail-card-shadow motion-reduce:transform-none">
-                <Link href={`/kien-thuc-thu-y/${post.slug}`} className="relative aspect-[3/2] overflow-hidden bg-soft-blue"><Image src={post.coverImage} alt={post.coverAlt} fill sizes="(max-width: 768px) 100vw, 33vw" className={post.coverImage.endsWith(".svg") ? "object-contain p-3 transition-transform duration-200 group-hover:scale-[1.025]" : "object-cover transition-transform duration-200 group-hover:scale-[1.025]"} /></Link>
-                <div className="flex flex-1 flex-col p-5"><p className="text-xs font-bold text-[#257493]">{knowledgeCategories[index] ?? "Kiến thức thú y"}</p><h3 className="mt-2 text-xl font-bold leading-7 text-foreground"><Link href={`/kien-thuc-thu-y/${post.slug}`} className="hover:text-primary">{post.title}</Link></h3><p className="mt-3 line-clamp-3 text-sm leading-6 text-muted-foreground">{post.excerpt}</p><div className="mt-auto flex items-center justify-between gap-3 pt-5 text-xs text-muted-foreground"><span className="inline-flex items-center gap-1"><CalendarDays className="size-3.5" aria-hidden="true" />{new Intl.DateTimeFormat("vi-VN").format(new Date(post.publishedAt))}</span><Link href={`/kien-thuc-thu-y/${post.slug}`} className="inline-flex items-center gap-1 font-bold text-primary">Đọc thêm <ArrowRight className="size-3.5" aria-hidden="true" /></Link></div></div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-    </>
+function SectionHeading({ title, href, label, icon }: { title: string; href: string; label: string; icon?: "book" }) {
+  return (
+    <div className="flex items-end justify-between gap-4">
+      <h2 className="petshop-section-title">{title}</h2>
+      <Button variant="ghost" className="h-9 rounded-full bg-petshop-teal px-4 text-xs font-extrabold text-white hover:bg-[#128794] hover:text-white" asChild>
+        <Link href={href}>{label} {icon === "book" ? <BookOpen aria-hidden="true" /> : <ArrowRight aria-hidden="true" />}</Link>
+      </Button>
+    </div>
   );
 }

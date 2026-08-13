@@ -9,9 +9,9 @@ export function CatalogueDealStrip({ products }: { products: Product[] }) {
   if (!products.length) return null;
 
   return (
-    <section className="mt-6 overflow-hidden rounded-2xl border border-[#f2d7cf] bg-[#fff8f3] p-2.5 sm:p-4" aria-labelledby="catalogue-deals-title">
+    <section className="mt-6 overflow-hidden rounded-[22px_12px_22px_12px] border border-[#f2d7cf] bg-[#fff2df] p-2.5 shadow-[3px_4px_0_rgba(237,92,1,0.1)] sm:p-4" aria-labelledby="catalogue-deals-title">
       <div className="grid grid-cols-[145px_minmax(0,1fr)] gap-2.5 sm:grid-cols-[190px_minmax(0,1fr)] sm:gap-3 lg:grid-cols-[230px_minmax(0,1fr)]">
-        <div className="flex min-h-72 flex-col justify-between rounded-xl bg-primary p-4 text-white sm:min-h-80 sm:p-5 lg:p-6">
+        <div className="flex min-h-72 flex-col justify-between rounded-[18px_9px_18px_9px] bg-primary p-4 text-white sm:min-h-80 sm:p-5 lg:p-6">
           <div>
             <span className="flex size-10 items-center justify-center rounded-full bg-white/12 text-action"><Sparkles className="size-5" aria-hidden="true" /></span>
             <p className="mt-4 text-[10px] font-extrabold uppercase tracking-[0.12em] text-action sm:mt-5 sm:text-xs sm:tracking-[0.14em]">Sản phẩm nổi bật</p>
@@ -31,7 +31,7 @@ export function CatalogueDealStrip({ products }: { products: Product[] }) {
 
 function DealProductCard({ product, eager }: { product: Product; eager: boolean }) {
   return (
-    <article className="group relative flex min-w-0 snap-start flex-col overflow-hidden rounded-xl border border-[#ecdcd5] bg-white">
+    <article className="group relative flex min-w-0 snap-start flex-col overflow-hidden rounded-[16px_9px_16px_9px] border border-[#eadfc8] bg-white">
       <span className="absolute left-3 top-3 z-10 rounded-md bg-[#c93434] px-2.5 py-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-white retail-card-shadow">Sale Shock</span>
       <Link href={`/san-pham/${product.slug}`} className="relative aspect-[3/4] overflow-hidden bg-[#f4f8fa]">
         <Image src={product.images[0].src} alt={product.images[0].alt} fill loading={eager ? "eager" : "lazy"} sizes="220px" className="object-contain p-5 transition-transform duration-200 group-hover:scale-[1.035] motion-reduce:transition-none" />

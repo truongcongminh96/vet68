@@ -49,17 +49,18 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   };
 
   return (
-    <article className="site-container section-space">
+    <article className="paper-page">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(articleJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbJsonLd) }} />
+      <div className="site-container py-10 md:py-14 lg:py-18">
       <nav className="mb-6 flex gap-2 text-sm text-muted-foreground" aria-label="Breadcrumb"><Link href="/">Trang chủ</Link><span>/</span><Link href="/kien-thuc-thu-y">Kiến thức thú y</Link></nav>
-      <header className="mx-auto max-w-4xl">
-        <p className="text-sm font-semibold text-primary">{new Intl.DateTimeFormat("vi-VN").format(new Date(post.publishedAt))} | {post.readingMinutes} phút đọc</p>
-        <h1 className="mt-3 text-4xl font-extrabold tracking-tight md:text-6xl">{post.title}</h1>
+      <header className="mx-auto max-w-4xl text-center">
+        <p className="paper-eyebrow">{new Intl.DateTimeFormat("vi-VN").format(new Date(post.publishedAt))} · {post.readingMinutes} phút đọc</p>
+        <h1 className="paper-heading mt-4 text-4xl md:text-6xl">{post.title}</h1>
         <p className="mt-5 text-lg leading-8 text-muted-foreground">{post.excerpt}</p>
       </header>
-      <div className="relative mx-auto mt-8 aspect-[16/8] max-w-5xl overflow-hidden rounded-2xl bg-soft-blue"><Image src={post.coverImage} alt={post.coverAlt} fill priority sizes="(max-width: 1200px) 100vw, 1000px" className={post.coverImage.endsWith(".svg") ? "object-contain p-5" : "object-cover"} /></div>
-      <div className="mx-auto mt-10 grid max-w-5xl gap-8 lg:grid-cols-[1fr_280px]">
+      <div className="paper-hero-photo relative mx-auto mt-9 aspect-[16/8] max-w-5xl"><Image src={post.coverImage} alt={post.coverAlt} fill priority sizes="(max-width: 1200px) 100vw, 1000px" className={post.coverImage.endsWith(".svg") ? "object-contain p-5" : "object-cover"} /></div>
+      <div className="mx-auto mt-12 grid max-w-5xl gap-8 lg:grid-cols-[1fr_280px]">
         <div className="article-content min-w-0 text-base leading-8">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
@@ -75,11 +76,12 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             }}
           >{post.content}</ReactMarkdown>
         </div>
-        <aside className="h-fit rounded-xl border border-medical-red/30 bg-card p-5 lg:sticky lg:top-5">
+        <aside className="paper-panel-warm h-fit p-5 lg:sticky lg:top-5">
           <AlertTriangle className="size-6 text-medical-red" aria-hidden="true" />
           <h2 className="mt-3 text-lg font-bold">Lưu ý</h2>
           <p className="mt-2 text-sm leading-6 text-muted-foreground">Thông tin trong bài viết mang tính tham khảo và không thay thế tư vấn của bác sĩ thú y hoặc hướng dẫn từ nhà sản xuất.</p>
         </aside>
+      </div>
       </div>
     </article>
   );

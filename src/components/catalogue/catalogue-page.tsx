@@ -46,36 +46,40 @@ export async function CataloguePage({ title, description, filters, basePath = "/
     showHero ? getCatalogueCategorySummaries() : Promise.resolve([]),
   ]);
   return (
-    <div className="site-container section-space">
+    <div className="paper-page">
       {showHero ? (
-        <section className="relative isolate min-h-[330px] overflow-hidden rounded-2xl bg-soft-blue p-7 retail-card-shadow md:min-h-[390px] md:p-12">
-          <Image src="/images/home/hero-veterinary-products.jpg" alt="Nhân viên thú y đang kiểm tra sức khỏe cho chó" fill priority sizes="(max-width: 1400px) 100vw, 1320px" className="-z-20 object-cover object-[70%_center]" />
-          <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(247,250,252,0.98)_0%,rgba(247,250,252,0.92)_38%,rgba(247,250,252,0.24)_72%,rgba(247,250,252,0.04)_100%)] max-sm:bg-[linear-gradient(180deg,rgba(247,250,252,0.97)_0%,rgba(247,250,252,0.82)_62%,rgba(6,42,64,0.42)_100%)]" />
-          <div className="relative flex min-h-[276px] max-w-2xl flex-col justify-between md:min-h-[294px]">
-            <div>
-              <p className="font-heading text-sm font-extrabold uppercase tracking-[0.14em] text-[#257493]">Catalogue Vet68</p>
-              <h1 className="mt-3 text-4xl font-bold leading-[1.08] tracking-[-0.04em] text-primary md:text-6xl">{title}</h1>
-              <p className="mt-4 max-w-xl text-sm leading-6 text-[#385565] md:text-base md:leading-7">{description}</p>
+        <section className="paper-hero">
+          <div className="site-container grid min-h-[390px] items-center gap-7 py-10 md:min-h-[430px] md:grid-cols-[.92fr_1.08fr] md:py-12 lg:gap-14">
+            <div className="relative z-10 md:pb-6">
+              <span className="hero-ray-mark" aria-hidden="true" />
+              <p className="paper-eyebrow">Catalogue Vet68</p>
+              <h1 className="paper-heading mt-4 max-w-xl text-[2.35rem] sm:text-5xl lg:text-[58px]">{title}</h1>
+              <p className="mt-5 max-w-[560px] text-[15px] leading-7 text-[#405c68] md:text-base">{description}</p>
+              <Button className="action-button mt-7 h-12 rounded-full px-6 text-base font-extrabold shadow-[3px_4px_0_rgba(6,45,62,0.12)]" asChild><Link href="#danh-sach-san-pham">Xem danh sách sản phẩm <ArrowRight aria-hidden="true" /></Link></Button>
             </div>
-            <Button className="action-button h-11 w-fit px-5" asChild><Link href="#danh-sach-san-pham">Xem danh sách sản phẩm <ArrowRight aria-hidden="true" /></Link></Button>
+            <div className="paper-hero-photo relative aspect-[16/10] self-center md:aspect-[4/3]">
+              <Image src="/images/home/hero-veterinary-products.jpg" alt="Nhân viên thú y đang kiểm tra sức khỏe cho chó" fill priority sizes="(max-width: 768px) 100vw, 52vw" className="object-cover object-[70%_center]" />
+            </div>
           </div>
         </section>
       ) : (
-        <div className="max-w-3xl"><h1 className="text-3xl font-extrabold tracking-tight text-primary md:text-5xl">{title}</h1><p className="mt-4 max-w-2xl leading-7 text-muted-foreground">{description}</p></div>
+        <section className="site-container pt-12 md:pt-16"><div className="max-w-3xl"><p className="paper-eyebrow">Tra cứu catalogue</p><h1 className="paper-heading mt-3 text-4xl md:text-5xl">{title}</h1><p className="mt-4 max-w-2xl leading-7 text-muted-foreground">{description}</p></div></section>
       )}
+      <div className="site-container pb-14 pt-8 md:pb-20 md:pt-10">
       {showHero ? <CatalogueDealStrip products={dealProducts} /> : null}
       {showHero ? <CatalogueCategoryStrip categories={categorySummaries} /> : null}
       <div className="mt-8 grid gap-8 lg:grid-cols-[270px_1fr]">
-        <details className="group h-fit rounded-xl border bg-card p-5 lg:hidden" aria-label="Bộ lọc sản phẩm">
+        <details className="paper-filter-panel group h-fit p-5 lg:hidden" aria-label="Bộ lọc sản phẩm">
           <summary className="flex cursor-pointer list-none items-center justify-between gap-2 font-bold"><FilterHeading /><span className="text-xs font-semibold text-muted-foreground transition-transform group-open:rotate-180">⌄</span></summary>
           <FilterForm basePath={basePath} filters={filters} taxonomy={taxonomy} idPrefix="mobile" />
         </details>
-        <aside className="hidden h-fit rounded-xl border bg-card p-5 lg:sticky lg:top-4 lg:block" aria-label="Bộ lọc sản phẩm"><FilterHeading /><FilterForm basePath={basePath} filters={filters} taxonomy={taxonomy} idPrefix="desktop" /></aside>
+        <aside className="paper-filter-panel hidden h-fit p-5 lg:sticky lg:top-4 lg:block" aria-label="Bộ lọc sản phẩm"><FilterHeading /><FilterForm basePath={basePath} filters={filters} taxonomy={taxonomy} idPrefix="desktop" /></aside>
         <div id="danh-sach-san-pham">
-          <div className="flex flex-col gap-3 border-b pb-5 sm:flex-row sm:items-center sm:justify-between"><p className="text-sm text-muted-foreground">Hiển thị <strong className="text-foreground">{total}</strong> sản phẩm</p><nav className="flex items-center gap-1 rounded-lg border bg-white p-1" aria-label="Sắp xếp sản phẩm"><span className="px-2 text-xs font-semibold text-muted-foreground">Sắp xếp</span>{(["name_asc", "name_desc"] as const).map((sort) => <Link key={sort} href={queryHref(basePath, activeQuery(filters, undefined, sort))} aria-current={filters.sort === sort ? "page" : undefined} className={`rounded-md px-3 py-2 text-sm font-bold transition-colors ${filters.sort === sort ? "bg-primary text-white" : "text-foreground hover:bg-soft-blue hover:text-primary"}`}>{sort === "name_asc" ? "Tên A-Z" : "Tên Z-A"}</Link>)}</nav></div>
+          <div className="flex flex-col gap-3 border-b border-[#e7dbc4] pb-5 sm:flex-row sm:items-center sm:justify-between"><p className="text-sm text-muted-foreground">Hiển thị <strong className="text-foreground">{total}</strong> sản phẩm</p><nav className="flex items-center gap-1 rounded-xl border border-[#e8ddc7] bg-white p-1" aria-label="Sắp xếp sản phẩm"><span className="px-2 text-xs font-semibold text-muted-foreground">Sắp xếp</span>{(["name_asc", "name_desc"] as const).map((sort) => <Link key={sort} href={queryHref(basePath, activeQuery(filters, undefined, sort))} aria-current={filters.sort === sort ? "page" : undefined} className={`rounded-lg px-3 py-2 text-sm font-bold transition-colors ${filters.sort === sort ? "bg-primary text-white" : "text-foreground hover:bg-[#fff2df] hover:text-primary"}`}>{sort === "name_asc" ? "Tên A-Z" : "Tên Z-A"}</Link>)}</nav></div>
           {products.length ? <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">{products.map((product, index) => <ProductCard key={product.id} product={product} eager={index < 3} />)}</div> : <div className="mt-10 flex min-h-72 flex-col items-center justify-center rounded-xl border border-dashed bg-card p-8 text-center"><SearchX className="size-10 text-muted-foreground" aria-hidden="true" /><h2 className="mt-4 text-xl font-bold">Không tìm thấy sản phẩm phù hợp</h2><p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">Hãy thử bỏ bớt bộ lọc, tìm bằng SKU hoặc liên hệ Vet68 để được hỗ trợ.</p><Button className="mt-5" variant="outline" asChild><Link href={basePath}>Xem tất cả sản phẩm</Link></Button></div>}
           {pageCount > 1 ? <nav className="mt-8 flex justify-center gap-2" aria-label="Phân trang">{Array.from({ length: pageCount }, (_, index) => index + 1).map((page) => <Button key={page} variant={page === filters.page ? "default" : "outline"} size="icon" asChild><Link href={`${basePath}?${activeQuery(filters, page)}`} aria-current={page === filters.page ? "page" : undefined}>{page}</Link></Button>)}</nav> : null}
         </div>
+      </div>
       </div>
     </div>
   );
