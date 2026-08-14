@@ -9,7 +9,6 @@ import {
   CalendarDays,
   Headset,
   HeartPulse,
-  Heart,
   MessageCircle,
   Pill,
   ReceiptText,
@@ -68,44 +67,40 @@ export default async function HomePage() {
 
   return (
     <div className="overflow-hidden bg-[#fffaf0]">
-      <section className="hero-editorial">
-        <div className="site-container relative z-10 grid min-h-[520px] items-center gap-7 py-9 md:min-h-[570px] md:grid-cols-[0.96fr_1.04fr] md:py-12 lg:min-h-[600px] lg:gap-10">
-          <div className="relative z-10 pb-1 md:pb-12">
-            <span className="hero-ray-mark" aria-hidden="true" />
-            <p className="whitespace-nowrap font-heading text-[clamp(2.35rem,4.7vw,4.4rem)] font-extrabold leading-[0.95] tracking-[-0.06em] text-primary">Vet Medicine <span className="text-medical-red">68</span></p>
-            <h1 className="mt-5 max-w-[590px] text-[2rem] font-extrabold leading-[1.08] tracking-[-0.045em] text-primary sm:text-[2.4rem] lg:text-[44px]">
-              {heroBanner?.title ?? "Thuốc thú y chất lượng, dễ dàng tra cứu"}
+      <section className="hero-full-bleed">
+        <Image
+          src={heroBanner?.image ?? "/images/home/hero-vet68-full-bleed.png"}
+          alt={heroBanner?.imageAlt ?? "Sản phẩm chăm sóc thú y cùng chó và mèo tại Vet68"}
+          fill
+          priority
+          sizes="100vw"
+          className="hero-full-bleed-image object-cover object-[67%_center]"
+        />
+        <div className="hero-full-bleed-wash" aria-hidden="true" />
+        <div className="site-container relative z-10 flex min-h-[min(720px,calc(100dvh-4.5rem))] items-center py-16 md:min-h-[min(780px,calc(100dvh-4.5rem))] md:py-20 lg:py-24">
+          <div className="max-w-[640px]">
+            <p className="font-heading text-sm font-extrabold tracking-[0.08em] text-petshop-teal">Vet Medicine <span className="text-medical-red">68</span></p>
+            <h1 className="mt-4 max-w-[620px] text-[clamp(2.55rem,5vw,4.7rem)] font-extrabold leading-[0.98] tracking-[-0.055em] text-primary">
+              {heroBanner?.title ?? "Chăm đúng sản phẩm, vững vàng cho từng bé cưng"}
             </h1>
-            <p className="mt-4 max-w-[530px] text-[15px] leading-7 text-[#405c68] md:text-base">
-              {heroBanner?.subtitle ?? "Tìm đúng sản phẩm theo công ty phân phối, danh mục và đối tượng sử dụng. Vet68 hỗ trợ xác nhận giá và quy cách trước khi đặt hàng."}
+            <p className="mt-5 max-w-[550px] text-[15px] leading-7 text-[#294d59] md:text-lg md:leading-8">
+              {heroBanner?.subtitle ?? "Tra cứu sản phẩm thú y theo nhu cầu, vật nuôi và công ty phân phối. Vet68 hỗ trợ xác nhận thông tin trước khi đặt hàng."}
             </p>
-            <Button size="lg" className="action-button mt-6 h-13 rounded-full px-6 text-base font-extrabold shadow-[3px_4px_0_rgba(6,45,62,0.12)]" asChild>
-              <Link href="/san-pham">Xem danh mục sản phẩm <ArrowRight aria-hidden="true" /></Link>
-            </Button>
-          </div>
-
-          <div className="relative min-h-[350px] self-stretch md:min-h-[480px]">
-            <span className="hero-hand-loop hero-hand-loop-top hidden md:block" aria-hidden="true" />
-            <div className="hero-photo-frame absolute inset-x-[6%] bottom-3 top-3 md:left-[11%] md:right-[7%] md:bottom-7 md:top-6">
-              <div className="hero-photo-inner">
-                <Image
-                  src={heroBanner?.image ?? "/images/home/hero-vet-dog.png"}
-                  alt={heroBanner?.imageAlt ?? "Bác sĩ thú y kiểm tra sức khoẻ cho chó golden retriever"}
-                  fill
-                  priority
-                  sizes="(max-width: 768px) 94vw, 52vw"
-                  className="object-cover object-center"
-                />
-              </div>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Button size="lg" className="h-12 rounded-xl bg-petshop-teal px-5 text-base font-extrabold text-white shadow-[0_12px_30px_rgba(7,62,95,0.18)] hover:bg-[#075f69]" asChild>
+                <Link href="/san-pham">Xem sản phẩm <ArrowRight aria-hidden="true" /></Link>
+              </Button>
+              <Button variant="outline" size="lg" className="h-12 rounded-xl border-[#0a6570]/70 bg-white/80 px-5 text-base font-extrabold text-[#07545e] backdrop-blur-sm hover:bg-white hover:text-[#053d46]" asChild>
+                <Link href="/danh-muc">Tra cứu theo nhu cầu</Link>
+              </Button>
             </div>
-            <span className="hero-hand-loop hero-hand-loop-bottom hidden md:block" aria-hidden="true" />
-            <Heart className="hero-doodle-heart hidden md:block" strokeWidth={2.6} aria-hidden="true" />
           </div>
         </div>
       </section>
 
       <section className="trust-paper-strip relative z-10" aria-label="Cam kết của Vet68">
-        <div className="site-container grid grid-cols-2 gap-y-4 pb-7 pt-5 lg:grid-cols-4 lg:pb-8 lg:pt-6">
+        <div className="site-container">
+          <div className="grid grid-cols-2 gap-y-4 rounded-[22px] border border-white/80 bg-white px-3 py-5 shadow-[0_18px_45px_rgba(6,45,62,0.12)] lg:grid-cols-4 lg:px-5 lg:py-6">
           {[
             [BadgeCheck, "Sản phẩm chất lượng", "Thông tin rõ ràng, dễ kiểm tra", "bg-petshop-teal"],
             [ReceiptText, "Hóa đơn đầy đủ", "Minh bạch khi xác nhận đơn", "bg-medical-red"],
@@ -117,6 +112,7 @@ export default async function HomePage() {
               <div><p className="font-heading text-sm font-extrabold text-primary sm:text-base">{String(title)}</p><p className="mt-1 hidden text-xs leading-5 text-muted-foreground sm:block">{String(text)}</p></div>
             </div>
           ))}
+          </div>
         </div>
       </section>
 

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, BadgeCheck, CheckCircle2, ClipboardCheck, FileCheck2, Heart, HeartHandshake, HeartPulse, MessageCircle, RefreshCcw, Truck, UsersRound, WalletCards } from "lucide-react";
+import { ArrowRight, BadgeCheck, CheckCircle2, ClipboardCheck, FileCheck2, HeartHandshake, HeartPulse, MessageCircle, RefreshCcw, Truck, UsersRound, WalletCards } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getSitemapProducts } from "@/lib/catalogue/queries";
 
@@ -39,21 +39,18 @@ export default async function AboutPage() {
 
   return (
     <div className="about-page overflow-hidden bg-[#fffaf0]">
-      <section className="about-hero" aria-labelledby="about-hero-title">
-        <div className="site-container relative z-10 grid min-h-[500px] items-center gap-7 py-9 md:min-h-[570px] md:grid-cols-[0.94fr_1.06fr] md:py-12 lg:min-h-[600px] lg:gap-12">
-          <div className="relative z-10 pb-1 md:pb-10">
-            <span className="hero-ray-mark" aria-hidden="true" />
-            <p className="font-heading text-sm font-extrabold uppercase tracking-[0.15em] text-petshop-teal">Về Vet Medicine 68</p>
-            <h1 id="about-hero-title" className="mt-4 max-w-[620px] text-[2.25rem] font-extrabold leading-[1.02] tracking-[-0.055em] text-primary sm:text-5xl lg:text-[56px]">Đồng hành cùng quyết định chăm sóc vật nuôi</h1>
-            <p className="mt-5 max-w-[555px] text-[15px] leading-7 text-[#405c68] md:text-base">Vet Medicine 68 xây dựng catalogue dễ tra cứu, giúp bạn kiểm tra sản phẩm theo công ty phân phối, danh mục và đối tượng sử dụng trước khi liên hệ đặt hàng.</p>
-            <Button className="action-button mt-7 h-13 rounded-full px-6 text-base font-extrabold shadow-[3px_4px_0_rgba(6,45,62,0.12)]" size="lg" asChild><Link href="/san-pham">Xem danh mục sản phẩm <ArrowRight aria-hidden="true" /></Link></Button>
-          </div>
-          <div className="relative min-h-[330px] self-stretch md:min-h-[470px]">
-            <span className="about-hero-loop about-hero-loop-top hidden md:block" aria-hidden="true" />
-            <div className="about-hero-photo absolute inset-x-[5%] bottom-4 top-2 md:left-[10%] md:right-[8%] md:bottom-8 md:top-6">
-              <div className="about-hero-photo-inner"><Image src="/images/home/hero-vet-dog.png" alt="Bác sĩ thú y đang chăm sóc chó golden retriever" fill priority sizes="(max-width: 768px) 94vw, 52vw" className="object-cover object-center" /></div>
+      <section className="hero-full-bleed" aria-labelledby="about-hero-title">
+        <Image src="/images/home/about-vet68-full-bleed.png" alt="Bác sĩ thú y Vet68 chăm sóc chó và mèo tại quầy tư vấn" fill priority sizes="100vw" className="hero-full-bleed-image object-cover object-[72%_center]" />
+        <div className="hero-full-bleed-wash" aria-hidden="true" />
+        <div className="site-container relative z-10 flex min-h-[min(720px,calc(100dvh-4.5rem))] items-center py-16 md:min-h-[min(780px,calc(100dvh-4.5rem))] md:py-20 lg:py-24">
+          <div className="max-w-[650px]">
+            <p className="font-heading text-sm font-extrabold tracking-[0.08em] text-petshop-teal">Về Vet Medicine <span className="text-medical-red">68</span></p>
+            <h1 id="about-hero-title" className="mt-4 max-w-[620px] text-[clamp(2.45rem,4.6vw,4.35rem)] font-extrabold leading-[1] tracking-[-0.055em] text-primary">Đồng hành cùng quyết định chăm sóc vật nuôi</h1>
+            <p className="mt-5 max-w-[555px] text-[15px] leading-7 text-[#294d59] md:text-lg md:leading-8">Vet Medicine 68 xây dựng catalogue dễ tra cứu, giúp bạn kiểm tra sản phẩm rõ ràng trước khi liên hệ đặt hàng.</p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Button className="h-12 rounded-xl bg-petshop-teal px-5 text-base font-extrabold text-white shadow-[0_12px_30px_rgba(7,62,95,0.18)] hover:bg-[#075f69]" size="lg" asChild><Link href="/san-pham">Xem sản phẩm <ArrowRight aria-hidden="true" /></Link></Button>
+              <Button variant="outline" className="h-12 rounded-xl border-[#0a6570]/70 bg-white/80 px-5 text-base font-extrabold text-[#07545e] backdrop-blur-sm hover:bg-white hover:text-[#053d46]" size="lg" asChild><Link href="/lien-he"><MessageCircle aria-hidden="true" /> Liên hệ Vet68</Link></Button>
             </div>
-            <Heart className="about-hero-heart hidden md:block" strokeWidth={2.6} aria-hidden="true" />
           </div>
         </div>
       </section>
