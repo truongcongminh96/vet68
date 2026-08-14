@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import {
   createResourceAction,
@@ -61,6 +64,7 @@ export function SimpleResourcePage({
   rows: Row[];
 }) {
   const fields = resourceFields[resource];
+  const [editingRow, setEditingRow] = useState<Row | null>(null);
 
   return (
     <div>
@@ -93,35 +97,7 @@ export function SimpleResourcePage({
                   {fields.usageCount ? <TableCell>{row.usageCount ?? 0}</TableCell> : null}
                   <TableCell>{row.is_active === false ? "Đang ẩn" : "Công khai"}</TableCell>
                   <TableCell className="text-right">
-                    <details className="relative inline-block text-left">
-                      <summary className="list-none">
-                        <Button type="button" variant="outline" size="sm"><Pencil aria-hidden="true" /> Sửa</Button>
-                      </summary>
-                      <div className="absolute right-0 z-10 mt-2 w-[min(88vw,360px)] rounded-xl border bg-popover p-4 text-popover-foreground shadow-lg">
-                        <AdminActionForm action={updateResourceAction} className="grid gap-3">
-                          <input type="hidden" name="resource" value={resource} />
-                          <input type="hidden" name="id" value={row.id} />
-                          <ResourceFields row={row} fields={fields} prefix={`edit-${row.id}`} />
-                          <div className="flex gap-2"><AdminSubmitButton className="flex-1">Lưu thay đổi</AdminSubmitButton></div>
-                        </AdminActionForm>
-                        <AdminActionForm action={deleteResourceAction} className="mt-2">
-                          <input type="hidden" name="resource" value={resource} />
-                          <input type="hidden" name="id" value={row.id} />
-                          <ConfirmSubmitButton
-                            type="submit"
-                            variant="destructive"
-                            className="w-full"
-                            disabled={fields.usageCount && Boolean(row.usageCount)}
-                            confirmation={`Xóa vĩnh viễn "${row.name}"?`}
-                          >
-                            <Trash2 aria-hidden="true" /> Xóa
-                          </ConfirmSubmitButton>
-                          {fields.usageCount && row.usageCount ? (
-                            <p className="mt-2 text-xs text-muted-foreground">Hãy chuyển sản phẩm sang công ty khác trước khi xóa.</p>
-                          ) : null}
-                        </AdminActionForm>
-                      </div>
-                    </details>
+                    <Button type="button" variant="outline" size="sm" onClick={() => setEditingRow(row)}><Pencil aria-hidden="true" /> Sửa</Button>
                   </TableCell>
                 </TableRow>
               )) : (
@@ -136,15 +112,48 @@ export function SimpleResourcePage({
         </div>
         <Card className="h-fit">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2"><Plus className="size-5" aria-hidden="true" /> Thêm mới</CardTitle>
-            <CardDescription>Slug cần dùng chữ thường không dấu.</CardDescription>
+            <CardTitle className="flex items-center gap-2">
+              {editingRow ? <Pencil className="size-5" aria-hidden="true" /> : <Plus className="size-5" aria-hidden="true" />}
+              {editingRow ? "Chỉnh sửa" : "Thêm mới"}
+            </CardTitle>
+            <CardDescription>{editingRow ? `Cập nhật thông tin cho ${editingRow.name}.` : "Slug cần dùng chữ thường không dấu."}</CardDescription>
           </CardHeader>
           <CardContent>
-            <AdminActionForm action={createResourceAction} className="grid gap-4">
-              <input type="hidden" name="resource" value={resource} />
-              <ResourceFields fields={fields} prefix={`create-${resource}`} />
-              <AdminSubmitButton>Lưu</AdminSubmitButton>
-            </AdminActionForm>
+            {editingRow ? (
+              <div className="grid gap-3">
+                <AdminActionForm key={`edit-${editingRow.id}`} action={updateResourceAction} className="grid gap-4">
+                  <input type="hidden" name="resource" value={resource} />
+                  <input type="hidden" name="id" value={editingRow.id} />
+                  <ResourceFields row={editingRow} fields={fields} prefix={`edit-${editingRow.id}`} />
+                  <div className="flex gap-2">
+                    <Button type="button" variant="outline" className="flex-1" onClick={() => setEditingRow(null)}>Hủy</Button>
+                    <AdminSubmitButton className="flex-1">Lưu thay đổi</AdminSubmitButton>
+                  </div>
+                </AdminActionForm>
+                <AdminActionForm action={deleteResourceAction}>
+                  <input type="hidden" name="resource" value={resource} />
+                  <input type="hidden" name="id" value={editingRow.id} />
+                  <ConfirmSubmitButton
+                    type="submit"
+                    variant="destructive"
+                    className="w-full"
+                    disabled={fields.usageCount && Boolean(editingRow.usageCount)}
+                    confirmation={`Xóa vĩnh viễn "${editingRow.name}"?`}
+                  >
+                    <Trash2 aria-hidden="true" /> Xóa
+                  </ConfirmSubmitButton>
+                  {fields.usageCount && editingRow.usageCount ? (
+                    <p className="mt-2 text-xs text-muted-foreground">Hãy chuyển sản phẩm sang công ty khác trước khi xóa.</p>
+                  ) : null}
+                </AdminActionForm>
+              </div>
+            ) : (
+              <AdminActionForm action={createResourceAction} className="grid gap-4">
+                <input type="hidden" name="resource" value={resource} />
+                <ResourceFields fields={fields} prefix={`create-${resource}`} />
+                <AdminSubmitButton>Lưu</AdminSubmitButton>
+              </AdminActionForm>
+            )}
           </CardContent>
         </Card>
       </div>

@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { SimpleResourcePage } from "@/components/admin/simple-resource-page";
 
@@ -9,7 +10,8 @@ vi.mock("@/app/admin/(protected)/resource-actions", () => ({
 }));
 
 describe("SimpleResourcePage for companies", () => {
-  it("hiển thị trường website và khóa xóa công ty đang có sản phẩm", () => {
+  it("nạp công ty vào form chỉnh sửa và khóa xóa khi đang có sản phẩm", async () => {
+    const user = userEvent.setup();
     render(
       <SimpleResourcePage
         title="Công ty phân phối"
@@ -25,6 +27,8 @@ describe("SimpleResourcePage for companies", () => {
       />,
     );
 
+    await user.click(screen.getByRole("button", { name: "Sửa" }));
+    expect(screen.getByText("Chỉnh sửa")).toBeInTheDocument();
     expect(screen.getByLabelText("Website", { selector: "input[value='https://vet68.example']" })).toBeInTheDocument();
     expect(screen.queryByLabelText("Alt text")).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Xóa" })).toBeDisabled();
