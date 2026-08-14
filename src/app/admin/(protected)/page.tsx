@@ -1,4 +1,5 @@
-import { Boxes, Eye, EyeOff, ImageOff, Newspaper, RefreshCcw, Tags } from "lucide-react";
+import Link from "next/link";
+import { ArrowUpRight, Boxes, Eye, EyeOff, ImageOff, Newspaper, RefreshCcw, Tags } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAdminDashboard } from "@/lib/admin/queries";
 
@@ -14,22 +15,21 @@ export default async function AdminDashboardPage() {
   ] as const;
 
   return (
-    <div>
-      <h1 className="text-3xl font-extrabold">Tổng quan</h1>
-      <p className="mt-2 text-muted-foreground">Số liệu catalogue và nội dung theo quyền RLS của tài khoản hiện tại.</p>
-      <div className="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+    <div className="admin-dashboard">
+      <header className="admin-page-header"><div><p className="admin-page-kicker">Tổng quan hệ thống</p><h1>Catalogue<br />control room</h1></div><p>Số liệu catalogue và nội dung theo quyền RLS của tài khoản hiện tại.</p></header>
+      <div className="admin-metrics-grid">
         {metrics.map(([Icon, label, value]) => (
-          <Card key={label}>
+          <Card key={label} className="admin-metric-card">
             <CardHeader className="flex-row items-center justify-between space-y-0">
-              <CardTitle className="text-sm">{label}</CardTitle>
-              <Icon className="size-5 text-primary" aria-hidden="true" />
+              <CardTitle>{label}</CardTitle>
+              <Icon aria-hidden="true" strokeWidth={1.5} />
             </CardHeader>
-            <CardContent><p className="font-heading text-3xl font-extrabold">{value}</p></CardContent>
+            <CardContent><p>{value}</p></CardContent>
           </Card>
         ))}
       </div>
-      <Card className="mt-6">
-        <CardHeader><CardTitle className="flex items-center gap-2"><RefreshCcw className="size-5" aria-hidden="true" /> Sản phẩm cập nhật gần đây</CardTitle></CardHeader>
+      <Card className="admin-activity-panel">
+        <CardHeader><CardTitle><RefreshCcw aria-hidden="true" /> Sản phẩm cập nhật gần đây</CardTitle><Link href="/admin/san-pham">Mở danh sách <ArrowUpRight aria-hidden="true" /></Link></CardHeader>
         <CardContent className="grid gap-3">
           {dashboard.recent.length ? dashboard.recent.map((product) => (
             <div key={product.id} className="flex items-center justify-between gap-4 border-b pb-3 text-sm last:border-0 last:pb-0">

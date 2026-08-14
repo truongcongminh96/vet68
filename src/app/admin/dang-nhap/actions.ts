@@ -1,8 +1,10 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 import { z } from "zod";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { AUTH_BUILD_COOKIE, AUTH_BUILD_COOKIE_OPTIONS, AUTH_BUILD_VERSION } from "@/lib/auth-build";
 
 const schema = z.object({ email: z.string().email(), password: z.string().min(8) });
 
@@ -18,11 +20,13 @@ export async function loginAction(_: { error?: string }, formData: FormData): Pr
     await supabase.auth.signOut();
     return { error: "Tài khoản chưa được kích hoạt cho khu vực quản trị." };
   }
+  (await cookies()).set(AUTH_BUILD_COOKIE, AUTH_BUILD_VERSION, AUTH_BUILD_COOKIE_OPTIONS);
   redirect("/admin");
 }
 
 export async function logoutAction() {
   const supabase = await createSupabaseServerClient();
   if (supabase) await supabase.auth.signOut();
+  (await cookies()).delete(AUTH_BUILD_COOKIE);
   redirect("/admin/dang-nhap");
 }
