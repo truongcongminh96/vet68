@@ -3,6 +3,7 @@
 import { revalidatePath, updateTag } from "next/cache";
 import { z } from "zod";
 import { productFormSchema, type ProductFormValues } from "@/lib/validation/product";
+import { databaseErrorMessage } from "@/lib/admin/action-state";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { requireStaff } from "@/lib/auth";
 import { getProductCacheTags } from "@/lib/cache-tags";
@@ -35,7 +36,7 @@ export async function saveProductAction(values: ProductFormValues): Promise<Prod
   const previous = value.id ? await supabase.from("products").select("slug").eq("id", value.id).maybeSingle() : null;
   const query = value.id ? supabase.from("products").update(payload).eq("id", value.id).select("id").single() : supabase.from("products").insert(payload).select("id").single();
   const { data, error } = await query;
-  if (error) return { ok: false, message: error.message };
+  if (error) return { ok: false, message: databaseErrorMessage(error, "Slug hoặc SKU sản phẩm đã tồn tại.") };
 
   const [{ error: animalDeleteError }, { error: categoryDeleteError }] = await Promise.all([
     supabase.from("product_animal_types").delete().eq("product_id", data.id),
@@ -71,7 +72,7 @@ export async function deleteProductAction(id: string): Promise<ProductActionResu
     supabase.from("product_images").select("storage_path").eq("product_id", id),
   ]);
   const { error } = await supabase.from("products").delete().eq("id", id);
-  if (error) return { ok: false, message: error.message };
+  if (error) return { ok: false, message: databaseErrorMessage(error) };
   if (images?.length) await supabase.storage.from("product-images").remove(images.map((image) => image.storage_path));
   if (product?.slug) getProductCacheTags(product.slug).forEach((tag) => updateTag(tag));
   updateTag("catalogue");

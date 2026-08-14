@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Boxes, Building2, ImageIcon, LayoutDashboard, Settings, Tags, UsersRound, type LucideIcon } from "lucide-react";
+import { BookOpen, Boxes, Building2, Factory, History, ImageIcon, LayoutDashboard, Settings, Tags, UserCog, UsersRound, type LucideIcon } from "lucide-react";
 
 type AdminNavItem = readonly [LucideIcon, string, string];
 
@@ -12,8 +12,11 @@ const items = [
   [Tags, "Danh mục", "/admin/danh-muc"],
   [UsersRound, "Vật nuôi", "/admin/vat-nuoi"],
   [Building2, "Thương hiệu", "/admin/thuong-hieu"],
+  [Factory, "Công ty phân phối", "/admin/cong-ty"],
   [BookOpen, "Bài viết", "/admin/bai-viet"],
   [ImageIcon, "Banner", "/admin/banner"],
+  [History, "Lịch sử thay đổi", "/admin/lich-su"],
+  [UserCog, "Nhân viên", "/admin/nhan-vien"],
   [Settings, "Cài đặt", "/admin/cai-dat"],
 ] as const satisfies readonly AdminNavItem[];
 

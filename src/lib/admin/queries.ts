@@ -17,6 +17,25 @@ export async function getAdminTaxonomy() {
   return { categories: categories ?? [], animalTypes: animalTypes ?? [], brands: brands ?? [], companies: companies ?? [] };
 }
 
+export async function getAdminCompanies() {
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) return [];
+
+  const [{ data: companies }, { data: productCompanies }] = await Promise.all([
+    supabase.from("companies").select("*").order("sort_order"),
+    supabase.from("products").select("company_id"),
+  ]);
+  const usageCounts = new Map<string, number>();
+  for (const row of productCompanies ?? []) {
+    usageCounts.set(row.company_id, (usageCounts.get(row.company_id) ?? 0) + 1);
+  }
+
+  return (companies ?? []).map((company) => ({
+    ...company,
+    usageCount: usageCounts.get(company.id) ?? 0,
+  }));
+}
+
 export async function getAdminProducts({
   query = "",
   status = "",
@@ -109,6 +128,32 @@ export async function getAdminBanners() {
   if (!supabase) return [];
   const { data } = await supabase.from("banners").select("*").order("sort_order");
   return data ?? [];
+}
+
+export async function getAdminAuditLogs(limit = 100) {
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) return [];
+  const { data: logs } = await supabase.from("audit_logs").select("*").order("created_at", { ascending: false }).limit(limit);
+  const actorIds = [...new Set((logs ?? []).flatMap((log) => log.actor_id ? [log.actor_id] : []))];
+  const { data: profiles } = actorIds.length
+    ? await supabase.from("profiles").select("id, full_name").in("id", actorIds)
+    : { data: [] };
+  const profileMap = new Map((profiles ?? []).map((profile) => [profile.id, profile.full_name]));
+
+  return (logs ?? []).map((log) => ({
+    ...log,
+    actorName: log.actor_id ? profileMap.get(log.actor_id) ?? "Nhân viên" : "Hệ thống",
+    entityLabel: auditEntityLabel(log.after_data ?? log.before_data, log.entity_id),
+  }));
+}
+
+function auditEntityLabel(data: Database["public"]["Tables"]["audit_logs"]["Row"]["after_data"], fallback: string) {
+  if (!data || Array.isArray(data) || typeof data !== "object") return fallback;
+  for (const key of ["name", "title", "alt_text", "slug", "sku"]) {
+    const value = data[key];
+    if (typeof value === "string" && value) return value;
+  }
+  return fallback;
 }
 
 function escapePostgrestSearch(value: string) {

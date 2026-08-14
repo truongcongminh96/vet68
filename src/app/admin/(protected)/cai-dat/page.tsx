@@ -1,10 +1,38 @@
-import { Button } from "@/components/ui/button";
+import { saveContactSettingsAction } from "@/app/admin/(protected)/resource-actions";
+import { AdminActionForm, AdminSubmitButton } from "@/components/admin/admin-action-form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { saveContactSettingsAction } from "@/app/admin/(protected)/resource-actions";
 import { requireStaff } from "@/lib/auth";
 import { getContactSettings } from "@/lib/contact-settings";
 
-export default async function AdminSettingsPage() { const session = await requireStaff(); const contact = await getContactSettings(); const isAdmin = session.profile.role === "admin"; return <div><h1 className="text-3xl font-extrabold">Cài đặt website</h1><p className="mt-2 text-muted-foreground">Chỉ admin được phép thay đổi thông tin liên hệ công khai.</p><Card className="mt-6 max-w-2xl"><CardHeader><CardTitle>Thông tin liên hệ</CardTitle><CardDescription>Dữ liệu này được dùng cho header, footer, Zalo CTA và điện thoại.</CardDescription></CardHeader><CardContent><form action={saveContactSettingsAction} className="grid gap-4"><Field id="setting-phone" label="Số điện thoại"><Input id="setting-phone" name="phone" defaultValue={contact.phone} disabled={!isAdmin} required /></Field><Field id="setting-phone-display" label="Số hiển thị"><Input id="setting-phone-display" name="phone_display" defaultValue={contact.phoneDisplay} disabled={!isAdmin} required /></Field><Field id="setting-zalo" label="Zalo URL"><Input id="setting-zalo" name="zalo_url" defaultValue={contact.zaloUrl} disabled={!isAdmin} required /></Field><Field id="setting-email" label="Email"><Input id="setting-email" name="email" defaultValue={contact.email} disabled={!isAdmin} required /></Field><Field id="setting-address" label="Địa chỉ"><Input id="setting-address" name="address" defaultValue={contact.address} disabled={!isAdmin} required /></Field><Button type="submit" disabled={!isAdmin}>Lưu cài đặt</Button>{!isAdmin ? <p className="text-sm font-semibold text-destructive">Tài khoản staff chỉ có quyền xem.</p> : null}</form></CardContent></Card></div>; }
-function Field({ id, label, children }: { id: string; label: string; children: React.ReactNode }) { return <div className="grid gap-2"><Label htmlFor={id}>{label}</Label>{children}</div>; }
+export default async function AdminSettingsPage() {
+  const session = await requireStaff();
+  const contact = await getContactSettings();
+  const isAdmin = session.profile.role === "admin";
+
+  return (
+    <div>
+      <h1 className="text-3xl font-extrabold">Cài đặt website</h1>
+      <p className="mt-2 text-muted-foreground">Chỉ admin được phép thay đổi thông tin liên hệ công khai.</p>
+      <Card className="mt-6 max-w-2xl">
+        <CardHeader><CardTitle>Thông tin liên hệ</CardTitle><CardDescription>Dữ liệu này được dùng cho header, footer, Zalo CTA và điện thoại.</CardDescription></CardHeader>
+        <CardContent>
+          <AdminActionForm action={saveContactSettingsAction} className="grid gap-4">
+            <Field id="setting-phone" label="Số điện thoại"><Input id="setting-phone" name="phone" defaultValue={contact.phone} disabled={!isAdmin} required /></Field>
+            <Field id="setting-phone-display" label="Số hiển thị"><Input id="setting-phone-display" name="phone_display" defaultValue={contact.phoneDisplay} disabled={!isAdmin} required /></Field>
+            <Field id="setting-zalo" label="Zalo URL"><Input id="setting-zalo" name="zalo_url" defaultValue={contact.zaloUrl} disabled={!isAdmin} required /></Field>
+            <Field id="setting-email" label="Email"><Input id="setting-email" name="email" defaultValue={contact.email} disabled={!isAdmin} required /></Field>
+            <Field id="setting-address" label="Địa chỉ"><Input id="setting-address" name="address" defaultValue={contact.address} disabled={!isAdmin} required /></Field>
+            <AdminSubmitButton disabled={!isAdmin}>Lưu cài đặt</AdminSubmitButton>
+            {!isAdmin ? <p className="text-sm font-semibold text-destructive">Tài khoản staff chỉ có quyền xem.</p> : null}
+          </AdminActionForm>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+function Field({ id, label, children }: { id: string; label: string; children: React.ReactNode }) {
+  return <div className="grid gap-2"><Label htmlFor={id}>{label}</Label>{children}</div>;
+}
