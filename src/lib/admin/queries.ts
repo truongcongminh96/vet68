@@ -1,20 +1,33 @@
 import "server-only";
 
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { emptyAdminTaxonomy, parseAdminTaxonomy, type AdminTaxonomy } from "@/lib/admin/taxonomy";
 import type { Database } from "@/types/database";
 
 type ProductRow = Database["public"]["Tables"]["products"]["Row"];
 
 export async function getAdminTaxonomy() {
+  const cached = getCachedAdminTaxonomy();
+  if (cached) return cached;
   const supabase = await createSupabaseServerClient();
-  if (!supabase) return { categories: [], animalTypes: [], brands: [], companies: [] };
-  const [{ data: categories }, { data: animalTypes }, { data: brands }, { data: companies }] = await Promise.all([
-    supabase.from("categories").select("*").order("sort_order"),
-    supabase.from("animal_types").select("*").order("sort_order"),
-    supabase.from("brands").select("*").order("sort_order"),
-    supabase.from("companies").select("*").order("sort_order"),
-  ]);
-  return { categories: categories ?? [], animalTypes: animalTypes ?? [], brands: brands ?? [], companies: companies ?? [] };
+  if (!supabase) return emptyAdminTaxonomy;
+  const { data, error } = await supabase.rpc("get_admin_taxonomy");
+  if (error) return emptyAdminTaxonomy;
+  const taxonomy = parseAdminTaxonomy(data);
+  cachedAdminTaxonomy = { taxonomy, expiresAt: Date.now() + ADMIN_TAXONOMY_TTL_MS };
+  return taxonomy;
+}
+
+const ADMIN_TAXONOMY_TTL_MS = 30_000;
+let cachedAdminTaxonomy: { taxonomy: AdminTaxonomy; expiresAt: number } | null = null;
+
+export function invalidateAdminTaxonomyCache() {
+  cachedAdminTaxonomy = null;
+}
+
+function getCachedAdminTaxonomy() {
+  if (!cachedAdminTaxonomy || cachedAdminTaxonomy.expiresAt <= Date.now()) return null;
+  return cachedAdminTaxonomy.taxonomy;
 }
 
 export async function getAdminCompanies() {

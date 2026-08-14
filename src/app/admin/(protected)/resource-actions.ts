@@ -12,6 +12,7 @@ import {
 } from "@/lib/admin/action-state";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { canDeleteCatalogue, canManageSiteSettings } from "@/lib/permissions";
+import { invalidateAdminTaxonomyCache } from "@/lib/admin/queries";
 
 const resourceSchema = z.object({
   resource: z.enum(["categories", "animal_types", "brands", "companies"]),
@@ -49,6 +50,7 @@ export async function createResourceAction(_state: AdminActionState, formData: F
     if (error) return adminActionError(databaseErrorMessage(error, "Slug công ty đã tồn tại."));
   }
   updateTag("catalogue");
+  invalidateAdminTaxonomyCache();
   revalidatePath(`/admin/${resourceAdminPath(value.resource)}`);
   revalidatePath("/", "layout");
   return adminActionSuccess("Đã thêm dữ liệu mới.");
@@ -79,6 +81,7 @@ export async function updateResourceAction(_state: AdminActionState, formData: F
     if (error) return adminActionError(databaseErrorMessage(error, "Slug công ty đã tồn tại."));
   }
   updateTag("catalogue");
+  invalidateAdminTaxonomyCache();
   revalidatePath(`/admin/${resourceAdminPath(value.resource)}`);
   revalidatePath("/", "layout");
   return adminActionSuccess("Đã lưu thay đổi.");
@@ -99,6 +102,7 @@ export async function deleteResourceAction(_state: AdminActionState, formData: F
   const { error } = await supabase.from(parsed.data.resource).delete().eq("id", parsed.data.id);
   if (error) return adminActionError(databaseErrorMessage(error));
   updateTag("catalogue");
+  invalidateAdminTaxonomyCache();
   revalidatePath(`/admin/${resourceAdminPath(parsed.data.resource)}`);
   revalidatePath("/", "layout");
   return adminActionSuccess("Đã xóa dữ liệu.");

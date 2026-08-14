@@ -27,7 +27,7 @@ export async function proxy(request: NextRequest) {
     return response;
   }
 
-  await supabase.auth.getUser();
+  if (hasAuthCookie) await supabase.auth.getUser();
   return response;
 }
 

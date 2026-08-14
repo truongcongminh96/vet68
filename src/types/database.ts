@@ -29,7 +29,7 @@ export type Database = {
       audit_logs: { Row: { id: number; actor_id: string | null; entity_type: AuditLogInsert["entity_type"]; entity_id: string; action: AuditLogInsert["action"]; changed_fields: string[]; before_data: Json | null; after_data: Json | null; created_at: string }; Insert: AuditLogInsert; Update: never; Relationships: [] };
     };
     Views: Record<string, never>;
-    Functions: { current_staff_role: { Args: Record<string, never>; Returns: "staff" | "admin" | null }; is_staff: { Args: Record<string, never>; Returns: boolean }; is_admin: { Args: Record<string, never>; Returns: boolean }; search_catalogue_product_ids: { Args: { search_query: string }; Returns: Array<{ product_id: string; search_rank: number }> } };
+    Functions: { current_staff_role: { Args: Record<string, never>; Returns: "staff" | "admin" | null }; is_staff: { Args: Record<string, never>; Returns: boolean }; is_admin: { Args: Record<string, never>; Returns: boolean }; get_admin_taxonomy: { Args: Record<string, never>; Returns: Json }; search_catalogue_product_ids: { Args: { search_query: string }; Returns: Array<{ product_id: string; search_rank: number }> } };
     Enums: { staff_role: "staff" | "admin"; category_kind: "product_type" | "treatment_need"; price_display_mode: "fixed" | "approximate" | "contact"; post_status: "draft" | "published"; banner_placement: "home_hero" | "home_promotion" | "promotions_page" };
     CompositeTypes: Record<string, never>;
   };

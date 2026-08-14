@@ -1,5 +1,5 @@
 begin;
-select plan(33);
+select plan(34);
 
 select ok((select relrowsecurity from pg_class where oid = 'public.profiles'::regclass), 'profiles RLS is active');
 select ok((select relrowsecurity from pg_class where oid = 'public.categories'::regclass), 'categories RLS is active');
@@ -31,6 +31,7 @@ select ok(exists (select 1 from pg_constraint where conrelid = 'public.products'
 select ok(exists (select 1 from pg_constraint where conrelid = 'public.products'::regclass and contype = 'u' and pg_get_constraintdef(oid) = 'UNIQUE (slug)'), 'product slug is unique');
 select ok(to_regprocedure('public.is_staff()') is not null, 'is_staff helper exists');
 select ok(to_regprocedure('public.is_admin()') is not null, 'is_admin helper exists');
+select ok(to_regprocedure('public.get_admin_taxonomy()') is not null, 'admin taxonomy RPC exists');
 select ok(has_table_privilege('anon', 'public.products', 'SELECT'), 'anon has catalogue SELECT grant');
 select ok(has_table_privilege('authenticated', 'public.products', 'INSERT,UPDATE,DELETE'), 'authenticated has catalogue mutation grants');
 select ok(has_table_privilege('authenticated', 'public.audit_logs', 'SELECT'), 'authenticated staff can read audit logs');
