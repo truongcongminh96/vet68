@@ -1,47 +1,51 @@
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, MessageCircle, Sparkles } from "lucide-react";
-import { ProductPrice } from "@/components/catalogue/product-price";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, Flame, Percent, Sparkles } from "lucide-react";
+import { ProductCard } from "@/components/catalogue/product-card";
 import type { Product } from "@/types/catalogue";
 
 export function CatalogueDealStrip({ products }: { products: Product[] }) {
-  if (!products.length) return null;
+  if (!products || products.length === 0) return null;
 
   return (
-    <section className="mt-6 overflow-hidden rounded-[22px_12px_22px_12px] border border-[#f2d7cf] bg-[#fff2df] p-2.5 shadow-[3px_4px_0_rgba(237,92,1,0.1)] sm:p-4" aria-labelledby="catalogue-deals-title">
-      <div className="grid grid-cols-[145px_minmax(0,1fr)] gap-2.5 sm:grid-cols-[190px_minmax(0,1fr)] sm:gap-3 lg:grid-cols-[230px_minmax(0,1fr)]">
-        <div className="flex min-h-72 flex-col justify-between rounded-[18px_9px_18px_9px] bg-primary p-4 text-white sm:min-h-80 sm:p-5 lg:p-6">
-          <div>
-            <span className="flex size-10 items-center justify-center rounded-full bg-white/12 text-action"><Sparkles className="size-5" aria-hidden="true" /></span>
-            <p className="mt-4 text-[10px] font-extrabold uppercase tracking-[0.12em] text-action sm:mt-5 sm:text-xs sm:tracking-[0.14em]">Sản phẩm nổi bật</p>
-            <h2 id="catalogue-deals-title" className="mt-2 text-2xl font-bold leading-none tracking-[-0.04em] sm:text-3xl">Deal tốt<br />hôm nay</h2>
-            <p className="mt-3 text-xs leading-5 text-white/72 sm:text-sm sm:leading-6">Liên hệ Vet68 để xác nhận giá, quy cách và tình trạng sản phẩm.</p>
-          </div>
-          <Button className="mt-5 h-auto w-full whitespace-normal bg-white px-3 py-2.5 text-primary hover:bg-white/90" asChild><Link href="/lien-he"><MessageCircle aria-hidden="true" /> Liên hệ đặt mua</Link></Button>
-        </div>
+    <section aria-label="Deal tốt hôm nay" className="my-6">
+      <div className="rounded-3xl border border-[#f7ebde] bg-[#faf9f2] p-5 shadow-[0_10px_30px_rgba(31,74,58,0.05)] lg:p-7">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-center">
+          {/* Left Promo Card */}
+          <div className="flex flex-col justify-between rounded-2xl bg-gradient-to-br from-main-green to-[#163b2e] p-6 text-white shadow-md lg:col-span-3 lg:min-h-[340px]">
+            <div>
+              <div className="flex size-14 items-center justify-center rounded-2xl bg-white/15 text-price-orange backdrop-blur-xs">
+                <Percent className="size-7 text-white" />
+              </div>
+              <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-price-orange px-3 py-0.5 text-[11px] font-bold uppercase tracking-wider text-white">
+                <Flame className="size-3.5" /> Ưu Đãi Giới Hạn
+              </span>
+              <h2 className="mt-3 font-playfair text-2xl font-bold uppercase tracking-tight text-white sm:text-3xl">
+                Deal Tốt<br className="hidden sm:inline" /> Hôm Nay
+              </h2>
+              <p className="mt-2 text-xs leading-relaxed text-white/80">
+                Săn ngay các sản phẩm dược phẩm & dinh dưỡng thú y với mức giá ưu đãi tốt nhất.
+              </p>
+            </div>
 
-        <div className="grid snap-x snap-mandatory auto-cols-[170px] grid-flow-col gap-2.5 overflow-x-auto overscroll-x-contain pb-2 sm:auto-cols-[210px] sm:gap-3 lg:auto-cols-[minmax(190px,1fr)] [scrollbar-color:#75c7e3_transparent] [scrollbar-width:thin]" aria-label="Danh sách deal tốt hôm nay">
-          {products.map((product, index) => <DealProductCard key={product.id} product={product} eager={index < 3} />)}
+            <div className="mt-6">
+              <Link
+                href="/khuyen-mai"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-main-green shadow-xs transition-all hover:bg-price-orange hover:text-white"
+              >
+                <span>Xem tất cả Deal</span>
+                <ArrowRight className="size-4" />
+              </Link>
+            </div>
+          </div>
+
+          {/* Right Products Scroll / Grid */}
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:col-span-9 lg:grid-cols-3 lg:gap-4 xl:grid-cols-3">
+            {products.slice(0, 3).map((product) => (
+              <ProductCard key={product.id} product={product} eager />
+            ))}
+          </div>
         </div>
       </div>
     </section>
-  );
-}
-
-function DealProductCard({ product, eager }: { product: Product; eager: boolean }) {
-  return (
-    <article className="group relative flex min-w-0 snap-start flex-col overflow-hidden rounded-[16px_9px_16px_9px] border border-[#eadfc8] bg-white">
-      <span className="absolute left-3 top-3 z-10 rounded-md bg-[#c93434] px-2.5 py-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-white retail-card-shadow">Sale Shock</span>
-      <Link href={`/san-pham/${product.slug}`} className="relative aspect-[3/4] overflow-hidden bg-[#f4f8fa]">
-        <Image src={product.images[0].src} alt={product.images[0].alt} fill loading={eager ? "eager" : "lazy"} sizes="220px" className="object-contain p-5 transition-transform duration-200 group-hover:scale-[1.035] motion-reduce:transition-none" />
-      </Link>
-      <div className="flex flex-1 flex-col p-4">
-        <p className="text-[11px] font-bold uppercase tracking-[0.08em] text-[#257493]">{product.company.name}</p>
-        <h3 className="mt-2 line-clamp-2 text-base font-bold leading-6"><Link href={`/san-pham/${product.slug}`} className="hover:text-primary">{product.name}</Link></h3>
-        <div className="mt-auto pt-4"><ProductPrice product={product} compact /></div>
-        <Link href={`/san-pham/${product.slug}`} className="mt-4 flex items-center gap-1 text-sm font-bold text-primary hover:text-[#257493]">Xem sản phẩm <ArrowRight className="size-4" aria-hidden="true" /></Link>
-      </div>
-    </article>
   );
 }

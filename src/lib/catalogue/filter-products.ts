@@ -22,6 +22,22 @@ export function filterProducts(source: Product[], filters: CatalogueFilters) {
       const bExact = normalize(b.sku) === normalize(filters.query) ? 1 : 0;
       if (aExact !== bExact) return bExact - aExact;
     }
+    if (filters.sort === "newest") {
+      const aNew = a.isNew ? 1 : 0;
+      const bNew = b.isNew ? 1 : 0;
+      if (aNew !== bNew) return bNew - aNew;
+      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+    }
+    if (filters.sort === "price_asc") {
+      const priceA = a.referencePrice ?? Number.MAX_SAFE_INTEGER;
+      const priceB = b.referencePrice ?? Number.MAX_SAFE_INTEGER;
+      return priceA - priceB;
+    }
+    if (filters.sort === "price_desc") {
+      const priceA = a.referencePrice ?? -1;
+      const priceB = b.referencePrice ?? -1;
+      return priceB - priceA;
+    }
     const comparison = a.name.localeCompare(b.name, "vi");
     return filters.sort === "name_desc" ? -comparison : comparison;
   });

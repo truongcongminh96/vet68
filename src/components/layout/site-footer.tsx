@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Clock3, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { CheckCircle2, Clock3, CreditCard, Mail, MapPin, MessageCircle, Phone, ShieldCheck, Truck, Undo2 } from "lucide-react";
 import { SiteLogo } from "@/components/layout/site-logo";
 import { getTelephoneUrl } from "@/lib/contact";
 import { getContactSettings } from "@/lib/contact-settings";
@@ -8,37 +8,211 @@ import { hasSupabaseEnv } from "@/lib/supabase/config";
 export async function SiteFooter() {
   const contact = await getContactSettings();
   const demoMode = !hasSupabaseEnv();
+
   return (
-    <footer className="mt-auto bg-deep-navy text-white">
-      <div className="h-5 rounded-b-[50%] bg-[#fffaf0]" />
-      <div className="site-container grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-[1.25fr_0.82fr_0.82fr_1.1fr] lg:py-14">
-        <div>
-          <SiteLogo inverted />
-          <p className="mt-5 max-w-md text-sm leading-7 text-white/70">Catalogue thuốc thú y, vaccine, dinh dưỡng, sát trùng và dụng cụ. Vet68 hỗ trợ xác nhận đúng sản phẩm, giá tham khảo và quy cách hiện tại.</p>
-          {demoMode ? <p className="mt-3 text-xs font-semibold text-petshop-yellow">Dữ liệu hiện tại là nội dung minh hoạ.</p> : null}
-        </div>
-        <FooterColumn title="Về chúng tôi">
-          <Link href="/gioi-thieu">Giới thiệu</Link><Link href="/san-pham">Sản phẩm</Link><Link href="/thuong-hieu/vet68-demo">Thương hiệu</Link><Link href="/kien-thuc-thu-y">Kiến thức thú y</Link>
-        </FooterColumn>
-        <FooterColumn title="Hỗ trợ khách hàng">
-          <Link href="/khuyen-mai">Khuyến mãi</Link><Link href="/lien-he">Liên hệ</Link><Link href="/robots.txt">Thông tin website</Link><Link href="/san-pham">Tra cứu catalogue</Link>
-        </FooterColumn>
-        <div>
-          <h2 className="font-extrabold text-white">Thông tin liên hệ</h2>
-          <div className="mt-4 grid gap-3 text-sm text-white/70">
-            <a className="flex items-start gap-2 hover:text-petshop-yellow" href={contact.zaloUrl} target="_blank" rel="noreferrer"><MessageCircle className="mt-0.5 size-4 shrink-0" aria-hidden="true" /> Tư vấn qua Zalo</a>
-            <a className="flex items-start gap-2 hover:text-petshop-yellow" href={getTelephoneUrl(contact.phone)}><Phone className="mt-0.5 size-4 shrink-0" aria-hidden="true" /> {contact.phoneDisplay}</a>
-            <a className="flex items-start gap-2 hover:text-petshop-yellow" href={`mailto:${contact.email}`}><Mail className="mt-0.5 size-4 shrink-0" aria-hidden="true" /> {contact.email}</a>
-            <p className="flex items-start gap-2"><MapPin className="mt-0.5 size-4 shrink-0" aria-hidden="true" /> {contact.address}</p>
-            <p className="flex items-start gap-2"><Clock3 className="mt-0.5 size-4 shrink-0" aria-hidden="true" /> Thứ 2 - Thứ 7, 8:00 - 18:00</p>
+    <footer className="mt-auto border-t border-[#eaf0ec] bg-[#f7ebde]/40 pt-10 text-[#33302f]">
+      <div className="site-container">
+        {/* Policy Trust Header Bar */}
+        <div className="mb-12 rounded-2xl border border-white/80 bg-white p-6 shadow-[0_10px_30px_rgba(31,74,58,0.06)]">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="flex items-center gap-3.5">
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#faf3ea] text-main-green">
+                <Truck className="size-6 text-price-orange" />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-main-green">Giao hàng nhanh</p>
+                <span className="text-xs text-muted-foreground">Đóng gói bảo quản chuyên dụng</span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3.5">
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#faf3ea] text-main-green">
+                <ShieldCheck className="size-6 text-main-green" />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-main-green">Chuẩn GMP - Chính hãng</p>
+                <span className="text-xs text-muted-foreground">Xuất hoá đơn VAT đầy đủ</span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3.5">
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#faf3ea] text-main-green">
+                <CreditCard className="size-6 text-price-orange" />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-main-green">Thanh toán an toàn</p>
+                <span className="text-xs text-muted-foreground">Xác nhận đơn minh bạch</span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3.5">
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#faf3ea] text-main-green">
+                <MessageCircle className="size-6 text-main-green" />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-main-green">Tư vấn chuyên môn 24/7</p>
+                <span className="text-xs text-muted-foreground">Đội ngũ bác sĩ thú y đồng hành</span>
+              </div>
+            </div>
           </div>
         </div>
+
+        {/* 4 Main Footer Columns */}
+        <div className="grid grid-cols-1 gap-10 pb-12 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Col 1: About Vet68 & Socials */}
+          <div>
+            <SiteLogo />
+            <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
+              Vet Medicine 68 - Hệ sinh thái tra cứu, cung cấp dược phẩm, vaccine, dinh dưỡng và thiết bị thú y chất lượng cao cho phòng khám, trang trại và người nuôi thú cưng trên toàn quốc.
+            </p>
+            {demoMode ? (
+              <p className="mt-2 text-[11px] font-semibold text-price-orange">
+                * Dữ liệu website đang ở chế độ xem mẫu.
+              </p>
+            ) : null}
+            <div className="mt-5 flex items-center gap-2">
+              <a
+                href={contact.zaloUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="flex size-9 items-center justify-center rounded-full bg-white text-main-green shadow-sm transition-all hover:bg-main-green hover:text-white"
+                title="Zalo OA"
+              >
+                <MessageCircle className="size-4" />
+              </a>
+              <a
+                href={getTelephoneUrl(contact.phone)}
+                className="flex size-9 items-center justify-center rounded-full bg-white text-main-green shadow-sm transition-all hover:bg-main-green hover:text-white"
+                title="Gọi Hotline"
+              >
+                <Phone className="size-4" />
+              </a>
+              <a
+                href={`mailto:${contact.email}`}
+                className="flex size-9 items-center justify-center rounded-full bg-white text-main-green shadow-sm transition-all hover:bg-main-green hover:text-white"
+                title="Gửi Email"
+              >
+                <Mail className="size-4" />
+              </a>
+            </div>
+          </div>
+
+          {/* Col 2: Contact Details */}
+          <div>
+            <h3 className="text-sm font-bold uppercase tracking-wider text-main-green">
+              Liên hệ với Vet68
+            </h3>
+            <div className="mt-4 grid gap-3 text-xs text-muted-foreground">
+              <p className="flex items-start gap-2">
+                <Phone className="mt-0.5 size-4 shrink-0 text-price-orange" />
+                <span>
+                  Hotline:{" "}
+                  <a href={getTelephoneUrl(contact.phone)} className="font-bold text-foreground hover:text-main-green">
+                    {contact.phoneDisplay}
+                  </a>
+                </span>
+              </p>
+              <p className="flex items-start gap-2">
+                <Mail className="mt-0.5 size-4 shrink-0 text-price-orange" />
+                <span>
+                  Email:{" "}
+                  <a href={`mailto:${contact.email}`} className="text-foreground hover:text-main-green">
+                    {contact.email}
+                  </a>
+                </span>
+              </p>
+              <p className="flex items-start gap-2">
+                <MapPin className="mt-0.5 size-4 shrink-0 text-price-orange" />
+                <span>{contact.address}</span>
+              </p>
+              <p className="flex items-start gap-2">
+                <Clock3 className="mt-0.5 size-4 shrink-0 text-price-orange" />
+                <span>Thứ 2 - Thứ 7: 8:00 - 18:00 (Hỗ trợ cấp cứu 24/7)</span>
+              </p>
+            </div>
+          </div>
+
+          {/* Col 3: Payment & Quick links */}
+          <div>
+            <h3 className="text-sm font-bold uppercase tracking-wider text-main-green">
+              Phương thức thanh toán
+            </h3>
+            <p className="mt-2 text-xs text-muted-foreground">Hỗ trợ đa dạng hình thức thanh toán & xuất hoá đơn VAT điện tử:</p>
+            <div className="mt-3 grid grid-cols-4 gap-2">
+              {["VNPay", "ZaloPay", "MoMo", "ATM", "Visa", "MasterCard", "Tiền mặt", "Chuyển khoản"].map((name) => (
+                <div key={name} className="flex h-8 items-center justify-center rounded-lg border border-[#eaf0ec] bg-white text-[10px] font-bold text-main-green shadow-xs">
+                  {name}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Col 4: Zalo QR & Fast Quote */}
+          <div>
+            <h3 className="text-sm font-bold uppercase tracking-wider text-main-green">
+              Tư vấn & Nhận báo giá
+            </h3>
+            <div className="mt-4 flex items-center gap-3 rounded-2xl border border-[#eaf0ec] bg-white p-3 shadow-xs">
+              <div className="flex size-16 shrink-0 items-center justify-center rounded-xl bg-main-green text-white font-bold text-xs">
+                Zalo QR
+              </div>
+              <div className="text-xs">
+                <p className="font-bold text-main-green">Zalo Official Account</p>
+                <p className="text-muted-foreground">Quét mã để kết nối trực tiếp với Bác sĩ thú y</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Sub-menu Navigation Links */}
+        <div className="grid grid-cols-2 gap-8 border-t border-[#eaf0ec] py-8 sm:grid-cols-4">
+          <div>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-main-green">Về chúng tôi</h4>
+            <div className="mt-3 grid gap-2 text-xs text-muted-foreground">
+              <Link href="/gioi-thieu" className="hover:text-main-green">Giới thiệu Vet68</Link>
+              <Link href="/san-pham" className="hover:text-main-green">Catalogue sản phẩm</Link>
+              <Link href="/kien-thuc-thu-y" className="hover:text-main-green">Kiến thức chuyên môn</Link>
+              <Link href="/lien-he" className="hover:text-main-green">Hệ thống phân phối</Link>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-main-green">Hỗ trợ khách hàng</h4>
+            <div className="mt-3 grid gap-2 text-xs text-muted-foreground">
+              <Link href="/khuyen-mai" className="hover:text-main-green">Chương trình khuyến mãi</Link>
+              <Link href="/lien-he" className="hover:text-main-green">Hướng dẫn tra cứu giá</Link>
+              <Link href="/lien-he" className="hover:text-main-green">Quy trình xác nhận đơn</Link>
+              <Link href="/lien-he" className="hover:text-main-green">Câu hỏi thường gặp</Link>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-main-green">Chính sách</h4>
+            <div className="mt-3 grid gap-2 text-xs text-muted-foreground">
+              <Link href="/lien-he" className="hover:text-main-green">Chính sách bảo hành & đổi trả</Link>
+              <Link href="/lien-he" className="hover:text-main-green">Chính sách vận chuyển thuốc</Link>
+              <Link href="/lien-he" className="hover:text-main-green">Chính sách đại lý & phòng khám</Link>
+              <Link href="/lien-he" className="hover:text-main-green">Bảo mật thông tin</Link>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-main-green">Dòng sản phẩm</h4>
+            <div className="mt-3 grid gap-2 text-xs text-muted-foreground">
+              <Link href="/danh-muc/khang-sinh" className="hover:text-main-green">Kháng sinh & Đặc trị</Link>
+              <Link href="/danh-muc/vitamin-khoang-chat" className="hover:text-main-green">Vitamin & Tăng lực</Link>
+              <Link href="/danh-muc/sat-trung" className="hover:text-main-green">Sát trùng & Môi trường</Link>
+              <Link href="/vat-nuoi/cho-va-meo" className="hover:text-main-green">Sản phẩm Chó & Mèo</Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Copyright & Disclaimer */}
+        <div className="border-t border-[#eaf0ec] py-6 text-center text-xs text-muted-foreground sm:flex sm:items-center sm:justify-between sm:text-left">
+          <p>© 2026 Vet Medicine 68. Giao diện thiết kế theo phong cách tinh tế, chuẩn xác và hiện đại.</p>
+          <p className="mt-2 sm:mt-0 text-[11px]">Thông tin website mang tính chất tham khảo kỹ thuật chuyên môn.</p>
+        </div>
       </div>
-      <div className="border-t border-white/12"><div className="site-container flex flex-col gap-2 py-5 pb-24 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between md:pb-5"><p>© 2026 Vet Medicine 68. Thông tin website mang tính tham khảo.</p><p>Không thay thế tư vấn của bác sĩ thú y hoặc hướng dẫn từ nhà sản xuất.</p></div></div>
     </footer>
   );
-}
-
-function FooterColumn({ title, children }: { title: string; children: React.ReactNode }) {
-  return <div><h2 className="font-extrabold text-white">{title}</h2><div className="mt-4 grid gap-3 text-sm text-white/70 [&_a:hover]:text-petshop-yellow">{children}</div></div>;
 }
