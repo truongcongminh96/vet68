@@ -1,33 +1,32 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Copy, Tag, TicketPercent } from "lucide-react";
+import { Check, Copy, Tag } from "lucide-react";
 
 type Voucher = {
   code: string;
-  title: string;
-  condition: string;
-  note: string;
+  discount: string;
+  maxDiscount?: string;
+  minOrder: string;
 };
 
 const defaultVouchers: Voucher[] = [
   {
     code: "VET68VIP",
-    title: "Giảm 10%",
-    condition: "Tối đa 100.000đ",
-    note: "Đơn từ 699.000đ",
+    discount: "Giảm 10%",
+    maxDiscount: "Tối đa 100.000đ",
+    minOrder: "Đơn từ 699.000đ",
+  },
+  {
+    code: "VET68PRO",
+    discount: "Giảm 20%",
+    maxDiscount: "Tối đa 200.000đ",
+    minOrder: "Đơn từ 1.299.000đ",
   },
   {
     code: "FREESHIP",
-    title: "Freeship Toàn Quốc",
-    condition: "Hỗ trợ 30.000đ ship",
-    note: "Đơn từ 500.000đ",
-  },
-  {
-    code: "TRANGTRAI",
-    title: "Chiết Khấu Đại Lý",
-    condition: "Ưu đãi trang trại & trại nuôi",
-    note: "Đơn sỉ số lượng lớn",
+    discount: "Giảm 30.000đ",
+    minOrder: "Đơn từ 399.000đ",
   },
 ];
 
@@ -43,36 +42,45 @@ export function ProductDetailVouchers() {
   };
 
   return (
-    <div className="rounded-3xl border border-[#f7ebde] bg-[#faf9f2] p-4 sm:p-5 shadow-2xs">
-      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-main-green">
-        <TicketPercent className="size-4 text-price-orange" />
-        <span>Mã Ưu Đãi & Khuyến Mãi</span>
-      </div>
+    <div className="mt-5">
+      {/* Header */}
+      <h3 className="text-xs font-extrabold uppercase tracking-wider text-[#20212b] sm:text-sm">
+        Mã Giảm Giá
+      </h3>
 
-      <div className="mt-3 grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+      {/* Voucher Horizontal Strip (Wolf Yoga Style) */}
+      <div className="mt-2.5 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
         {defaultVouchers.map((voucher) => {
           const isCopied = copiedCode === voucher.code;
           return (
             <div
               key={voucher.code}
-              className="flex flex-col justify-between rounded-2xl border border-[#eaf0ec] bg-white p-3 shadow-2xs transition-all hover:border-price-orange/40 hover:shadow-xs"
+              className="flex flex-col justify-between rounded-xl border border-[#e2ebe2] bg-[#f7f9f7] p-3 transition-all hover:border-main-green/40 hover:shadow-xs"
             >
               <div>
-                <span className="inline-block rounded-md bg-main-green/10 px-2 py-0.5 font-mono text-xs font-bold uppercase text-main-green">
+                <span className="text-xs font-bold text-main-green">
                   {voucher.code}
                 </span>
-                <p className="mt-1.5 text-xs font-bold text-price-orange">{voucher.title}</p>
-                <p className="text-[11px] text-muted-foreground">{voucher.condition}</p>
-                <p className="text-[10px] text-muted-foreground/80">{voucher.note}</p>
+                <p className="mt-1 text-xs font-semibold text-[#20212b]">
+                  {voucher.discount}
+                </p>
+                {voucher.maxDiscount && (
+                  <p className="text-[11px] text-[#5e6973]">
+                    {voucher.maxDiscount}
+                  </p>
+                )}
+                <p className="text-[10px] text-[#5e6973]/80">
+                  {voucher.minOrder}
+                </p>
               </div>
 
               <button
                 type="button"
                 onClick={() => handleCopy(voucher.code)}
-                className={`mt-2.5 flex items-center justify-center gap-1.5 rounded-lg py-1 text-[11px] font-bold transition-all ${
+                className={`mt-2.5 flex w-full items-center justify-center gap-1 rounded-md py-1 text-xs font-bold transition-all ${
                   isCopied
                     ? "bg-emerald-600 text-white"
-                    : "bg-[#faf3ea] text-main-green hover:bg-main-green hover:text-white"
+                    : "bg-[#e2ebe2] text-main-green hover:bg-main-green hover:text-white"
                 }`}
               >
                 {isCopied ? (
@@ -81,15 +89,22 @@ export function ProductDetailVouchers() {
                     <span>Đã sao chép</span>
                   </>
                 ) : (
-                  <>
-                    <Copy className="size-3" />
-                    <span>Sao chép mã</span>
-                  </>
+                  <span>Sao chép</span>
                 )}
               </button>
             </div>
           );
         })}
+
+        {/* 4th Card: "Xem thêm mã giảm giá" */}
+        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[#d0ded0] bg-[#fafcf9] p-3 text-center transition-colors hover:border-main-green hover:bg-[#f0f6f0] cursor-pointer">
+          <div className="flex size-9 items-center justify-center rounded-full bg-[#eaf2ea] text-main-green mb-1.5">
+            <Tag className="size-4.5" />
+          </div>
+          <span className="text-xs font-bold text-main-green leading-snug">
+            Xem thêm<br />mã giảm giá
+          </span>
+        </div>
       </div>
     </div>
   );

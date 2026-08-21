@@ -44,7 +44,7 @@ export default async function HomePage() {
       ) : null}
 
       {/* 3. Flash Sale Deal Section with Live Countdown */}
-      <FlashSaleSection products={featuredProducts.slice(0, 4)} />
+      <FlashSaleSection products={featuredProducts.slice(0, 5)} />
 
       {/* 4. Category Grid Showcase (8 Tiles) */}
       <CategoryGridShowcase />

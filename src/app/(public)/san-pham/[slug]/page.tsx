@@ -180,103 +180,98 @@ export default async function ProductDetailPage({
 
           {/* Right Product Information (7 cols) */}
           <div className="flex flex-col lg:col-span-7">
-            {/* Title & Brand Header */}
+            {/* Title & Brand Header (Wolf Yoga Style) */}
             <div>
-              <div className="flex flex-wrap items-center gap-2">
-                {product.requiresConsultation ? (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-red-100 px-3 py-0.5 text-xs font-bold text-red-700">
-                    <ShieldAlert className="size-3.5" /> Thuốc kê đơn / Cần tư vấn
-                  </span>
-                ) : (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-3 py-0.5 text-xs font-bold text-emerald-800">
-                    <CheckCircle2 className="size-3.5" /> Có sẵn - Giao ngay
-                  </span>
-                )}
-                {demoMode && (
-                  <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-[11px] font-semibold text-amber-800">
-                    Dữ liệu demo
-                  </span>
-                )}
-              </div>
-
-              <h1 className="mt-3 font-playfair text-2xl font-bold uppercase tracking-tight text-main-green sm:text-3xl lg:text-4xl">
+              <h1 className="text-2xl font-bold tracking-tight text-[#20212b] sm:text-3xl lg:text-[32px] leading-tight">
                 {product.name}
               </h1>
 
-              {/* Meta details row: SKU, Brand, Rating */}
-              <div className="mt-2.5 flex flex-wrap items-center gap-y-2 gap-x-4 text-xs text-muted-foreground">
+              {/* Meta details row: SKU, Brand */}
+              <div className="mt-2.5 flex flex-wrap items-center gap-x-3 text-xs text-[#5e6973] sm:text-[13px]">
                 <div>
-                  Mã SKU: <strong className="font-semibold text-foreground">{product.sku}</strong>
+                  SKU: <strong className="font-semibold text-[#20212b]">{product.sku}</strong>
                 </div>
-                <div className="h-3 w-px bg-border hidden sm:block" />
+                <span>|</span>
                 <div>
-                  Hãng:{" "}
+                  Thương hiệu:{" "}
                   <Link
                     href={`/cong-ty/${product.company.slug}`}
-                    className="font-bold text-main-green hover:underline"
+                    className="font-bold text-main-green hover:underline uppercase"
                   >
                     {product.company.name}
                   </Link>
                 </div>
-                <div className="h-3 w-px bg-border hidden sm:block" />
-                <div className="flex items-center gap-1">
-                  <div className="flex items-center text-[#f59e0b]">
-                    <Star className="size-3.5 fill-current" />
-                    <Star className="size-3.5 fill-current" />
-                    <Star className="size-3.5 fill-current" />
-                    <Star className="size-3.5 fill-current" />
-                    <Star className="size-3.5 fill-current" />
-                  </div>
-                  <span className="font-bold text-foreground">(5.0)</span>
+              </div>
+
+              {/* 5-Star Rating Row */}
+              <div className="mt-2 flex items-center gap-1.5 text-xs text-[#5e6973]">
+                <div className="flex items-center text-[#f59e0b]">
+                  <Star className="size-3.5 fill-current" />
+                  <Star className="size-3.5 fill-current" />
+                  <Star className="size-3.5 fill-current" />
+                  <Star className="size-3.5 fill-current" />
+                  <Star className="size-3.5 fill-current" />
                 </div>
+                <span className="font-medium">5.0 (5 đánh giá)</span>
               </div>
             </div>
 
-            {/* Price Box */}
-            <div className="mt-4 rounded-2xl border border-[#f0e6da] bg-white p-4 shadow-2xs sm:p-5">
-              <div className="flex items-baseline gap-3">
-                <span className="text-xs font-medium text-muted-foreground">Giá tham khảo:</span>
-                <div className="text-2xl font-bold text-price-orange sm:text-3xl">
-                  <ProductPrice product={product} />
-                </div>
+            {/* Direct Prominent Price (Wolf Yoga Style) */}
+            <div className="mt-3.5 flex items-baseline gap-2">
+              <div className="text-3xl font-extrabold text-price-orange sm:text-4xl">
+                <ProductPrice product={product} />
               </div>
-              <p className="mt-1.5 text-xs text-muted-foreground">
-                Giá trên chỉ mang tính tham khảo. Quý khách liên hệ trực tiếp với Vet68 để nhận chính sách chiết khấu tốt nhất theo số lượng.
-              </p>
             </div>
 
             {/* Voucher Mini Cards (Wolf Yoga Coupon Block) */}
-            <div className="mt-4">
-              <ProductDetailVouchers />
-            </div>
+            <ProductDetailVouchers />
 
-            {/* Key Specifications Grid */}
-            <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-2">
-              <div className="rounded-2xl border border-[#eaf0ec] bg-white p-3.5 shadow-2xs">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-price-orange">
-                  Quy cách đóng gói
-                </span>
-                <p className="mt-1 text-xs font-semibold text-main-green">{product.packaging}</p>
+            {/* Variant Selectors (Wolf Yoga Style: Quy cách & Dạng bào chế) */}
+            <div className="mt-6 space-y-4">
+              <div>
+                <div className="text-xs font-bold text-[#20212b] sm:text-sm">
+                  Quy cách đóng gói: <span className="font-medium text-main-green">{product.packaging}</span>
+                </div>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    className="rounded-lg border-2 border-main-green bg-white px-4 py-1.5 text-xs font-bold text-main-green shadow-2xs"
+                  >
+                    {product.packaging}
+                  </button>
+                  <button
+                    type="button"
+                    className="rounded-lg border border-[#eaf0ec] bg-white px-4 py-1.5 text-xs font-medium text-[#5e6973] hover:border-main-green/50"
+                  >
+                    Hộp chuẩn GSP
+                  </button>
+                  <button
+                    type="button"
+                    className="rounded-lg border border-[#eaf0ec] bg-white px-4 py-1.5 text-xs font-medium text-[#5e6973] hover:border-main-green/50"
+                  >
+                    Thùng trang trại (Sỉ)
+                  </button>
+                </div>
               </div>
 
-              <div className="rounded-2xl border border-[#eaf0ec] bg-white p-3.5 shadow-2xs">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-price-orange">
-                  Dạng bào chế
-                </span>
-                <p className="mt-1 text-xs font-semibold text-main-green">{product.dosageForm}</p>
-              </div>
-
-              <div className="rounded-2xl border border-[#eaf0ec] bg-white p-3.5 shadow-2xs col-span-2">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-price-orange">
-                  Hoạt chất / Thành phần chính
-                </span>
-                <p className="mt-1 text-xs font-semibold text-main-green">{product.activeIngredients}</p>
+              <div>
+                <div className="text-xs font-bold text-[#20212b] sm:text-sm">
+                  Dạng bào chế: <span className="font-medium text-main-green">{product.dosageForm}</span>
+                </div>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    className="rounded-lg border-2 border-main-green bg-white px-4 py-1.5 text-xs font-bold text-main-green shadow-2xs"
+                  >
+                    {product.dosageForm}
+                  </button>
+                </div>
               </div>
             </div>
 
             {/* Target Animal Badges */}
             <div className="mt-4 flex flex-wrap items-center gap-1.5">
-              <span className="text-xs font-semibold text-muted-foreground mr-1">Chỉ định dùng cho:</span>
+              <span className="text-xs font-bold text-[#20212b] mr-1">Chỉ định vật nuôi:</span>
               {product.animals.map((animal) => (
                 <span
                   key={animal.id}
@@ -285,6 +280,11 @@ export default async function ProductDetailPage({
                   {animal.name}
                 </span>
               ))}
+            </div>
+
+            {/* Hoạt chất chính */}
+            <div className="mt-3 text-xs text-[#5e6973]">
+              <strong className="font-bold text-[#20212b]">Hoạt chất chính:</strong> {product.activeIngredients}
             </div>
 
             {/* Action CTA Buttons Row */}

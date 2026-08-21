@@ -230,12 +230,20 @@
 }
 
 .announcement-bar {
-  min-height: 2.25rem;
+  height: 2rem;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
 }
 
 .announcement-track {
-  min-height: 2.25rem;
-  animation: announcement-scroll 28s linear infinite;
+  display: flex;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  width: max-content;
+  height: 2rem;
+  align-items: center;
+  animation: announcement-scroll 32s linear infinite;
   will-change: transform;
 }
 

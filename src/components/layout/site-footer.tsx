@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { CheckCircle2, Clock3, CreditCard, Mail, MapPin, MessageCircle, Phone, ShieldCheck, Truck, Undo2 } from "lucide-react";
 import { SiteLogo } from "@/components/layout/site-logo";
 import { getTelephoneUrl } from "@/lib/contact";
@@ -138,12 +139,13 @@ export async function SiteFooter() {
               Phương thức thanh toán
             </h3>
             <p className="mt-2 text-xs text-muted-foreground">Hỗ trợ đa dạng hình thức thanh toán & xuất hoá đơn VAT điện tử:</p>
-            <div className="mt-3 grid grid-cols-4 gap-2">
-              {["VNPay", "ZaloPay", "MoMo", "ATM", "Visa", "MasterCard", "Tiền mặt", "Chuyển khoản"].map((name) => (
-                <div key={name} className="flex h-8 items-center justify-center rounded-lg border border-[#eaf0ec] bg-white text-[10px] font-bold text-main-green shadow-xs">
-                  {name}
-                </div>
-              ))}
+            <div className="mt-3.5 flex flex-wrap items-center gap-2">
+              <Image src="/images/payments/visa.svg" alt="Visa" width={72} height={40} className="h-8.5 w-auto object-contain transition-transform hover:scale-105" />
+              <Image src="/images/payments/momo.svg" alt="MoMo" width={72} height={40} className="h-8.5 w-auto object-contain transition-transform hover:scale-105" />
+              <Image src="/images/payments/napas.svg" alt="Napas" width={72} height={40} className="h-8.5 w-auto object-contain transition-transform hover:scale-105" />
+              <Image src="/images/payments/zalopay.svg" alt="ZaloPay" width={72} height={40} className="h-8.5 w-auto object-contain transition-transform hover:scale-105" />
+              <Image src="/images/payments/vnpay.svg" alt="VNPay" width={72} height={40} className="h-8.5 w-auto object-contain transition-transform hover:scale-105" />
+              <Image src="/images/payments/mastercard.svg" alt="MasterCard" width={72} height={40} className="h-8.5 w-auto object-contain transition-transform hover:scale-105" />
             </div>
           </div>
 
@@ -153,12 +155,13 @@ export async function SiteFooter() {
               Tư vấn & Nhận báo giá
             </h3>
             <div className="mt-4 flex items-center gap-3 rounded-2xl border border-[#eaf0ec] bg-white p-3 shadow-xs">
-              <div className="flex size-16 shrink-0 items-center justify-center rounded-xl bg-main-green text-white font-bold text-xs">
-                Zalo QR
+              <div className="flex size-14 shrink-0 flex-col items-center justify-center rounded-xl bg-main-green text-white">
+                <MessageCircle className="size-6 text-white" />
+                <span className="text-[9px] font-bold mt-0.5">ZALO OA</span>
               </div>
               <div className="text-xs">
                 <p className="font-bold text-main-green">Zalo Official Account</p>
-                <p className="text-muted-foreground">Quét mã để kết nối trực tiếp với Bác sĩ thú y</p>
+                <p className="text-muted-foreground mt-0.5">Quét mã hoặc bấm để kết nối trực tiếp Bác sĩ thú y</p>
               </div>
             </div>
           </div>

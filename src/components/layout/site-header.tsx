@@ -28,58 +28,47 @@ export async function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-[#eaf0ec] bg-white/95 backdrop-blur-md transition-all duration-200">
       {/* Top Marquee Announcement */}
-      <div className="wolf-header-topbanner overflow-hidden bg-main-green py-2 text-white">
+      <div className="wolf-header-topbanner overflow-hidden bg-main-green py-1.5 text-white">
         <div className="site-container">
           <div className="announcement-bar relative flex items-center overflow-hidden">
-            <div className="announcement-track flex w-max items-center gap-8 text-xs font-semibold tracking-wide sm:text-[13px]">
-              <span className="flex items-center gap-2">
-                <span className="inline-block size-2 rounded-full bg-price-orange" />
-                Giao nhanh toàn quốc - Đóng gói chuyên dụng bảo quản thuốc
-              </span>
-              <span className="flex items-center gap-2">
-                <span className="inline-block size-2 rounded-full bg-price-orange" />
-                100% Sản phẩm chính hãng - Đạt chuẩn GMP & xuất hoá đơn VAT
-              </span>
-              <span className="flex items-center gap-2">
-                <span className="inline-block size-2 rounded-full bg-price-orange" />
-                Bác sĩ thú y hỗ trợ tư vấn phác đồ & giải pháp phòng bệnh
-              </span>
-              <span className="flex items-center gap-2">
-                <span className="inline-block size-2 rounded-full bg-price-orange" />
-                Liên hệ Zalo / Hotline để xác nhận quy cách & báo giá ưu đãi
-              </span>
-              {/* Duplicate track for seamless infinite marquee */}
-              <span aria-hidden="true" className="flex items-center gap-2">
-                <span className="inline-block size-2 rounded-full bg-price-orange" />
-                Giao nhanh toàn quốc - Đóng gói chuyên dụng bảo quản thuốc
-              </span>
-              <span aria-hidden="true" className="flex items-center gap-2">
-                <span className="inline-block size-2 rounded-full bg-price-orange" />
-                100% Sản phẩm chính hãng - Đạt chuẩn GMP & xuất hoá đơn VAT
-              </span>
-              <span aria-hidden="true" className="flex items-center gap-2">
-                <span className="inline-block size-2 rounded-full bg-price-orange" />
-                Bác sĩ thú y hỗ trợ tư vấn phác đồ & giải pháp phòng bệnh
-              </span>
-              <span aria-hidden="true" className="flex items-center gap-2">
-                <span className="inline-block size-2 rounded-full bg-price-orange" />
-                Liên hệ Zalo / Hotline để xác nhận quy cách & báo giá ưu đãi
-              </span>
+            <div className="announcement-track flex w-max flex-nowrap items-center whitespace-nowrap text-xs font-medium tracking-wide sm:text-[13px]">
+              <span className="inline-flex items-center">Giao nhanh - Miễn phí cho đơn 1tr VNĐ</span>
+              <span className="mx-3.5 inline-block text-white/50">•</span>
+              <span className="inline-flex items-center">Sản phẩm chính hãng - Xuất VAT</span>
+              <span className="mx-3.5 inline-block text-white/50">•</span>
+              <span className="inline-flex items-center">Bác sĩ thú y hỗ trợ tư vấn phác đồ & giải pháp phòng bệnh</span>
+              <span className="mx-3.5 inline-block text-white/50">•</span>
+              <span className="inline-flex items-center">Mua Online với dịch vụ vượt trội & chiết khấu tốt</span>
+              <span className="mx-3.5 inline-block text-white/50">•</span>
+              <span className="inline-flex items-center">Liên hệ Zalo / Hotline để xác nhận quy cách & báo giá</span>
+              <span className="mx-3.5 inline-block text-white/50">•</span>
+
+              {/* Duplicate track for seamless infinite marquee loop */}
+              <span aria-hidden="true" className="inline-flex items-center">Giao nhanh - Miễn phí cho đơn 1tr VNĐ</span>
+              <span aria-hidden="true" className="mx-3.5 inline-block text-white/50">•</span>
+              <span aria-hidden="true" className="inline-flex items-center">Sản phẩm chính hãng - Xuất VAT</span>
+              <span aria-hidden="true" className="mx-3.5 inline-block text-white/50">•</span>
+              <span aria-hidden="true" className="inline-flex items-center">Bác sĩ thú y hỗ trợ tư vấn phác đồ & giải pháp phòng bệnh</span>
+              <span aria-hidden="true" className="mx-3.5 inline-block text-white/50">•</span>
+              <span aria-hidden="true" className="inline-flex items-center">Mua Online với dịch vụ vượt trội & chiết khấu tốt</span>
+              <span aria-hidden="true" className="mx-3.5 inline-block text-white/50">•</span>
+              <span aria-hidden="true" className="inline-flex items-center">Liên hệ Zalo / Hotline để xác nhận quy cách & báo giá</span>
+              <span aria-hidden="true" className="mx-3.5 inline-block text-white/50">•</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Main Navigation Header */}
-      <div className="site-container flex min-h-[76px] items-center justify-between gap-4 py-3">
+      <div className="site-container flex min-h-[72px] items-center justify-between gap-3 py-2.5 lg:gap-6">
         {/* Left: Mobile Drawer Button + Site Logo */}
-        <div className="flex items-center gap-2 lg:gap-0">
+        <div className="flex shrink-0 items-center gap-2 lg:gap-3">
           <MobileMenu categories={taxonomy.categories} animalTypes={taxonomy.animalTypes} companies={taxonomy.companies} />
           <SiteLogo compact />
         </div>
 
         {/* Center: Desktop Navigation Bar with Mega Menu */}
-        <nav className="hidden items-center justify-center gap-6 xl:flex" aria-label="Điều hướng chính">
+        <nav className="hidden shrink-0 items-center justify-center gap-5 xl:flex lg:gap-6" aria-label="Điều hướng chính">
           {primaryNavItems.map((item) => (
             <Link
               key={item.href}
@@ -179,8 +168,8 @@ export async function SiteHeader() {
         </nav>
 
         {/* Right: Search Box + Action Icons */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          <div className="hidden w-48 sm:w-60 md:block lg:w-72">
+        <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
+          <div className="hidden lg:block lg:w-44 xl:w-52 2xl:w-60">
             <ProductSearch />
           </div>
 
@@ -188,10 +177,10 @@ export async function SiteHeader() {
           <Link
             href="/san-pham"
             title="Sản phẩm đã chọn & Báo giá"
-            className="group relative flex size-10 items-center justify-center rounded-full bg-[#f4f3ef] text-main-green transition-all hover:bg-main-green hover:text-white"
+            className="group relative flex size-9 items-center justify-center rounded-full bg-[#f4f3ef] text-main-green transition-all hover:bg-main-green hover:text-white sm:size-10"
           >
-            <ShoppingBag className="size-5" />
-            <span className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-price-orange text-[10px] font-bold text-white shadow">
+            <ShoppingBag className="size-4.5 sm:size-5" />
+            <span className="absolute -right-1 -top-1 flex size-4.5 items-center justify-center rounded-full bg-price-orange text-[10px] font-bold text-white shadow">
               0
             </span>
           </Link>
@@ -199,7 +188,7 @@ export async function SiteHeader() {
           {/* Direct Consultation Hotline Button */}
           <a
             href={getTelephoneUrl(contact.phone)}
-            className="hidden items-center gap-2 rounded-full border border-[#eaf0ec] bg-white px-3.5 py-1.5 text-xs font-bold text-main-green shadow-sm transition-all hover:border-main-green hover:bg-[#faf3ea] md:flex"
+            className="hidden items-center gap-1.5 rounded-full border border-[#eaf0ec] bg-white px-3 py-1.5 text-xs font-bold text-main-green shadow-xs transition-all hover:border-main-green hover:bg-[#faf3ea] 2xl:flex"
             title={`Hotline: ${contact.phoneDisplay}`}
           >
             <Phone className="size-3.5 text-price-orange" />
@@ -211,11 +200,11 @@ export async function SiteHeader() {
             href={contact.zaloUrl}
             target="_blank"
             rel="noreferrer"
-            className="flex size-10 items-center justify-center rounded-full bg-main-green text-white shadow-sm transition-all hover:bg-[#163b2e] hover:scale-105"
+            className="flex size-9 items-center justify-center rounded-full bg-main-green text-white shadow-xs transition-all hover:bg-[#163b2e] hover:scale-105 sm:size-10"
             aria-label="Tư vấn phác đồ qua Zalo"
             title="Chat Zalo Tư Vấn"
           >
-            <MessageCircle className="size-5" />
+            <MessageCircle className="size-4.5 sm:size-5" />
           </a>
         </div>
       </div>

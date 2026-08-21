@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 40" fill="none">
+  <rect x="0.5" y="0.5" width="71" height="39" rx="6" fill="white" stroke="#E2E8F0"/>
+  <g transform="translate(10, 11)">
+    <text x="0" y="16" font-family="Arial, sans-serif" font-weight="900" font-style="italic" font-size="16" fill="#004A8F">napas</text>
+    <path d="M43 4L47 11L40 9L43 4Z" fill="#00A3E0"/>
+    <path d="M47 11L53 9L48 13L47 11Z" fill="#8DC63F"/>
+    <path d="M48 13L50 20L45 14L48 13Z" fill="#00A3E0"/>
+    <path d="M45 14L39 15L44 11L45 14Z" fill="#8DC63F"/>
+  </g>
+</svg>

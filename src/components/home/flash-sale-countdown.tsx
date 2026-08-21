@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Timer } from "lucide-react";
 
 export function FlashSaleCountdown() {
   const [timeLeft, setTimeLeft] = useState({
-    days: "02",
-    hours: "18",
-    minutes: "45",
-    seconds: "30",
+    days: "00",
+    hours: "04",
+    minutes: "42",
+    seconds: "47",
   });
 
   useEffect(() => {
@@ -43,30 +42,48 @@ export function FlashSaleCountdown() {
   }, []);
 
   return (
-    <div className="flex items-center gap-2 self-start rounded-2xl bg-white p-2 shadow-xs sm:self-auto">
-      <div className="hidden items-center gap-1.5 px-2 text-xs font-bold text-main-green uppercase tracking-wider md:flex">
-        <Timer className="size-4 text-price-orange" />
-        <span>Kết thúc sau:</span>
+    <div className="relative rounded-2xl border border-white/80 bg-white px-5 py-4 pt-5 shadow-[0_6px_24px_rgba(31,74,58,0.06)] sm:px-8 sm:py-5">
+      {/* Top Attached Badge (Wolf Yoga Style) */}
+      <div className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-main-green px-4 py-1 text-[11px] font-bold uppercase tracking-wider text-white shadow-xs sm:text-xs">
+        KẾT THÚC SAU
       </div>
-      <div className="flex items-center gap-1.5">
-        <div className="flex flex-col items-center rounded-xl bg-main-green px-2.5 py-1 text-white shadow-xs">
-          <span className="font-mono text-sm font-bold sm:text-base">{timeLeft.days}</span>
-          <span className="text-[9px] uppercase tracking-wider opacity-80">Ngày</span>
+
+      {/* 4 Large Serif Digits with Labels (No Colons) */}
+      <div className="flex items-center justify-center gap-4 sm:gap-6 lg:gap-7">
+        <div className="flex flex-col items-center">
+          <span className="font-playfair text-2xl font-bold leading-none text-[#b84c1e] sm:text-3xl lg:text-[34px]">
+            {timeLeft.days}
+          </span>
+          <span className="mt-1 text-[10px] font-bold tracking-wider text-[#33302f] uppercase sm:text-xs">
+            NGÀY
+          </span>
         </div>
-        <span className="font-bold text-main-green">:</span>
-        <div className="flex flex-col items-center rounded-xl bg-main-green px-2.5 py-1 text-white shadow-xs">
-          <span className="font-mono text-sm font-bold sm:text-base">{timeLeft.hours}</span>
-          <span className="text-[9px] uppercase tracking-wider opacity-80">Giờ</span>
+
+        <div className="flex flex-col items-center">
+          <span className="font-playfair text-2xl font-bold leading-none text-[#b84c1e] sm:text-3xl lg:text-[34px]">
+            {timeLeft.hours}
+          </span>
+          <span className="mt-1 text-[10px] font-bold tracking-wider text-[#33302f] uppercase sm:text-xs">
+            GIỜ
+          </span>
         </div>
-        <span className="font-bold text-main-green">:</span>
-        <div className="flex flex-col items-center rounded-xl bg-main-green px-2.5 py-1 text-white shadow-xs">
-          <span className="font-mono text-sm font-bold sm:text-base">{timeLeft.minutes}</span>
-          <span className="text-[9px] uppercase tracking-wider opacity-80">Phút</span>
+
+        <div className="flex flex-col items-center">
+          <span className="font-playfair text-2xl font-bold leading-none text-[#b84c1e] sm:text-3xl lg:text-[34px]">
+            {timeLeft.minutes}
+          </span>
+          <span className="mt-1 text-[10px] font-bold tracking-wider text-[#33302f] uppercase sm:text-xs">
+            PHÚT
+          </span>
         </div>
-        <span className="font-bold text-main-green">:</span>
-        <div className="flex flex-col items-center rounded-xl bg-price-orange px-2.5 py-1 text-white shadow-xs">
-          <span className="font-mono text-sm font-bold sm:text-base">{timeLeft.seconds}</span>
-          <span className="text-[9px] uppercase tracking-wider opacity-80">Giây</span>
+
+        <div className="flex flex-col items-center">
+          <span className="font-playfair text-2xl font-bold leading-none text-[#b84c1e] sm:text-3xl lg:text-[34px]">
+            {timeLeft.seconds}
+          </span>
+          <span className="mt-1 text-[10px] font-bold tracking-wider text-[#33302f] uppercase sm:text-xs">
+            GIÂY
+          </span>
         </div>
       </div>
     </div>
