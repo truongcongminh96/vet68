@@ -80,6 +80,8 @@ export type Post = {
   readingMinutes: number;
 };
 
+export type CatalogueSort = "name_asc" | "name_desc" | "newest" | "price_asc" | "price_desc";
+
 export type CatalogueFilters = {
   query?: string;
   animal?: string;
@@ -91,6 +93,6 @@ export type CatalogueFilters = {
   dosageForm?: string;
   consultation?: "required" | "not_required";
   priceMode?: PriceDisplayMode;
-  sort: "name_asc" | "name_desc";
+  sort: CatalogueSort;
   page: number;
 };

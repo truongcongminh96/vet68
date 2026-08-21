@@ -27,7 +27,7 @@ const schema = z.object({
   dosage_form: optionalString(80),
   consultation: optionalEnum(["required", "not_required"]),
   price_mode: optionalEnum(["fixed", "approximate", "contact"]),
-  sort: z.enum(["name_asc", "name_desc"]).catch("name_asc"),
+  sort: z.enum(["name_asc", "name_desc", "newest", "price_asc", "price_desc"]).catch("name_asc"),
   page: z.coerce.number().int().positive().catch(1),
 });
 

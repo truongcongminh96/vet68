@@ -15,8 +15,10 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: "Inter", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "Manrope", "Manrope Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-montserrat), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-playfair), Georgia, serif;
+  --font-serif: var(--font-playfair), Georgia, serif;
+  --font-montserrat: var(--font-montserrat), sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -45,6 +47,11 @@
   --color-petshop-yellow: var(--petshop-yellow);
   --color-deep-navy: var(--deep-navy);
   --color-soft-blue: var(--soft-blue);
+  --color-main-green: var(--main-green);
+  --color-price-orange: var(--price-orange);
+  --color-deal-green: var(--deal-green);
+  --color-bg-cream: var(--bg-cream);
+  --color-bg-warm: var(--bg-warm);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -61,40 +68,48 @@
 }
 
 :root {
-  --background: #f7fafc;
-  --foreground: #102a3a;
+  --background: #faf8f5;
+  --foreground: #20212b;
   --card: #ffffff;
-  --card-foreground: #102a3a;
+  --card-foreground: #20212b;
   --popover: #ffffff;
-  --popover-foreground: #102a3a;
-  --primary: #073e5f;
-  --primary-foreground: #f8fbfd;
-  --secondary: #eaf2f6;
-  --secondary-foreground: #073e5f;
-  --muted: #edf3f6;
-  --muted-foreground: #526b78;
-  --accent: #e7f0f5;
-  --accent-foreground: #052f49;
+  --popover-foreground: #20212b;
+  --primary: #1f4a3a;
+  --primary-foreground: #ffffff;
+  --secondary: #f7ebde;
+  --secondary-foreground: #1f4a3a;
+  --muted: #f4f3ef;
+  --muted-foreground: #5e6973;
+  --accent: #faf3ea;
+  --accent-foreground: #1f4a3a;
   --destructive: #df2d3f;
-  --medical-red: #df2d3f;
-  --highlight: #f7d928;
-  --success: #198754;
-  --action: #7ec8e3;
-  --action-foreground: #062a40;
-  --deep-navy: #062a40;
-  --soft-blue: #eaf6fa;
-  --border: #e1e9ee;
-  --input: #d6e1e7;
-  --ring: #0e6a98;
-  --radius: 0.75rem;
+  --medical-red: #ed6514;
+  --highlight: #f7ebde;
+  --success: #1f4a3a;
+  --action: #ed6514;
+  --action-foreground: #ffffff;
+  --deep-navy: #1f4a3a;
+  --soft-blue: #f4f3ef;
+  --petshop-teal: #1f4a3a;
+  --petshop-cream: #faf3ea;
+  --petshop-yellow: #f7ebde;
+  --main-green: #1f4a3a;
+  --price-orange: #ed6514;
+  --deal-green: #0a5d4f;
+  --bg-cream: #faf8f5;
+  --bg-warm: #f7ebde;
+  --border: #eaf0ec;
+  --input: #e0e7e3;
+  --ring: #1f4a3a;
+  --radius: 1rem;
   --sidebar: #ffffff;
-  --sidebar-foreground: #102a3a;
-  --sidebar-primary: #073e5f;
+  --sidebar-foreground: #20212b;
+  --sidebar-primary: #1f4a3a;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #eaf2f6;
-  --sidebar-accent-foreground: #073e5f;
-  --sidebar-border: #e1e9ee;
-  --sidebar-ring: #0e6a98;
+  --sidebar-accent: #faf3ea;
+  --sidebar-accent-foreground: #1f4a3a;
+  --sidebar-border: #eaf0ec;
+  --sidebar-ring: #1f4a3a;
 }
 
 .dark {
@@ -184,22 +199,53 @@
   --petshop-yellow: #fbbd08;
 }
 
+.font-playfair {
+  font-family: var(--font-playfair), Georgia, serif;
+}
+
+.font-montserrat {
+  font-family: var(--font-montserrat), var(--font-inter), sans-serif;
+}
+
+.wolf-section-title {
+  font-family: var(--font-playfair), Georgia, serif;
+  @apply text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-main-green;
+}
+
+.wolf-card-shadow {
+  box-shadow: 0 10px 30px rgba(31, 74, 58, 0.07);
+}
+
+.wolf-deal-shadow {
+  box-shadow: 0 14px 40px rgba(10, 93, 79, 0.12);
+}
+
+.wolf-scroll-tab {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.wolf-scroll-tab::-webkit-scrollbar {
+  display: none;
+}
+
 .announcement-bar {
-  min-height: 2.125rem;
+  min-height: 2.25rem;
 }
 
 .announcement-track {
-  min-height: 2.125rem;
-  animation: announcement-scroll 26s linear infinite;
+  min-height: 2.25rem;
+  animation: announcement-scroll 28s linear infinite;
   will-change: transform;
 }
 
 .petshop-card-shadow {
-  box-shadow: 3px 4px 0 rgba(6, 45, 62, 0.08), 0 12px 28px rgba(6, 45, 62, 0.05);
+  box-shadow: 0 10px 30px rgba(31, 74, 58, 0.07);
 }
 
 .petshop-section-title {
-  @apply font-heading text-[1.65rem] font-extrabold leading-tight tracking-[-0.035em] text-primary md:text-[2rem];
+  font-family: var(--font-playfair), Georgia, serif;
+  @apply text-[1.65rem] font-bold leading-tight tracking-tight text-main-green md:text-[2.15rem];
 }
 
 .petshop-scroll-row {
@@ -208,14 +254,6 @@
 
 .petshop-scroll-row::-webkit-scrollbar {
   display: none;
-}
-
-.petshop-paw-pattern {
-  background-image:
-    radial-gradient(circle at 12px 8px, rgba(255,255,255,.16) 0 4px, transparent 4.5px),
-    radial-gradient(circle at 27px 8px, rgba(255,255,255,.16) 0 4px, transparent 4.5px),
-    radial-gradient(ellipse at 20px 23px, rgba(255,255,255,.14) 0 8px, transparent 8.5px);
-  background-size: 42px 42px;
 }
 
 .paper-canvas {
