@@ -36,7 +36,7 @@ export function LatestPostsSection({ posts }: { posts: Post[] }) {
               className="group flex flex-col overflow-hidden rounded-2xl border border-[#eaf0ec] bg-white shadow-[0_8px_25px_rgba(31,74,58,0.04)] transition-all duration-300 hover:-translate-y-1.5 hover:border-main-green/40 hover:shadow-[0_16px_35px_rgba(31,74,58,0.09)]"
             >
               {/* Article Thumbnail */}
-              <Link href={`/kien-thuc-thu-y/${post.slug}`} className="relative aspect-[16/10] overflow-hidden bg-[#faf8f5]">
+              <Link prefetch={false} href={`/kien-thuc-thu-y/${post.slug}`} className="relative aspect-[16/10] overflow-hidden bg-[#faf8f5]">
                 <Image
                   src={post.coverImage || "/images/demo/article-care.jpg"}
                   alt={post.coverAlt ?? post.title}
@@ -62,7 +62,7 @@ export function LatestPostsSection({ posts }: { posts: Post[] }) {
 
                 {/* Article Title */}
                 <h3 className="mt-2 line-clamp-2 text-sm font-bold leading-snug text-main-green transition-colors group-hover:text-price-orange sm:text-base">
-                  <Link href={`/kien-thuc-thu-y/${post.slug}`}>{post.title}</Link>
+                  <Link prefetch={false} href={`/kien-thuc-thu-y/${post.slug}`}>{post.title}</Link>
                 </h3>
 
                 {/* Article Excerpt */}
@@ -72,7 +72,7 @@ export function LatestPostsSection({ posts }: { posts: Post[] }) {
 
                 {/* Read More Link */}
                 <div className="mt-auto pt-4">
-                  <Link
+                  <Link prefetch={false}
                     href={`/kien-thuc-thu-y/${post.slug}`}
                     className="inline-flex items-center gap-1.5 text-xs font-bold text-main-green transition-colors group-hover:text-price-orange"
                   >
@@ -91,7 +91,7 @@ export function LatestPostsSection({ posts }: { posts: Post[] }) {
             asChild
             className="rounded-xl bg-main-green px-6 text-xs font-bold uppercase tracking-wider text-white shadow-sm hover:bg-[#163b2e]"
           >
-            <Link href="/kien-thuc-thu-y" className="flex items-center gap-2">
+            <Link prefetch={false} href="/kien-thuc-thu-y" className="flex items-center gap-2">
               <span>Xem tất cả bài viết kiến thức</span>
               <ArrowRight className="size-4" />
             </Link>

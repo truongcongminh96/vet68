@@ -63,7 +63,7 @@ export function FlashSaleSection({ products }: { products: Product[] }) {
 
           {/* Bottom Link to View All Deals */}
           <div className="mt-7 text-center">
-            <Link
+            <Link prefetch={false}
               href="/khuyen-mai"
               className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-main-green shadow-xs transition-all hover:bg-main-green hover:text-white"
             >

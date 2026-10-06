@@ -44,6 +44,9 @@ import { getContactSettings } from "@/lib/contact-settings";
 import { absoluteUrl, serializeJsonLd, SITE_NAME, SITE_URL } from "@/lib/site";
 import { hasSupabaseEnv } from "@/lib/supabase/config";
 
+// Generate and cache product pages on first access, including newly added slugs.
+export function generateStaticParams() { return []; }
+
 export async function generateMetadata({
   params,
 }: {
@@ -121,15 +124,15 @@ export default async function ProductDetailPage({
       <div className="border-b border-[#eaf0ec] bg-white py-3">
         <div className="site-container">
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-muted-foreground overflow-x-auto small-scrollbar py-0.5">
-            <Link href="/" className="font-medium hover:text-main-green shrink-0">
+            <Link prefetch={false} href="/" className="font-medium hover:text-main-green shrink-0">
               Trang chủ
             </Link>
             <ChevronRight className="size-3.5 shrink-0" />
-            <Link href="/san-pham" className="font-medium hover:text-main-green shrink-0">
+            <Link prefetch={false} href="/san-pham" className="font-medium hover:text-main-green shrink-0">
               Sản phẩm
             </Link>
             <ChevronRight className="size-3.5 shrink-0" />
-            <Link
+            <Link prefetch={false}
               href={`/danh-muc/${product.category.slug}`}
               className="font-medium hover:text-main-green shrink-0"
             >
@@ -194,7 +197,7 @@ export default async function ProductDetailPage({
                 <span>|</span>
                 <div>
                   Thương hiệu:{" "}
-                  <Link
+                  <Link prefetch={false}
                     href={`/cong-ty/${product.company.slug}`}
                     className="font-bold text-main-green hover:underline uppercase"
                   >
@@ -467,7 +470,7 @@ export default async function ProductDetailPage({
                 </div>
               </div>
 
-              <Link
+              <Link prefetch={false}
                 href={`/danh-muc/${product.category.slug}`}
                 className="inline-flex items-center gap-1 text-xs font-bold text-main-green hover:text-price-orange"
               >

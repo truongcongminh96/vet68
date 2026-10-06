@@ -73,7 +73,7 @@ export function CatalogueSortBar({
           const active = filters.sort === opt.value;
           const Icon = opt.icon;
           return (
-            <Link
+            <Link prefetch={false}
               key={opt.value}
               href={buildSortUrl(opt.value)}
               className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 font-medium transition-all ${

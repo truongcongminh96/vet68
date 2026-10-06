@@ -44,7 +44,7 @@ export async function ProductCard({
 
         {/* Hover Action Buttons Toolbar */}
         <div className="absolute inset-x-0 bottom-3 z-20 flex justify-center gap-2 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 translate-y-2">
-          <Link
+          <Link prefetch={false}
             href={`/san-pham/${product.slug}`}
             className="flex size-9 items-center justify-center rounded-full bg-white text-foreground shadow-md transition-transform hover:scale-110 hover:bg-main-green hover:text-white"
             title="Xem chi tiết"
@@ -63,7 +63,7 @@ export async function ProductCard({
         </div>
 
         {/* Product Image */}
-        <Link href={`/san-pham/${product.slug}`} className="relative block size-full">
+        <Link prefetch={false} href={`/san-pham/${product.slug}`} className="relative block size-full">
           <Image
             src={product.images[0]?.src ?? "/images/demo/article-care.jpg"}
             alt={product.images[0]?.alt ?? product.name}
@@ -94,7 +94,7 @@ export async function ProductCard({
 
         {/* Product Title */}
         <h3 className="mt-2 line-clamp-2 min-h-10 text-sm font-bold leading-tight text-foreground transition-colors group-hover:text-main-green">
-          <Link href={`/san-pham/${product.slug}`}>{product.name}</Link>
+          <Link prefetch={false} href={`/san-pham/${product.slug}`}>{product.name}</Link>
         </h3>
 
         {/* 5-Star Rating Row */}
@@ -123,7 +123,7 @@ export async function ProductCard({
             </div>
           </div>
 
-          <Link
+          <Link prefetch={false}
             href={`/san-pham/${product.slug}`}
             className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#f4f3ef] text-main-green transition-all duration-200 hover:bg-main-green hover:text-white"
             title="Xem thông tin chi tiết"

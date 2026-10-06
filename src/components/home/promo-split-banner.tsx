@@ -42,7 +42,7 @@ export function PromoSplitBanner() {
                   asChild
                   className="rounded-xl bg-main-green px-5 text-xs font-bold uppercase tracking-wider text-white shadow-sm hover:bg-[#163b2e]"
                 >
-                  <Link href="/vat-nuoi/cho-va-meo" className="flex items-center gap-2">
+                  <Link prefetch={false} href="/vat-nuoi/cho-va-meo" className="flex items-center gap-2">
                     <span>Xem sản phẩm Chó & Mèo</span>
                     <ArrowRight className="size-3.5" />
                   </Link>
@@ -85,7 +85,7 @@ export function PromoSplitBanner() {
                   asChild
                   className="rounded-xl bg-price-orange px-5 text-xs font-bold uppercase tracking-wider text-white shadow-sm hover:bg-price-orange-dark"
                 >
-                  <Link href="/vat-nuoi/heo" className="flex items-center gap-2">
+                  <Link prefetch={false} href="/vat-nuoi/heo" className="flex items-center gap-2">
                     <span>Xem danh mục Trang Trại</span>
                     <ArrowRight className="size-3.5" />
                   </Link>

@@ -4,7 +4,7 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { emptyAdminTaxonomy, parseAdminTaxonomy, type AdminTaxonomy } from "@/lib/admin/taxonomy";
 import type { Database } from "@/types/database";
 
-type ProductRow = Database["public"]["Tables"]["products"]["Row"];
+type DashboardProduct = Pick<Database["public"]["Tables"]["products"]["Row"], "id" | "name" | "sku" | "is_active" | "price_display_mode" | "reference_price" | "updated_at">;
 
 export async function getAdminTaxonomy() {
   const cached = getCachedAdminTaxonomy();
@@ -107,10 +107,10 @@ export async function getAdminProduct(id: string) {
 
 export async function getAdminDashboard() {
   const supabase = await createSupabaseServerClient();
-  if (!supabase) return { total: 0, active: 0, hidden: 0, missingImages: 0, missingPricing: 0, publishedPosts: 0, recent: [] as ProductRow[] };
+  if (!supabase) return { total: 0, active: 0, hidden: 0, missingImages: 0, missingPricing: 0, publishedPosts: 0, recent: [] as DashboardProduct[] };
 
   const [{ data: products }, { count: publishedPosts }] = await Promise.all([
-    supabase.from("products").select("*").order("updated_at", { ascending: false }),
+    supabase.from("products").select("id, name, sku, is_active, price_display_mode, reference_price, updated_at").order("updated_at", { ascending: false }),
     supabase.from("posts").select("id", { count: "exact", head: true }).eq("status", "published"),
   ]);
   const rows = products ?? [];

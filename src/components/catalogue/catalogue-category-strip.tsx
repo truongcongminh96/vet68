@@ -25,7 +25,7 @@ export function CatalogueCategoryStrip({ categories }: { categories: CategorySum
 
       <div className="mt-4 grid snap-x snap-mandatory auto-cols-[235px] grid-flow-col gap-3 overflow-x-auto overscroll-x-contain pb-3 sm:auto-cols-[260px] [scrollbar-color:#75c7e3_transparent] [scrollbar-width:thin]" aria-label="Các danh mục sản phẩm">
         {categories.map(({ category, productCount, image, imageAlt }) => (
-          <Link key={category.id} href={`/danh-muc/${category.slug}`} className="paper-panel group grid min-h-24 snap-start grid-cols-[76px_minmax(0,1fr)] items-center gap-3 p-3 transition-[border-color,box-shadow,transform] hover:-translate-y-0.5 hover:border-petshop-teal motion-reduce:transform-none">
+          <Link prefetch={false} key={category.id} href={`/danh-muc/${category.slug}`} className="paper-panel group grid min-h-24 snap-start grid-cols-[76px_minmax(0,1fr)] items-center gap-3 p-3 transition-[border-color,box-shadow,transform] hover:-translate-y-0.5 hover:border-petshop-teal motion-reduce:transform-none">
             <span className="relative size-[76px] overflow-hidden rounded-lg bg-soft-blue">
               <Image src={image} alt={imageAlt} fill sizes="76px" className="object-contain p-2.5 transition-transform group-hover:scale-105 motion-reduce:transition-none" />
             </span>

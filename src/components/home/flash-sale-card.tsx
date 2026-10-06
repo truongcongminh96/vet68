@@ -25,7 +25,7 @@ export function FlashSaleCard({ product }: { product: Product }) {
       </span>
 
       {/* Product Image Container */}
-      <Link
+      <Link prefetch={false}
         href={`/san-pham/${product.slug}`}
         className="relative block aspect-[4/5] w-full overflow-hidden bg-[#faf8f5] p-3 transition-colors group-hover:bg-[#f5f1eb]"
       >
@@ -42,7 +42,7 @@ export function FlashSaleCard({ product }: { product: Product }) {
       <div className="flex flex-1 flex-col p-3.5 sm:p-4">
         {/* Product Title */}
         <h3 className="line-clamp-2 min-h-10 text-xs font-semibold leading-snug text-[#20212b] transition-colors group-hover:text-main-green sm:text-[13px]">
-          <Link href={`/san-pham/${product.slug}`}>{product.name}</Link>
+          <Link prefetch={false} href={`/san-pham/${product.slug}`}>{product.name}</Link>
         </h3>
 
         {/* 5-Star Rating Row */}
@@ -74,7 +74,7 @@ export function FlashSaleCard({ product }: { product: Product }) {
           </div>
 
           {/* Quick Details / Options Icon Button */}
-          <Link
+          <Link prefetch={false}
             href={`/san-pham/${product.slug}`}
             className="flex size-7.5 shrink-0 items-center justify-center rounded-full border border-main-green/20 bg-white text-main-green transition-all duration-200 hover:bg-main-green hover:text-white"
             title="Xem chi tiết & tuỳ chọn"

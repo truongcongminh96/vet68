@@ -28,7 +28,7 @@ export default function AdminLoginPage() {
             <p className="admin-login-copy">Dùng tài khoản nhân viên đã được cấp để quản lý catalogue và nội dung Vet Medicine 68.</p>
             <LoginForm />
             {!configured ? <p className="admin-login-notice">Supabase chưa được cấu hình. Hãy cập nhật `.env.local` trước khi đăng nhập.</p> : null}
-            <Link href="/" className="admin-login-return">← Về website</Link>
+            <Link prefetch={false} href="/" className="admin-login-return">← Về website</Link>
           </div>
         </section>
 

@@ -93,7 +93,7 @@ export function HomeHeroSlider() {
 
             {/* Action Buttons Group */}
             <div className="mt-8 flex flex-wrap items-center gap-3.5">
-              <Link
+              <Link prefetch={false}
                 href={slide.primaryCta.href}
                 className="inline-flex items-center gap-2 rounded-lg bg-main-green px-7 py-3.5 text-xs font-bold uppercase tracking-wider text-white shadow-sm transition-all hover:bg-[#163b2e] hover:shadow-md"
               >
@@ -101,7 +101,7 @@ export function HomeHeroSlider() {
                 <ArrowRight className="size-4" />
               </Link>
 
-              <Link
+              <Link prefetch={false}
                 href={slide.secondaryCta.href}
                 className="inline-flex items-center gap-2 rounded-lg border border-[#e2cbb8] bg-[#f7ebde] px-7 py-3.5 text-xs font-bold uppercase tracking-wider text-[#33302f] transition-all hover:bg-[#f0decb]"
               >

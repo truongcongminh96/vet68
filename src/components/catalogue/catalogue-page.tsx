@@ -72,11 +72,11 @@ export async function CataloguePage({
       <div className="border-b border-[#eaf0ec] bg-white py-3">
         <div className="site-container">
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-muted-foreground">
-            <Link href="/" className="font-medium hover:text-main-green">
+            <Link prefetch={false} href="/" className="font-medium hover:text-main-green">
               Trang chủ
             </Link>
             <ChevronRight className="size-3.5" />
-            <Link href="/san-pham" className="font-medium hover:text-main-green">
+            <Link prefetch={false} href="/san-pham" className="font-medium hover:text-main-green">
               Sản phẩm
             </Link>
             {title !== "Tất cả sản phẩm" && (
@@ -190,7 +190,7 @@ export async function CataloguePage({
                     variant="outline"
                     className="rounded-xl border-main-green/20 text-xs font-bold text-main-green hover:bg-main-green hover:text-white"
                   >
-                    <Link href={basePath} className="flex items-center gap-1.5">
+                    <Link prefetch={false} href={basePath} className="flex items-center gap-1.5">
                       <RotateCcw className="size-3.5" />
                       <span>Xóa bộ lọc</span>
                     </Link>
@@ -199,7 +199,7 @@ export async function CataloguePage({
                     asChild
                     className="rounded-xl bg-price-orange text-xs font-bold text-white hover:bg-price-orange-dark"
                   >
-                    <Link href="/lien-he">Liên hệ hỗ trợ</Link>
+                    <Link prefetch={false} href="/lien-he">Liên hệ hỗ trợ</Link>
                   </Button>
                 </div>
               </div>
@@ -224,7 +224,7 @@ export async function CataloguePage({
                           : "border-[#eaf0ec] bg-white text-[#33302f] hover:bg-[#faf3ea] hover:text-main-green"
                       }`}
                     >
-                      <Link href={href} aria-current={isActive ? "page" : undefined}>
+                      <Link prefetch={false} href={href} aria-current={isActive ? "page" : undefined}>
                         {page}
                       </Link>
                     </Button>

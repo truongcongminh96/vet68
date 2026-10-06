@@ -1,7 +1,7 @@
 import "server-only";
 
-import { cache } from "react";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { cachePublicQuery } from "@/lib/public-cache";
+import { createSupabasePublicClient } from "@/lib/supabase/public";
 import { getPublicStorageUrl } from "@/lib/supabase/storage";
 import type { Database } from "@/types/database";
 
@@ -17,8 +17,8 @@ export type PublicBanner = {
   linkUrl: string | null;
 };
 
-const loadBanners = cache(async (): Promise<Array<PublicBanner & { placement: Placement }>> => {
-  const supabase = await createSupabaseServerClient();
+const loadBanners = cachePublicQuery(async (): Promise<Array<PublicBanner & { placement: Placement }>> => {
+  const supabase = await createSupabasePublicClient();
   if (!supabase) return [];
   const now = new Date().toISOString();
   const { data, error } = await supabase
@@ -28,7 +28,7 @@ const loadBanners = cache(async (): Promise<Array<PublicBanner & { placement: Pl
     .or(`starts_at.is.null,starts_at.lte.${now}`)
     .or(`ends_at.is.null,ends_at.gt.${now}`)
     .order("sort_order");
-  if (error) return [];
+  if (error) throw error;
   return (data ?? []).map((row) => ({
     id: row.id,
     placement: row.placement,
@@ -39,7 +39,7 @@ const loadBanners = cache(async (): Promise<Array<PublicBanner & { placement: Pl
     imageAlt: row.image_alt,
     linkUrl: row.link_url,
   }));
-});
+}, "public-banners", ["banners"]);
 
 export async function getActiveBanners(placement: Placement) {
   return (await loadBanners()).filter((banner) => banner.placement === placement);

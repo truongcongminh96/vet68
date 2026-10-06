@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 import { getPosts, getSitemapProducts, getTaxonomy } from "@/lib/catalogue/queries";
 import { absoluteUrl } from "@/lib/site";
 
+export const revalidate = 300;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [products, taxonomy, posts] = await Promise.all([getSitemapProducts(), getTaxonomy(), getPosts()]);
   const staticRoutes = ["", "/san-pham", "/khuyen-mai", "/kien-thuc-thu-y", "/gioi-thieu", "/lien-he"];

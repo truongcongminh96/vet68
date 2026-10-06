@@ -101,7 +101,7 @@ export function CategoryGridShowcase() {
           {categories.map((category) => {
             const Icon = category.icon;
             return (
-              <Link
+              <Link prefetch={false}
                 key={category.slug}
                 href={`/danh-muc/${category.slug}`}
                 className="group relative flex items-center justify-between overflow-hidden rounded-2xl border border-[#eaf0ec] bg-white p-4 sm:p-5 shadow-[0_4px_16px_rgba(0,0,0,0.02)] transition-all duration-300 hover:-translate-y-1 hover:border-main-green/30 hover:shadow-[0_12px_28px_rgba(31,74,58,0.08)]"

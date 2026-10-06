@@ -31,7 +31,7 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
     <div>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div><h1 className="text-3xl font-extrabold">Sản phẩm</h1><p className="mt-2 text-muted-foreground">{total} sản phẩm trong cơ sở dữ liệu.</p></div>
-        <Button asChild><Link href="/admin/san-pham/moi"><Plus aria-hidden="true" /> Tạo sản phẩm</Link></Button>
+        <Button asChild><Link prefetch={false} href="/admin/san-pham/moi"><Plus aria-hidden="true" /> Tạo sản phẩm</Link></Button>
       </div>
       <form className="mt-6 grid gap-3 rounded-xl border bg-card p-4 lg:grid-cols-[minmax(220px,1fr)_180px_220px_200px_auto]">
         <div className="relative"><Label htmlFor="admin-product-search" className="sr-only">Tìm tên hoặc SKU</Label><Search className="absolute left-3 top-3 size-4 text-muted-foreground" aria-hidden="true" /><Input id="admin-product-search" name="q" defaultValue={params.q} placeholder="Tìm tên hoặc SKU" className="ps-9" /></div>
@@ -50,13 +50,13 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
                 <TableCell>{product.categoryName}</TableCell>
                 <TableCell>{product.price_display_mode === "contact" ? "Liên hệ" : product.reference_price ? `${Number(product.reference_price).toLocaleString("vi-VN")} ₫` : "Thiếu giá"}</TableCell>
                 <TableCell><Badge variant={product.is_active ? "default" : "secondary"}>{product.is_active ? "Công khai" : "Đang ẩn"}</Badge></TableCell>
-                <TableCell className="text-right"><Button variant="outline" size="sm" asChild><Link href={`/admin/san-pham/${product.id}`}>Chỉnh sửa</Link></Button></TableCell>
+                <TableCell className="text-right"><Button variant="outline" size="sm" asChild><Link prefetch={false} href={`/admin/san-pham/${product.id}`}>Chỉnh sửa</Link></Button></TableCell>
               </TableRow>
             )) : <TableRow><TableCell colSpan={5} className="h-32 text-center text-muted-foreground">Không có sản phẩm phù hợp.</TableCell></TableRow>}
           </TableBody>
         </Table>
       </div>
-      {pageCount > 1 ? <nav className="mt-6 flex justify-center gap-2" aria-label="Phân trang sản phẩm">{Array.from({ length: pageCount }, (_, index) => index + 1).map((item) => <Button key={item} size="icon" variant={item === page ? "default" : "outline"} asChild><Link href={pageHref(item)} aria-current={item === page ? "page" : undefined}>{item}</Link></Button>)}</nav> : null}
+      {pageCount > 1 ? <nav className="mt-6 flex justify-center gap-2" aria-label="Phân trang sản phẩm">{Array.from({ length: pageCount }, (_, index) => index + 1).map((item) => <Button key={item} size="icon" variant={item === page ? "default" : "outline"} asChild><Link prefetch={false} href={pageHref(item)} aria-current={item === page ? "page" : undefined}>{item}</Link></Button>)}</nav> : null}
     </div>
   );
 }

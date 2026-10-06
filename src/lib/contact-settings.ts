@@ -1,12 +1,12 @@
 import "server-only";
 
-import { cache } from "react";
+import { cachePublicQuery } from "@/lib/public-cache";
 import { contactSchema, getEnvironmentContactSettings, type ContactSettings } from "@/lib/contact";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabasePublicClient } from "@/lib/supabase/public";
 
-export const getContactSettings = cache(async (): Promise<ContactSettings> => {
+export const getContactSettings = cachePublicQuery(async (): Promise<ContactSettings> => {
   const fallback = getEnvironmentContactSettings();
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabasePublicClient();
   if (!supabase) return fallback;
 
   const { data, error } = await supabase
@@ -16,7 +16,8 @@ export const getContactSettings = cache(async (): Promise<ContactSettings> => {
     .eq("is_public", true)
     .maybeSingle();
 
-  if (error || !data) return fallback;
+  if (error) throw error;
+  if (!data) return fallback;
   const value = data.value as Record<string, unknown>;
   const parsed = contactSchema.safeParse({
     phone: value.phone,
@@ -26,4 +27,4 @@ export const getContactSettings = cache(async (): Promise<ContactSettings> => {
     address: value.address,
   });
   return parsed.success ? parsed.data : fallback;
-});
+}, "public-contact-settings", ["site-settings"]);

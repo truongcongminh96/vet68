@@ -125,7 +125,7 @@ export function CatalogueFilterSidebar({
         <div className="rounded-2xl border border-price-orange/20 bg-price-orange/5 p-3.5">
           <div className="flex items-center justify-between text-xs font-bold text-price-orange">
             <span>Đang chọn ({activeChips.length})</span>
-            <Link
+            <Link prefetch={false}
               href={basePath}
               className="inline-flex items-center gap-1 text-[11px] underline hover:text-price-orange-dark"
             >
@@ -134,7 +134,7 @@ export function CatalogueFilterSidebar({
           </div>
           <div className="mt-2.5 flex flex-wrap gap-1.5">
             {activeChips.map((chip) => (
-              <Link
+              <Link prefetch={false}
                 key={chip.label}
                 href={chip.removeUrl}
                 className="inline-flex items-center gap-1 rounded-md border border-price-orange/30 bg-white px-2 py-1 text-[11px] font-medium text-main-green shadow-2xs hover:border-price-orange"
@@ -157,7 +157,7 @@ export function CatalogueFilterSidebar({
           {priceRangeOptions.map((opt) => {
             const active = isPriceSelected(opt);
             return (
-              <Link
+              <Link prefetch={false}
                 key={opt.label}
                 href={
                   active
@@ -189,7 +189,7 @@ export function CatalogueFilterSidebar({
             {companies.map((comp) => {
               const active = filters.company === comp.slug;
               return (
-                <Link
+                <Link prefetch={false}
                   key={comp.id}
                   href={
                     active
@@ -222,7 +222,7 @@ export function CatalogueFilterSidebar({
             {animalTypes.map((animal) => {
               const active = filters.animal === animal.slug;
               return (
-                <Link
+                <Link prefetch={false}
                   key={animal.id}
                   href={
                     active
@@ -255,7 +255,7 @@ export function CatalogueFilterSidebar({
             {dosageForms.map((df) => {
               const active = filters.dosageForm === df;
               return (
-                <Link
+                <Link prefetch={false}
                   key={df}
                   href={
                     active
@@ -284,7 +284,7 @@ export function CatalogueFilterSidebar({
           asChild
           className="w-full rounded-xl border-main-green/20 text-xs font-bold text-main-green hover:bg-main-green hover:text-white"
         >
-          <Link href={basePath} className="flex items-center justify-center gap-1.5">
+          <Link prefetch={false} href={basePath} className="flex items-center justify-center gap-1.5">
             <Trash2 className="size-3.5" />
             <span>Xoá tất cả bộ lọc</span>
           </Link>
@@ -303,7 +303,7 @@ export function CatalogueFilterSidebar({
             <span>Bộ lọc sản phẩm</span>
           </div>
           {activeChips.length > 0 && (
-            <Link
+            <Link prefetch={false}
               href={basePath}
               className="text-[11px] font-semibold text-price-orange hover:underline"
               title="Xoá bộ lọc"

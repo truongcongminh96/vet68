@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
+import { refreshProductImagesAction } from "@/app/admin/(protected)/san-pham/actions";
 import type { Database } from "@/types/database";
 
 type ProductImage = Database["public"]["Tables"]["product_images"]["Row"];
@@ -20,6 +21,15 @@ export function ProductImageManager({ productId, initialImages }: { productId: s
   const supabase = useMemo(() => getSupabaseBrowserClient(), []);
 
   const publicUrl = (path: string) => supabase.storage.from("product-images").getPublicUrl(path).data.publicUrl;
+
+  async function finishImageChange(successMessage: string) {
+    try {
+      const refreshed = await refreshProductImagesAction(productId);
+      setMessage(refreshed.ok ? successMessage : refreshed.message);
+    } catch {
+      setMessage("Ảnh đã thay đổi nhưng chưa làm mới được website. Hãy lưu lại sản phẩm.");
+    }
+  }
 
   function upload() {
     const normalizedAlt = altText.trim();
@@ -50,7 +60,7 @@ export function ProductImageManager({ productId, initialImages }: { productId: s
       setImages((current) => [...current, data]);
       setFile(null);
       setAltText("");
-      setMessage("Đã tải ảnh lên.");
+      await finishImageChange("Đã tải ảnh lên.");
     });
   }
 
@@ -63,8 +73,9 @@ export function ProductImageManager({ productId, initialImages }: { productId: s
     setImages(reordered);
     startTransition(async () => {
       const results = await Promise.all(reordered.map((image) => supabase.from("product_images").update({ sort_order: image.sort_order }).eq("id", image.id)));
-      if (results.some((result) => result.error)) setMessage("Không thể lưu thứ tự ảnh. Hãy tải lại trang và thử lại.");
-      else setMessage("Đã cập nhật thứ tự ảnh.");
+      await finishImageChange(results.some((result) => result.error)
+        ? "Không thể lưu thứ tự ảnh. Hãy tải lại trang và thử lại."
+        : "Đã cập nhật thứ tự ảnh.");
     });
   }
 
@@ -72,11 +83,14 @@ export function ProductImageManager({ productId, initialImages }: { productId: s
     startTransition(async () => {
       const currentPrimary = images.find((image) => image.is_primary);
       if (currentPrimary?.id === id) return;
-      if (currentPrimary) await supabase.from("product_images").update({ is_primary: false }).eq("id", currentPrimary.id);
+      if (currentPrimary) {
+        const { error } = await supabase.from("product_images").update({ is_primary: false }).eq("id", currentPrimary.id);
+        if (error) return setMessage(error.message);
+      }
       const { error } = await supabase.from("product_images").update({ is_primary: true }).eq("id", id);
-      if (error) return setMessage(error.message);
+      if (error) return finishImageChange(error.message);
       setImages((current) => current.map((image) => ({ ...image, is_primary: image.id === id })));
-      setMessage("Đã chọn ảnh đại diện.");
+      await finishImageChange("Đã chọn ảnh đại diện.");
     });
   }
 
@@ -87,9 +101,16 @@ export function ProductImageManager({ productId, initialImages }: { productId: s
       if (error) return setMessage(error.message);
       await supabase.storage.from("product-images").remove([image.storage_path]);
       const remaining = images.filter((item) => item.id !== image.id);
+      if (image.is_primary && remaining[0]) {
+        const { error: primaryError } = await supabase.from("product_images").update({ is_primary: true }).eq("id", remaining[0].id);
+        if (primaryError) {
+          setImages(remaining);
+          return finishImageChange("Đã xóa ảnh nhưng chưa chọn được ảnh đại diện. Hãy chọn lại.");
+        }
+        remaining[0] = { ...remaining[0], is_primary: true };
+      }
       setImages(remaining);
-      setMessage("Đã xóa ảnh.");
-      if (image.is_primary && remaining[0]) makePrimary(remaining[0].id);
+      await finishImageChange("Đã xóa ảnh.");
     });
   }
 

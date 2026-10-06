@@ -172,40 +172,40 @@ export async function SiteFooter() {
           <div>
             <h4 className="text-xs font-bold uppercase tracking-wider text-main-green">Về chúng tôi</h4>
             <div className="mt-3 grid gap-2 text-xs text-muted-foreground">
-              <Link href="/gioi-thieu" className="hover:text-main-green">Giới thiệu Vet68</Link>
-              <Link href="/san-pham" className="hover:text-main-green">Catalogue sản phẩm</Link>
-              <Link href="/kien-thuc-thu-y" className="hover:text-main-green">Kiến thức chuyên môn</Link>
-              <Link href="/lien-he" className="hover:text-main-green">Hệ thống phân phối</Link>
+              <Link prefetch={false} href="/gioi-thieu" className="hover:text-main-green">Giới thiệu Vet68</Link>
+              <Link prefetch={false} href="/san-pham" className="hover:text-main-green">Catalogue sản phẩm</Link>
+              <Link prefetch={false} href="/kien-thuc-thu-y" className="hover:text-main-green">Kiến thức chuyên môn</Link>
+              <Link prefetch={false} href="/lien-he" className="hover:text-main-green">Hệ thống phân phối</Link>
             </div>
           </div>
 
           <div>
             <h4 className="text-xs font-bold uppercase tracking-wider text-main-green">Hỗ trợ khách hàng</h4>
             <div className="mt-3 grid gap-2 text-xs text-muted-foreground">
-              <Link href="/khuyen-mai" className="hover:text-main-green">Chương trình khuyến mãi</Link>
-              <Link href="/lien-he" className="hover:text-main-green">Hướng dẫn tra cứu giá</Link>
-              <Link href="/lien-he" className="hover:text-main-green">Quy trình xác nhận đơn</Link>
-              <Link href="/lien-he" className="hover:text-main-green">Câu hỏi thường gặp</Link>
+              <Link prefetch={false} href="/khuyen-mai" className="hover:text-main-green">Chương trình khuyến mãi</Link>
+              <Link prefetch={false} href="/lien-he" className="hover:text-main-green">Hướng dẫn tra cứu giá</Link>
+              <Link prefetch={false} href="/lien-he" className="hover:text-main-green">Quy trình xác nhận đơn</Link>
+              <Link prefetch={false} href="/lien-he" className="hover:text-main-green">Câu hỏi thường gặp</Link>
             </div>
           </div>
 
           <div>
             <h4 className="text-xs font-bold uppercase tracking-wider text-main-green">Chính sách</h4>
             <div className="mt-3 grid gap-2 text-xs text-muted-foreground">
-              <Link href="/lien-he" className="hover:text-main-green">Chính sách bảo hành & đổi trả</Link>
-              <Link href="/lien-he" className="hover:text-main-green">Chính sách vận chuyển thuốc</Link>
-              <Link href="/lien-he" className="hover:text-main-green">Chính sách đại lý & phòng khám</Link>
-              <Link href="/lien-he" className="hover:text-main-green">Bảo mật thông tin</Link>
+              <Link prefetch={false} href="/lien-he" className="hover:text-main-green">Chính sách bảo hành & đổi trả</Link>
+              <Link prefetch={false} href="/lien-he" className="hover:text-main-green">Chính sách vận chuyển thuốc</Link>
+              <Link prefetch={false} href="/lien-he" className="hover:text-main-green">Chính sách đại lý & phòng khám</Link>
+              <Link prefetch={false} href="/lien-he" className="hover:text-main-green">Bảo mật thông tin</Link>
             </div>
           </div>
 
           <div>
             <h4 className="text-xs font-bold uppercase tracking-wider text-main-green">Dòng sản phẩm</h4>
             <div className="mt-3 grid gap-2 text-xs text-muted-foreground">
-              <Link href="/danh-muc/khang-sinh" className="hover:text-main-green">Kháng sinh & Đặc trị</Link>
-              <Link href="/danh-muc/vitamin-khoang-chat" className="hover:text-main-green">Vitamin & Tăng lực</Link>
-              <Link href="/danh-muc/sat-trung" className="hover:text-main-green">Sát trùng & Môi trường</Link>
-              <Link href="/vat-nuoi/cho-va-meo" className="hover:text-main-green">Sản phẩm Chó & Mèo</Link>
+              <Link prefetch={false} href="/danh-muc/khang-sinh" className="hover:text-main-green">Kháng sinh & Đặc trị</Link>
+              <Link prefetch={false} href="/danh-muc/vitamin-khoang-chat" className="hover:text-main-green">Vitamin & Tăng lực</Link>
+              <Link prefetch={false} href="/danh-muc/sat-trung" className="hover:text-main-green">Sát trùng & Môi trường</Link>
+              <Link prefetch={false} href="/vat-nuoi/cho-va-meo" className="hover:text-main-green">Sản phẩm Chó & Mèo</Link>
             </div>
           </div>
         </div>

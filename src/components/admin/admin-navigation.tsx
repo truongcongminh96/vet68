@@ -27,7 +27,7 @@ export function AdminNavigation() {
       {items.map(([Icon, label, href]) => {
         const active = href === "/admin" ? pathname === href : pathname.startsWith(href);
         return (
-          <Link key={href} href={href} data-active={active || undefined} className="admin-navigation-link">
+          <Link prefetch={false} key={href} href={href} data-active={active || undefined} className="admin-navigation-link">
             <Icon aria-hidden="true" strokeWidth={1.7} />
             <span>{label}</span>
           </Link>

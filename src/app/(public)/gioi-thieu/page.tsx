@@ -69,7 +69,7 @@ export default async function AboutPage() {
       <div className="border-b border-[#eaf0ec] bg-white py-3">
         <div className="site-container">
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-muted-foreground">
-            <Link href="/" className="font-medium hover:text-main-green">
+            <Link prefetch={false} href="/" className="font-medium hover:text-main-green">
               Trang chủ
             </Link>
             <ChevronRight className="size-3.5" />
@@ -126,7 +126,7 @@ export default async function AboutPage() {
                   asChild
                   className="rounded-xl bg-main-green px-6 text-xs font-bold uppercase tracking-wider text-white shadow-md hover:bg-[#163b2e]"
                 >
-                  <Link href="/san-pham" className="flex items-center gap-2">
+                  <Link prefetch={false} href="/san-pham" className="flex items-center gap-2">
                     <span>Khám phá catalogue</span>
                     <ArrowRight className="size-4" />
                   </Link>
@@ -137,7 +137,7 @@ export default async function AboutPage() {
                   variant="outline"
                   className="rounded-xl border-main-green/30 bg-white/80 px-5 text-xs font-bold uppercase tracking-wider text-main-green hover:bg-white"
                 >
-                  <Link href="/lien-he">Liên hệ tư vấn</Link>
+                  <Link prefetch={false} href="/lien-he">Liên hệ tư vấn</Link>
                 </Button>
               </div>
             </div>
@@ -298,7 +298,7 @@ export default async function AboutPage() {
                   asChild
                   className="rounded-xl bg-price-orange px-6 text-xs font-bold uppercase tracking-wider text-white shadow-sm hover:bg-price-orange-dark"
                 >
-                  <Link href="/lien-he" className="flex items-center gap-2">
+                  <Link prefetch={false} href="/lien-he" className="flex items-center gap-2">
                     <MessageCircle className="size-4" />
                     <span>Liên hệ trao đổi hợp tác</span>
                   </Link>

@@ -29,7 +29,7 @@ export default async function AdminDashboardPage() {
         ))}
       </div>
       <Card className="admin-activity-panel">
-        <CardHeader><CardTitle><RefreshCcw aria-hidden="true" /> Sản phẩm cập nhật gần đây</CardTitle><Link href="/admin/san-pham">Mở danh sách <ArrowUpRight aria-hidden="true" /></Link></CardHeader>
+        <CardHeader><CardTitle><RefreshCcw aria-hidden="true" /> Sản phẩm cập nhật gần đây</CardTitle><Link prefetch={false} href="/admin/san-pham">Mở danh sách <ArrowUpRight aria-hidden="true" /></Link></CardHeader>
         <CardContent className="grid gap-3">
           {dashboard.recent.length ? dashboard.recent.map((product) => (
             <div key={product.id} className="flex items-center justify-between gap-4 border-b pb-3 text-sm last:border-0 last:pb-0">

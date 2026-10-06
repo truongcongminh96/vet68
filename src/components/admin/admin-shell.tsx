@@ -25,7 +25,7 @@ export function AdminShell({ children, staffName, role }: { children: React.Reac
         </div>
       </aside>
       <div className="admin-content-frame">
-        <header className="admin-topbar"><div><p className="admin-topbar-kicker">Vet Medicine 68</p><p className="admin-topbar-title">Catalogue operations</p></div><div className="admin-topbar-actions"><AdminThemeControls /><Button variant="outline" className="admin-site-link" asChild><Link href="/" target="_blank"><Flag aria-hidden="true" /> Xem website</Link></Button></div></header>
+        <header className="admin-topbar"><div><p className="admin-topbar-kicker">Vet Medicine 68</p><p className="admin-topbar-title">Catalogue operations</p></div><div className="admin-topbar-actions"><AdminThemeControls /><Button variant="outline" className="admin-site-link" asChild><Link prefetch={false} href="/" target="_blank"><Flag aria-hidden="true" /> Xem website</Link></Button></div></header>
         <main className="admin-main">{children}</main>
       </div>
     </div>

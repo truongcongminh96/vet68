@@ -1,32 +1,35 @@
 import "server-only";
 
-import { cache } from "react";
+import { cachePublicQuery } from "@/lib/public-cache";
 import { animalTypes as demoAnimalTypes, brands as demoBrands, categories as demoCategories, companies as demoCompanies, posts as demoPosts, products as demoProducts } from "@/lib/catalogue/demo-data";
 import { filterProducts } from "@/lib/catalogue/filter-products";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabasePublicClient } from "@/lib/supabase/public";
 import { getPublicStorageUrl } from "@/lib/supabase/storage";
 import type { AnimalType, Brand, CatalogueFilters, Category, Company, Post, Product } from "@/types/catalogue";
 import type { Database } from "@/types/database";
 
 export const CATALOGUE_PAGE_SIZE = 12;
 
-const loadPublicProducts = cache(async (): Promise<Product[]> => {
-  const supabase = await createSupabaseServerClient();
-  if (!supabase) return demoProducts;
+async function queryPublicProducts(slug?: string): Promise<Product[]> {
+  const supabase = await createSupabasePublicClient();
+  if (!supabase) return slug ? demoProducts.filter((product) => product.slug === slug) : demoProducts;
 
-  const { data: productRows, error } = await supabase
+  let query = supabase
     .from("products")
     .select("*")
     .eq("is_active", true)
     .order("updated_at", { ascending: false });
-
-  if (error || !productRows?.length) return [];
+  if (slug) query = query.eq("slug", slug);
+  const { data: productRows, error } = await query;
+  if (error) throw error;
+  if (!productRows?.length) return [];
 
   const productIds = productRows.map((row) => row.id);
-  const { data: secondaryLinks } = await supabase
+  const { data: secondaryLinks, error: secondaryError } = await supabase
     .from("product_categories")
     .select("product_id, category_id")
     .in("product_id", productIds);
+  if (secondaryError) throw secondaryError;
 
   const brandIds = productRows.flatMap((row) => row.brand_id ? [row.brand_id] : []);
   const companyIds = productRows.flatMap((row) => row.company_id ? [row.company_id] : []);
@@ -35,18 +38,23 @@ const loadPublicProducts = cache(async (): Promise<Product[]> => {
     ...(secondaryLinks ?? []).map((row) => row.category_id),
   ];
 
-  const [{ data: companyRows }, { data: brandRows }, { data: categoryRows }, { data: animalLinks }, { data: imageRows }] = await Promise.all([
-    companyIds.length ? supabase.from("companies").select("*").in("id", [...new Set(companyIds)]) : Promise.resolve({ data: [] }),
-    brandIds.length ? supabase.from("brands").select("*").in("id", [...new Set(brandIds)]) : Promise.resolve({ data: [] }),
-    categoryIds.length ? supabase.from("categories").select("*").in("id", [...new Set(categoryIds)]) : Promise.resolve({ data: [] }),
+  const associations = await Promise.all([
+    companyIds.length ? supabase.from("companies").select("*").in("id", [...new Set(companyIds)]) : Promise.resolve({ data: [], error: null }),
+    brandIds.length ? supabase.from("brands").select("*").in("id", [...new Set(brandIds)]) : Promise.resolve({ data: [], error: null }),
+    categoryIds.length ? supabase.from("categories").select("*").in("id", [...new Set(categoryIds)]) : Promise.resolve({ data: [], error: null }),
     supabase.from("product_animal_types").select("product_id, animal_type_id").in("product_id", productIds),
     supabase.from("product_images").select("*").in("product_id", productIds).order("is_primary", { ascending: false }).order("sort_order", { ascending: true }),
   ]);
 
+  const associationError = associations.find((result) => "error" in result && result.error)?.error;
+  if (associationError) throw associationError;
+  const [{ data: companyRows }, { data: brandRows }, { data: categoryRows }, { data: animalLinks }, { data: imageRows }] = associations;
+
   const animalIds = [...new Set((animalLinks ?? []).map((row) => row.animal_type_id))];
-  const { data: animalRows } = animalIds.length
+  const { data: animalRows, error: animalError } = animalIds.length
     ? await supabase.from("animal_types").select("*").in("id", animalIds)
-    : { data: [] };
+    : { data: [], error: null };
+  if (animalError) throw animalError;
 
   const companyMap = new Map((companyRows ?? []).map((row) => [row.id, mapCompany(row)]));
   const brandMap = new Map((brandRows ?? []).map((row) => [row.id, mapBrand(supabase, row)]));
@@ -105,7 +113,7 @@ const loadPublicProducts = cache(async (): Promise<Product[]> => {
 
   if (!products.some((product) => product.slug.endsWith("-demo"))) return products;
 
-  return mergeBySlug(products, demoProducts, (product, demoProduct) => ({
+  return mergeBySlug(products, slug ? demoProducts.filter((product) => product.slug === slug) : demoProducts, (product, demoProduct) => ({
     ...demoProduct,
     ...product,
     brand: {
@@ -118,10 +126,13 @@ const loadPublicProducts = cache(async (): Promise<Product[]> => {
     secondaryCategories: mergeBySlug(product.secondaryCategories, demoProduct.secondaryCategories),
     animals: mergeBySlug(product.animals, demoProduct.animals),
   }));
-});
+}
 
-const loadTaxonomy = cache(async () => {
-  const supabase = await createSupabaseServerClient();
+const loadPublicProducts = cachePublicQuery(() => queryPublicProducts(), "public-products", ["catalogue"]);
+const loadProductBySlug = cachePublicQuery(async (slug: string) => (await queryPublicProducts(slug))[0] ?? null, "public-product-by-slug", ["catalogue"]);
+
+const loadTaxonomy = cachePublicQuery(async () => {
+  const supabase = await createSupabasePublicClient();
   if (!supabase) return { categories: demoCategories, animalTypes: demoAnimalTypes, brands: demoBrands, companies: demoCompanies };
 
   const [{ data: categoryRows, error: categoryError }, { data: animalRows, error: animalError }, { data: brandRows, error: brandError }, { data: companyRows, error: companyError }] = await Promise.all([
@@ -131,16 +142,17 @@ const loadTaxonomy = cache(async () => {
     supabase.from("companies").select("*").eq("is_active", true).order("sort_order"),
   ]);
 
-  if (categoryError || animalError || brandError || companyError) return { categories: [], animalTypes: [], brands: [], companies: [] };
+  const error = categoryError ?? animalError ?? brandError ?? companyError;
+  if (error) throw error;
   const categories = (categoryRows ?? []).map((row) => mapCategory(supabase, row));
   const animalTypes = (animalRows ?? []).map((row) => mapAnimalType(supabase, row));
   const brands = (brandRows ?? []).map((row) => mapBrand(supabase, row));
   const companies = (companyRows ?? []).map(mapCompany);
   return { categories, animalTypes, brands, companies };
-});
+}, "public-taxonomy", ["catalogue"]);
 
-const loadPosts = cache(async (): Promise<Post[]> => {
-  const supabase = await createSupabaseServerClient();
+const loadPosts = cachePublicQuery(async (): Promise<Post[]> => {
+  const supabase = await createSupabasePublicClient();
   if (!supabase) return demoPosts;
   const { data, error } = await supabase
     .from("posts")
@@ -148,7 +160,7 @@ const loadPosts = cache(async (): Promise<Post[]> => {
     .eq("status", "published")
     .lte("published_at", new Date().toISOString())
     .order("published_at", { ascending: false });
-  if (error) return [];
+  if (error) throw error;
   if (!data?.length) return demoPosts;
   return data.map((row) => ({
     id: row.id,
@@ -161,7 +173,7 @@ const loadPosts = cache(async (): Promise<Post[]> => {
     publishedAt: row.published_at ?? row.updated_at,
     readingMinutes: Math.max(1, Math.ceil(row.content_markdown.trim().split(/\s+/).length / 220)),
   }));
-});
+}, "public-posts", ["posts"]);
 
 export async function getProducts(filters: CatalogueFilters) {
   const result = filterProducts(await loadPublicProducts(), filters);
@@ -171,7 +183,7 @@ export async function getProducts(filters: CatalogueFilters) {
 }
 
 export async function getProductBySlug(slug: string) {
-  return (await loadPublicProducts()).find((product) => product.slug === slug && product.isActive) ?? null;
+  return loadProductBySlug(slug);
 }
 
 export async function getRelatedProducts(product: Product, limit = 4) {
@@ -218,7 +230,7 @@ export async function getNewProducts(limit = 4) {
 }
 
 export async function getRecentlyViewableProducts(limit = 12) {
-  return (await loadPublicProducts()).slice(0, limit);
+  return (await loadPublicProducts()).slice(0, limit).map(({ id, slug, name, sku, images }) => ({ id, slug, name, sku, images: images.slice(0, 1) }));
 }
 
 export async function getSitemapProducts() {
@@ -241,7 +253,7 @@ export async function getPosts() {
   return loadPosts();
 }
 
-function mapCategory(supabase: Awaited<ReturnType<typeof createSupabaseServerClient>> & {}, row: Database["public"]["Tables"]["categories"]["Row"]): Category {
+function mapCategory(supabase: Awaited<ReturnType<typeof createSupabasePublicClient>> & {}, row: Database["public"]["Tables"]["categories"]["Row"]): Category {
   return {
     id: row.id,
     name: row.name,
@@ -253,7 +265,7 @@ function mapCategory(supabase: Awaited<ReturnType<typeof createSupabaseServerCli
   };
 }
 
-function mapAnimalType(supabase: Awaited<ReturnType<typeof createSupabaseServerClient>> & {}, row: Database["public"]["Tables"]["animal_types"]["Row"]): AnimalType {
+function mapAnimalType(supabase: Awaited<ReturnType<typeof createSupabasePublicClient>> & {}, row: Database["public"]["Tables"]["animal_types"]["Row"]): AnimalType {
   return {
     id: row.id,
     name: row.name,
@@ -295,7 +307,7 @@ function getProductFallback(categorySlug: string) {
   return fallbacks[categorySlug] ?? "/images/products/demo-mineral-bag.svg";
 }
 
-function mapBrand(supabase: Awaited<ReturnType<typeof createSupabaseServerClient>> & {}, row: Database["public"]["Tables"]["brands"]["Row"]): Brand {
+function mapBrand(supabase: Awaited<ReturnType<typeof createSupabasePublicClient>> & {}, row: Database["public"]["Tables"]["brands"]["Row"]): Brand {
   return {
     id: row.id,
     name: row.name,

@@ -1,8 +1,10 @@
 import type { NextConfig } from "next";
 
-const authBuildVersion = process.env.VET68_BUILD_VERSION
-  ?? process.env.VERCEL_DEPLOYMENT_ID
-  ?? process.env.VERCEL_GIT_COMMIT_SHA
+const authBuildVersion = [
+  process.env.VET68_BUILD_VERSION,
+  process.env.VERCEL_DEPLOYMENT_ID,
+  process.env.VERCEL_GIT_COMMIT_SHA,
+].find((value) => value?.trim())
   ?? `local-${Date.now()}`;
 
 const nextConfig: NextConfig = {

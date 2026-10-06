@@ -38,7 +38,7 @@ export function FeaturedCollections({
                 asChild
                 className="rounded-xl bg-main-green px-6 text-xs font-bold uppercase tracking-wider text-white shadow-sm hover:bg-[#163b2e]"
               >
-                <Link href="/san-pham" className="flex items-center gap-2">
+                <Link prefetch={false} href="/san-pham" className="flex items-center gap-2">
                   <span>Xem tất cả sản phẩm</span>
                   <ArrowRight className="size-4" />
                 </Link>
@@ -89,7 +89,7 @@ export function FeaturedCollections({
                 Sản Phẩm <span className="italic font-normal text-price-orange">Nổi Bật Nhất</span>
               </h3>
             </div>
-            <Link
+            <Link prefetch={false}
               href="/san-pham"
               className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-price-orange hover:text-price-orange-dark"
             >

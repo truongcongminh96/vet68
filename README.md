@@ -112,6 +112,16 @@ Playwright chạy cả desktop và mobile, kiểm tra luồng public chính, quy
 
 Vercel Analytics và Speed Insights đã được gắn tại root layout.
 
+### Cache và mức sử dụng Vercel
+
+- Các truy vấn public dùng publishable key dưới quyền anonymous/RLS, không đọc cookie đăng nhập của nhân viên. Proxy chỉ chạy cho `/admin`.
+- Dữ liệu catalogue, bài viết, banner và liên hệ được cache trong 5 phút. Trang public không có bộ lọc dùng ISR; trang sản phẩm và bài viết được tạo/cache khi truy cập lần đầu, nên thêm slug mới không cần deploy lại.
+- Thêm/sửa/xóa sản phẩm qua admin làm mới cache ngay. Thay đổi ảnh sản phẩm cũng làm mới cache dù chưa lưu lại form sản phẩm. Bài viết, banner và cài đặt dùng các tag tương ứng.
+- Sửa trực tiếp trong Supabase hoặc nội dung hẹn giờ có thể mất khoảng 5 phút và lượt truy cập làm mới kế tiếp để xuất hiện. Nếu cần cập nhật ngay, lưu lại nội dung tương ứng qua admin.
+- Liên kết public và admin tắt prefetch để chỉ tải trang khi khách mở liên kết. Danh sách sản phẩm đã xem chỉ gửi các trường cần hiển thị xuống trình duyệt. Dashboard admin chỉ truy vấn các trường cần thống kê và hiển thị, không tải toàn bộ mô tả sản phẩm.
+
+Chạy `pnpm test:cache` để build và kiểm tra production cache với Supabase HTTP fixture local. Test không dùng thông tin đăng nhập production hoặc ghi dữ liệu thật; nó kiểm tra cache HIT, số truy vấn lặp, thêm/sửa/ẩn sản phẩm, cập nhật ảnh và quyền truy cập admin. Test tạo lại `.next`, nên dừng server local trước khi chạy và build lại với biến môi trường thật trước khi deploy bằng bản build sẵn.
+
 ## Định hướng thiết kế
 
 Thiết kế public theo hướng trust-first cho ngành thú y, dùng navy, medical red và yellow có kiểm soát. Các mức thiết kế: Variance 4, Motion 2, Density 5. Giao diện ưu tiên khả năng đọc, tìm kiếm và liên hệ, không dùng hiệu ứng gây mất tập trung.

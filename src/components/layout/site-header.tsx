@@ -70,7 +70,7 @@ export async function SiteHeader() {
         {/* Center: Desktop Navigation Bar with Mega Menu */}
         <nav className="hidden shrink-0 items-center justify-center gap-5 xl:flex lg:gap-6" aria-label="Điều hướng chính">
           {primaryNavItems.map((item) => (
-            <Link
+            <Link prefetch={false}
               key={item.href}
               href={item.href}
               className={`group flex items-center gap-1.5 whitespace-nowrap text-[14px] font-semibold transition-colors duration-200 ${
@@ -101,7 +101,7 @@ export async function SiteHeader() {
                   </h3>
                   <div className="mt-3 grid gap-2">
                     {taxonomy.companies.slice(0, 7).map((company) => (
-                      <Link
+                      <Link prefetch={false}
                         key={company.id}
                         href={`/cong-ty/${company.slug}`}
                         className="text-xs font-medium text-muted-foreground transition-colors hover:text-price-orange"
@@ -109,7 +109,7 @@ export async function SiteHeader() {
                         {company.name}
                       </Link>
                     ))}
-                    <Link href="/san-pham" className="mt-1 text-xs font-bold text-main-green hover:underline">
+                    <Link prefetch={false} href="/san-pham" className="mt-1 text-xs font-bold text-main-green hover:underline">
                       Xem tất cả công ty →
                     </Link>
                   </div>
@@ -121,7 +121,7 @@ export async function SiteHeader() {
                   </h3>
                   <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2">
                     {taxonomy.categories.filter((c) => c.kind === "product_type").slice(0, 10).map((cat) => (
-                      <Link
+                      <Link prefetch={false}
                         key={cat.id}
                         href={`/danh-muc/${cat.slug}`}
                         className="text-xs font-medium text-muted-foreground transition-colors hover:text-price-orange"
@@ -138,7 +138,7 @@ export async function SiteHeader() {
                   </span>
                   <div className="mt-3 flex flex-wrap justify-center gap-1.5">
                     {taxonomy.animalTypes.map((animal) => (
-                      <Link
+                      <Link prefetch={false}
                         key={animal.id}
                         href={`/vat-nuoi/${animal.slug}`}
                         className="rounded-lg bg-white px-2.5 py-1 text-xs font-semibold text-main-green shadow-sm transition-all hover:bg-main-green hover:text-white"
@@ -148,7 +148,7 @@ export async function SiteHeader() {
                     ))}
                   </div>
                   <Button className="mt-4 w-full rounded-xl bg-price-orange text-xs font-bold text-white hover:bg-price-orange-dark" asChild>
-                    <Link href="/san-pham">Khám phá catalogue</Link>
+                    <Link prefetch={false} href="/san-pham">Khám phá catalogue</Link>
                   </Button>
                 </div>
               </div>
@@ -157,7 +157,7 @@ export async function SiteHeader() {
 
           {/* Secondary links */}
           {secondaryNavItems.map((item) => (
-            <Link
+            <Link prefetch={false}
               key={item.href}
               href={item.href}
               className="whitespace-nowrap text-[14px] font-semibold text-foreground transition-colors hover:text-main-green"
@@ -174,7 +174,7 @@ export async function SiteHeader() {
           </div>
 
           {/* Quick Consultation / Quote Cart Badge */}
-          <Link
+          <Link prefetch={false}
             href="/san-pham"
             title="Sản phẩm đã chọn & Báo giá"
             className="group relative flex size-9 items-center justify-center rounded-full bg-[#f4f3ef] text-main-green transition-all hover:bg-main-green hover:text-white sm:size-10"
@@ -237,13 +237,13 @@ function MobileMenu({ categories, animalTypes, companies }: { categories: Catego
         </SheetHeader>
 
         <nav className="mt-4 grid gap-2" aria-label="Điều hướng mobile">
-          <Link href="/" className="rounded-xl px-3 py-2.5 text-sm font-bold text-foreground transition-colors hover:bg-white hover:text-main-green">
+          <Link prefetch={false} href="/" className="rounded-xl px-3 py-2.5 text-sm font-bold text-foreground transition-colors hover:bg-white hover:text-main-green">
             Trang chủ
           </Link>
-          <Link href="/gioi-thieu" className="rounded-xl px-3 py-2.5 text-sm font-bold text-foreground transition-colors hover:bg-white hover:text-main-green">
+          <Link prefetch={false} href="/gioi-thieu" className="rounded-xl px-3 py-2.5 text-sm font-bold text-foreground transition-colors hover:bg-white hover:text-main-green">
             Giới thiệu
           </Link>
-          <Link href="/khuyen-mai" className="flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-bold text-price-orange transition-colors hover:bg-white">
+          <Link prefetch={false} href="/khuyen-mai" className="flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-bold text-price-orange transition-colors hover:bg-white">
             <span className="flex items-center gap-1.5"><Flame className="size-4" /> Ưu đãi chớp nhoáng</span>
             <Badge className="bg-price-orange text-[10px] text-white">HOT</Badge>
           </Link>
@@ -258,7 +258,7 @@ function MobileMenu({ categories, animalTypes, companies }: { categories: Catego
                 <p className="font-bold uppercase tracking-wider text-price-orange">Nhóm vật nuôi</p>
                 <div className="mt-2 grid grid-cols-2 gap-2">
                   {animalTypes.map((item) => (
-                    <Link key={item.id} href={`/vat-nuoi/${item.slug}`} className="rounded-lg bg-[#faf8f5] p-2 text-center font-semibold text-foreground hover:bg-main-green hover:text-white">
+                    <Link prefetch={false} key={item.id} href={`/vat-nuoi/${item.slug}`} className="rounded-lg bg-[#faf8f5] p-2 text-center font-semibold text-foreground hover:bg-main-green hover:text-white">
                       {item.name}
                     </Link>
                   ))}
@@ -269,7 +269,7 @@ function MobileMenu({ categories, animalTypes, companies }: { categories: Catego
                 <p className="font-bold uppercase tracking-wider text-price-orange">Nhóm công dụng</p>
                 <div className="mt-2 grid gap-1.5">
                   {categories.filter((c) => c.kind === "product_type").slice(0, 6).map((item) => (
-                    <Link key={item.id} href={`/danh-muc/${item.slug}`} className="font-medium text-muted-foreground hover:text-main-green">
+                    <Link prefetch={false} key={item.id} href={`/danh-muc/${item.slug}`} className="font-medium text-muted-foreground hover:text-main-green">
                       • {item.name}
                     </Link>
                   ))}
@@ -278,10 +278,10 @@ function MobileMenu({ categories, animalTypes, companies }: { categories: Catego
             </div>
           </details>
 
-          <Link href="/kien-thuc-thu-y" className="rounded-xl px-3 py-2.5 text-sm font-bold text-foreground transition-colors hover:bg-white hover:text-main-green">
+          <Link prefetch={false} href="/kien-thuc-thu-y" className="rounded-xl px-3 py-2.5 text-sm font-bold text-foreground transition-colors hover:bg-white hover:text-main-green">
             Kiến thức thú y
           </Link>
-          <Link href="/lien-he" className="rounded-xl px-3 py-2.5 text-sm font-bold text-foreground transition-colors hover:bg-white hover:text-main-green">
+          <Link prefetch={false} href="/lien-he" className="rounded-xl px-3 py-2.5 text-sm font-bold text-foreground transition-colors hover:bg-white hover:text-main-green">
             Liên hệ & Tư vấn
           </Link>
         </nav>

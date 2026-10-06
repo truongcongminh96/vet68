@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export function SiteLogo({ compact = false, inverted = false }: { compact?: boolean; inverted?: boolean }) {
   return (
-    <Link href="/" className="inline-flex shrink-0 items-center gap-3" aria-label="Vet Medicine 68, về trang chủ">
+    <Link prefetch={false} href="/" className="inline-flex shrink-0 items-center gap-3" aria-label="Vet Medicine 68, về trang chủ">
       <Image
         src="/brand/vet-medicine-68-mark.png"
         alt=""

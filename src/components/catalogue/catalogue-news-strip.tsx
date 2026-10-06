@@ -23,7 +23,7 @@ export function CatalogueNewsStrip({ posts }: { posts: Post[] }) {
           </div>
         </div>
 
-        <Link
+        <Link prefetch={false}
           href="/kien-thuc-thu-y"
           className="inline-flex items-center gap-1.5 rounded-full border border-main-green/20 bg-white px-4 py-1.5 text-xs font-bold text-main-green shadow-xs transition-all hover:bg-main-green hover:text-white"
         >
@@ -38,7 +38,7 @@ export function CatalogueNewsStrip({ posts }: { posts: Post[] }) {
             key={post.id}
             className="group flex flex-col overflow-hidden rounded-2xl border border-[#eaf0ec] bg-white transition-all duration-300 hover:-translate-y-1 hover:border-main-green/30 hover:shadow-[0_12px_28px_rgba(31,74,58,0.08)]"
           >
-            <Link href={`/kien-thuc-thu-y/${post.slug}`} className="relative aspect-[16/10] overflow-hidden bg-[#faf8f5]">
+            <Link prefetch={false} href={`/kien-thuc-thu-y/${post.slug}`} className="relative aspect-[16/10] overflow-hidden bg-[#faf8f5]">
               <Image
                 src={post.coverImage}
                 alt={post.coverAlt}
@@ -61,7 +61,7 @@ export function CatalogueNewsStrip({ posts }: { posts: Post[] }) {
               </div>
 
               <h3 className="mt-2 line-clamp-2 text-sm font-bold leading-snug text-foreground transition-colors group-hover:text-main-green">
-                <Link href={`/kien-thuc-thu-y/${post.slug}`}>{post.title}</Link>
+                <Link prefetch={false} href={`/kien-thuc-thu-y/${post.slug}`}>{post.title}</Link>
               </h3>
 
               <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
@@ -69,7 +69,7 @@ export function CatalogueNewsStrip({ posts }: { posts: Post[] }) {
               </p>
 
               <div className="mt-auto pt-4">
-                <Link
+                <Link prefetch={false}
                   href={`/kien-thuc-thu-y/${post.slug}`}
                   className="inline-flex items-center gap-1 text-xs font-bold text-main-green transition-colors hover:text-price-orange"
                 >

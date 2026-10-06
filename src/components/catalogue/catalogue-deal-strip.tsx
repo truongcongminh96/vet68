@@ -28,7 +28,7 @@ export function CatalogueDealStrip({ products }: { products: Product[] }) {
             </div>
 
             <div className="mt-6">
-              <Link
+              <Link prefetch={false}
                 href="/khuyen-mai"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-main-green shadow-xs transition-all hover:bg-price-orange hover:text-white"
               >

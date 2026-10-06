@@ -9,6 +9,9 @@ import { AlertTriangle } from "lucide-react";
 import { getPostBySlug } from "@/lib/catalogue/queries";
 import { absoluteUrl, serializeJsonLd, SITE_NAME } from "@/lib/site";
 
+// Cache articles on demand while allowing newly published slugs.
+export function generateStaticParams() { return []; }
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
@@ -53,7 +56,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(articleJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbJsonLd) }} />
       <div className="site-container py-10 md:py-14 lg:py-18">
-      <nav className="mb-6 flex gap-2 text-sm text-muted-foreground" aria-label="Breadcrumb"><Link href="/">Trang chủ</Link><span>/</span><Link href="/kien-thuc-thu-y">Kiến thức thú y</Link></nav>
+      <nav className="mb-6 flex gap-2 text-sm text-muted-foreground" aria-label="Breadcrumb"><Link prefetch={false} href="/">Trang chủ</Link><span>/</span><Link prefetch={false} href="/kien-thuc-thu-y">Kiến thức thú y</Link></nav>
       <header className="mx-auto max-w-4xl text-center">
         <p className="paper-eyebrow">{new Intl.DateTimeFormat("vi-VN").format(new Date(post.publishedAt))} · {post.readingMinutes} phút đọc</p>
         <h1 className="paper-heading mt-4 text-4xl md:text-6xl">{post.title}</h1>

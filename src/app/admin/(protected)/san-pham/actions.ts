@@ -11,6 +11,28 @@ import { canDeleteCatalogue } from "@/lib/permissions";
 
 export type ProductActionResult = { ok: boolean; message: string; id?: string };
 
+function expireProductCaches(slug: string, previousSlug?: string) {
+  getProductCacheTags(slug).forEach((tag) => updateTag(tag));
+  if (previousSlug && previousSlug !== slug) getProductCacheTags(previousSlug).forEach((tag) => updateTag(tag));
+  revalidatePath("/admin/san-pham");
+  revalidatePath("/", "layout");
+}
+
+// Image uploads are written by the authenticated browser client. Expire public
+// product/page caches after the write, even when the product form was not saved.
+export async function refreshProductImagesAction(id: string): Promise<ProductActionResult> {
+  await requireStaff();
+  const parsed = z.string().uuid().safeParse(id);
+  if (!parsed.success) return { ok: false, message: "Mã sản phẩm không hợp lệ." };
+  const supabase = await createSupabaseServerClient();
+  if (!supabase) return { ok: false, message: "Supabase chưa được cấu hình." };
+  const { data, error } = await supabase.from("products").select("slug").eq("id", parsed.data).maybeSingle();
+  if (error || !data) return { ok: false, message: "Không thể làm mới ảnh trên website. Hãy lưu lại sản phẩm." };
+  getProductCacheTags(data.slug).forEach((tag) => updateTag(tag));
+  revalidatePath("/", "layout");
+  return { ok: true, message: "Đã cập nhật ảnh trên website." };
+}
+
 export async function saveProductAction(values: ProductFormValues): Promise<ProductActionResult> {
   await requireStaff();
   const parsed = productFormSchema.safeParse(values);
@@ -42,20 +64,22 @@ export async function saveProductAction(values: ProductFormValues): Promise<Prod
     supabase.from("product_animal_types").delete().eq("product_id", data.id),
     supabase.from("product_categories").delete().eq("product_id", data.id),
   ]);
-  if (animalDeleteError || categoryDeleteError) return { ok: false, message: animalDeleteError?.message ?? categoryDeleteError?.message ?? "Không thể cập nhật phân loại sản phẩm." };
+  if (animalDeleteError || categoryDeleteError) {
+    expireProductCaches(value.slug, previous?.data?.slug);
+    return { ok: false, message: animalDeleteError?.message ?? categoryDeleteError?.message ?? "Không thể cập nhật phân loại sản phẩm." };
+  }
 
   const associationWrites = await Promise.all([
     value.animalTypeIds.length ? supabase.from("product_animal_types").insert(value.animalTypeIds.map((animalTypeId) => ({ product_id: data.id, animal_type_id: animalTypeId }))) : Promise.resolve({ error: null }),
     value.treatmentCategoryIds.length ? supabase.from("product_categories").insert(value.treatmentCategoryIds.map((categoryId) => ({ product_id: data.id, category_id: categoryId }))) : Promise.resolve({ error: null }),
   ]);
   const associationError = associationWrites.find((result) => result.error)?.error;
-  if (associationError) return { ok: false, message: associationError.message };
+  if (associationError) {
+    expireProductCaches(value.slug, previous?.data?.slug);
+    return { ok: false, message: associationError.message };
+  }
 
-  getProductCacheTags(value.slug).forEach((tag) => updateTag(tag));
-  if (previous?.data?.slug && previous.data.slug !== value.slug) getProductCacheTags(previous.data.slug).forEach((tag) => updateTag(tag));
-  updateTag("catalogue");
-  revalidatePath("/admin/san-pham");
-  revalidatePath("/", "layout");
+  expireProductCaches(value.slug, previous?.data?.slug);
   return { ok: true, message: "Đã lưu sản phẩm.", id: data.id };
 }
 
